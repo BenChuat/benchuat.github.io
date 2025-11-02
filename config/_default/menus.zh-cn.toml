@@ -1,0 +1,23 @@
+# 中文站导航菜单
+# main 这个数组就是顶部导航栏
+# weight 越小越靠左
+
+[[main]]
+name = "首页"
+pageRef = "/"
+weight = 1
+
+[[main]]
+name = "归档"
+pageRef = "/archives/"
+weight = 2
+
+[[main]]
+name = "标签"
+pageRef = "/tags/"
+weight = 3
+
+[[main]]
+name = "关于"
+pageRef = "/about/"
+weight = 4

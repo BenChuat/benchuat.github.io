@@ -1,0 +1,128 @@
+
+disabled = false
+# 设为 false 表示启用中文站
+
+languageCode = "zh-cn"
+# 用于 <html lang="zh-cn"> 和 SEO
+
+languageName = "中文"
+# 语言切换器里显示 "中文"
+
+weight = 1
+# 排序优先级。1 表示中文是默认语言。
+# 如果你想把英文设成默认，就把英文的 weight 设为 1，这个设为 2。
+
+title = "BenChuat的记录本"
+# 中文站点显示的标题，会出现在标签页标题、页眉等位置
+
+mainSections = ["posts"] 
+
+[params.homepage]
+  showMoreLinkDest = "/posts/"
+
+
+[params]
+  displayName = "中"
+  # 语言切换时这个语言的标签，比如“中”或“中文”
+
+  isoCode = "zh-CN"
+  # 用于结构化元数据，建议写成国际标准大小写 zh-CN
+
+  rtl = false
+  # 中文是从左到右，保持 false
+
+  dateFormat = "2006年1月2日"
+  # 日期格式。会显示成类似 "2025年10月29日"
+  # 这个格式是 Go 的时间模板：2006-01-02 代表年月日的结构
+
+  # logo = "images/logo.png"
+  # 网站 Logo（可选），路径基于 /static
+
+  # secondaryLogo = "images/logo-dark.png"
+  # 暗色模式下的替代 Logo（可选）
+
+  description = "红眼睛幽幽地看着孤城，霓虹熄了世界渐冷清"
+  # 中文站 meta description。对搜索引擎很重要。
+  # 建议简单描述你的网站主题和定位。
+
+  copyright = "© 2025 BenChuat. 保留所有权利"
+  # 页脚版权信息，支持中文
+
+  # 作者信息（可选，但非常建议配置，展示个人品牌）
+
+[params.author]
+  name = "BenChuat"
+#   # 作者显示名，如 “BenChuat”
+#
+  email = "chuatben@gmail.com"
+#   # 公开邮箱（可选）
+#
+#   image = "img/blowfish_logo.png"
+#   # 作者头像。路径同上，来自 static。
+#
+#   imageQuality = 96
+#   # 头像压缩质量，数值越大越清晰，体积稍大。
+#
+  headline = "I'm only human"
+#   # 通常展示在作者卡片/关于卡片下方的一句短话。
+#   # 比如 "AI & Robotics Enthusiast"
+#
+  bio = "A little bit about BenChuat."
+#   # 更长的个人简介，出现在 About 区块和博文作者信息处。
+  links = [
+    { email = "mailto:chuatben@gmail.com" },
+    { link = "http://blog.benchuat.cn:1515/profile/aboutme.html" },
+#     { amazon = "https://www.amazon.com/hz/wishlist/ls/wishlist-id" },
+#     { apple = "https://www.apple.com" },
+#     { blogger = "https://username.blogspot.com/" },
+#     { bluesky = "https://bsky.app/profile/username" },
+#     { codepen = "https://codepen.io/username" },
+#     { dev = "https://dev.to/username" },
+#     { discord = "https://discord.gg/invitecode" },
+#     { dribbble = "https://dribbble.com/username" },
+#     { facebook = "https://facebook.com/username" },
+#     { flickr = "https://www.flickr.com/photos/username/" },
+#     { foursquare = "https://foursquare.com/username" },
+#     { github = "https://github.com/username" },
+#     { gitlab = "https://gitlab.com/username" },
+#     { google = "https://www.google.com/" },
+#     { hashnode = "https://username.hashnode.dev" },
+#     { instagram = "https://instagram.com/username" },
+#     { itch-io = "https://username.itch.io" },
+#     { keybase = "https://keybase.io/username" },
+#     { keyoxide = "https://keyoxide.org/URI" },
+#     { kickstarter = "https://www.kickstarter.com/profile/username" },
+#     { lastfm = "https://lastfm.com/user/username" },
+#     { linkedin = "https://linkedin.com/in/username" },
+#     { mastodon = "https://mastodon.instance/@username" },
+#     { matrix = "https://matrix.to/#/URI" },
+#     { medium = "https://medium.com/username" },
+#     { microsoft = "https://www.microsoft.com/" },
+#     { orcid = "https://orcid.org/userid" },
+#     { patreon = "https://www.patreon.com/username" },
+#     { pinterest = "https://pinterest.com/username" },
+#     { reddit = "https://reddit.com/user/username" },
+#     { researchgate = "https://www.researchgate.net/profile/username" },
+#     { signal = "https://signal.me/#eu/userid" },
+#     { slack = "https://workspace.url/team/userid" },
+#     { snapchat = "https://snapchat.com/add/username" },
+#     { soundcloud = "https://soundcloud.com/username" },
+#     { spotify = "https://open.spotify.com/user/userid" },
+#     { stack-overflow = "https://stackoverflow.com/users/userid/username" },
+#     { steam = "https://steamcommunity.com/profiles/userid" },
+#     { telegram = "https://t.me/username" },
+#     { threads = "https://www.threads.net/@username" },
+#     { tiktok = "https://tiktok.com/@username" },
+#     { tumblr = "https://username.tumblr.com" },
+#     { twitch = "https://twitch.tv/username" },
+#     { twitter = "https://twitter.com/username" },
+#     { x-twitter = "https://twitter.com/username" },
+#     { whatsapp = "https://wa.me/phone-number" },
+#     { youtube = "https://youtube.com/username" },
+#     { ko-fi = "https://ko-fi.com/username" },
+#     { codeberg = "https://codeberg.org/username"},
+  ]
+#   # 这是社交链接列表。Blowfish 会自动渲染小图标。
+#   # 键名决定图标，比如 { github = "..." } 会用 GitHub 图标。
+#   # 这个部分对“个人品牌”特别重要，
+#   # 可以只保留 GitHub、LinkedIn、个人主页等。
