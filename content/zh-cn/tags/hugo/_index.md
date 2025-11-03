@@ -1,0 +1,5 @@
+---
+title: hugo
+slug: hugo
+---
+
