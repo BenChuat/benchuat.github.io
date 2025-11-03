@@ -1,36 +1,72 @@
-name: Deploy Hugo site to GitHub Pages
+name: Deploy Hugo to GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # 每次推送 main 分支就触发构建
-  workflow_dispatch:  # 支持手动触发
+    branches: [ main ]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.152.2'   # 你的 Hugo 版本
+          hugo-version: '0.152.2'   # 用你本地的版本
           extended: true
 
-      - name: Build site
+      - name: Build
         run: hugo --minify
 
-      - name: Upload site artifact
+      # 关键：补齐 *.assets 到 public
+      - name: Copy Typora .assets folders into public
+        run: |
+          shopt -s globstar nullglob
+          # 遍历 content/* 下所有 md
+          for md in content/**/*.md; do
+            base="${md%.md}"
+            assets="${base}.assets"
+            [ -d "$assets" ] || continue
+
+            # 去掉 content/ 前缀，得到 zh-cn/posts/test-post 或 en/posts/hello-hugo
+            rel="${base#content/}"
+            lang="${rel%%/*}"      # zh-cn 或 en
+            rest="${rel#*/}"       # posts/test-post (后面没有扩展名)
+
+            name="${rest##*/}"     # test-post
+            parent="${rest%/*}"    # posts
+
+            if [ "$lang" = "zh-cn" ]; then
+              # 默认语言放根目录
+              out="public/${parent}/${name}.assets"
+            else
+              # 非默认语言带前缀，如 /en/
+              out="public/${lang}/${parent}/${name}.assets"
+            fi
+
+            mkdir -p "$out"
+            cp -R "$assets"/. "$out/"
+            echo "Copied $assets -> $out"
+          done
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public  # Hugo 默认输出目录
+          path: ./public
 
   deploy:
     needs: build
@@ -39,6 +75,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
