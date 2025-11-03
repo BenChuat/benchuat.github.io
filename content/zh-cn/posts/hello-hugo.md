@@ -13,3 +13,5 @@ description = "我的 Hugo 双语博客的第一篇文章"
 
 大家好！🎉  
 这是我使用 **Hugo** 和 **Blowfish** 主题搭建的第一篇中文博客。
+
+![logo](hello-hugo.assets/Qx3mhQ.png)
