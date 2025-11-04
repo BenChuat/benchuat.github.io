@@ -1,7 +1,7 @@
 {
   "D:\\Users\\Ben\\Desktop\\blog\\用 Hugo 设置中英双站.md": {
-    "published": false,
-    "published_at": "2025-11-04T14:57:34.476952",
+    "published": true,
+    "published_at": "2025-11-04T16:31:32.923194",
     "draft_md": "D:\\Users\\Ben\\Desktop\\blog\\用 Hugo 设置中英双站.md",
     "slug": "用-hugo-设置中英双站",
     "lang": "zh-cn",
@@ -10,9 +10,9 @@
     "first_seen": "2025-11-04T14:10:27.429630",
     "last_seen_sha": "638e1ca1d73eedbf8cdf9c1d18b10c31fd8a3117",
     "last_seen_mtime": 1762239405.7198892,
-    "deleted_at": "2025-11-04T16:16:14.494103",
+    "deleted_at": null,
     "last_published_sha": "638e1ca1d73eedbf8cdf9c1d18b10c31fd8a3117",
-    "last_published_mtime": 1762239405.7198892,
+    "last_published_mtime": 1762245064.4466493,
     "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\用 Hugo 设置中英双站.md",
     "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\用 Hugo 设置中英双站.assets"
   },
