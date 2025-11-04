@@ -1,78 +1,140 @@
 {
   "D:\\Users\\Ben\\Desktop\\blog\\用 Hugo 设置中英双站.md": {
     "published": true,
-    "published_at": "2025-11-03T16:34:00.308529",
+    "published_at": "2025-11-04T14:57:34.476952",
     "draft_md": "D:\\Users\\Ben\\Desktop\\blog\\用 Hugo 设置中英双站.md",
     "slug": "用-hugo-设置中英双站",
     "lang": "zh-cn",
     "title": "用 Hugo 设置中英双站",
     "sha1": "830acb08b157bfb154680dc33a78d65c2132a714",
-    "first_seen": "2025-11-04T14:10:27.429630"
+    "first_seen": "2025-11-04T14:10:27.429630",
+    "last_seen_sha": "0845f9ffba86c7fca8af95ec6d1f7c45e4b63cdc",
+    "last_seen_mtime": 1762236676.9135616,
+    "deleted_at": null,
+    "last_published_sha": "638e1ca1d73eedbf8cdf9c1d18b10c31fd8a3117",
+    "last_published_mtime": 1762239405.7198892,
+    "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\用 Hugo 设置中英双站.md",
+    "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\用 Hugo 设置中英双站.assets"
   },
   "D:\\Users\\Ben\\Desktop\\blog\\FRP 内网穿透全攻略：让校园服务器轻松被公网访问（基于 NAS 中转）.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "54c884ed00a8391d115e976942724697a3bcf8c3"
+    "sha1": "54c884ed00a8391d115e976942724697a3bcf8c3",
+    "last_seen_sha": "54c884ed00a8391d115e976942724697a3bcf8c3",
+    "last_seen_mtime": 1761114445.468912,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\NextCloud安装报错 .htaccess.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "e4a530263293d2868c217d953b648862fd9526f5"
+    "sha1": "e4a530263293d2868c217d953b648862fd9526f5",
+    "last_seen_sha": "e4a530263293d2868c217d953b648862fd9526f5",
+    "last_seen_mtime": 1760708710.6261873,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\PraNet项目了解.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "894eb77f3b84a82cfcad6e3559edb0ef7b3e9e6d"
+    "sha1": "894eb77f3b84a82cfcad6e3559edb0ef7b3e9e6d",
+    "last_seen_sha": "894eb77f3b84a82cfcad6e3559edb0ef7b3e9e6d",
+    "last_seen_mtime": 1760431596.764171,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "dfef3983a9ff30521522e7052429dada93695057"
+    "sha1": "dfef3983a9ff30521522e7052429dada93695057",
+    "last_seen_sha": "dfef3983a9ff30521522e7052429dada93695057",
+    "last_seen_mtime": 1762154039.8546462,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\使用 httpsok 给 QNAP NAS 添加阿里云域名的永久免费 HTTPS（SSL）证书.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "63876c524bef5cd69a31de18f9287459d4c5ef9f"
+    "sha1": "63876c524bef5cd69a31de18f9287459d4c5ef9f",
+    "last_seen_sha": "63876c524bef5cd69a31de18f9287459d4c5ef9f",
+    "last_seen_mtime": 1760258461.4110374,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\在 QNAP Container Station 上部署 Redis 容器.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "fcaa90cbef381989d7bb542479ade2f5b24cc064"
+    "sha1": "fcaa90cbef381989d7bb542479ade2f5b24cc064",
+    "last_seen_sha": "fcaa90cbef381989d7bb542479ade2f5b24cc064",
+    "last_seen_mtime": 1760684397.3521087,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\在 QNAP NAS 上安装 Entware：像 apt 一样优雅地管理命令行软件.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
     "published": false,
     "published_at": null,
-    "sha1": "dd72edce098fd9b65454c648b980c313b144d4d1"
+    "sha1": "dd72edce098fd9b65454c648b980c313b144d4d1",
+    "last_seen_sha": "dd72edce098fd9b65454c648b980c313b144d4d1",
+    "last_seen_mtime": 1760684163.8227415,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\在 QNAP NAS 上部署 Nextcloud（复用已有 MySQLMariaDB 与 Redis 容器）.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
     "published": false,
     "published_at": null,
-    "sha1": "4ea45f1264baefa199566a16a4450e15eed2396d"
+    "sha1": "4ea45f1264baefa199566a16a4450e15eed2396d",
+    "last_seen_sha": "4ea45f1264baefa199566a16a4450e15eed2396d",
+    "last_seen_mtime": 1760809292.6219566,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\威联通 NAS 中的 macvlan 网络详解与实践.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
     "published": false,
     "published_at": null,
-    "sha1": "19421dd8afba3619452bad53f166bf531ea8f6a5"
+    "sha1": "19421dd8afba3619452bad53f166bf531ea8f6a5",
+    "last_seen_sha": "19421dd8afba3619452bad53f166bf531ea8f6a5",
+    "last_seen_mtime": 1760599198.3416178,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\威联通 NAS 添加第三方 App Store 下载源教程（完整图文版）.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
     "published": false,
     "published_at": null,
-    "sha1": "38197635d97f5048495f8b7299c8da683a98b6db"
+    "sha1": "38197635d97f5048495f8b7299c8da683a98b6db",
+    "last_seen_sha": "38197635d97f5048495f8b7299c8da683a98b6db",
+    "last_seen_mtime": 1760684406.0490644,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   },
   "D:\\Users\\Ben\\Desktop\\blog\\用公网 NAS 做中转访问校园内 Ubuntu 服务器（完整实战指南）.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
     "published": false,
     "published_at": null,
-    "sha1": "68fde3790abc3f7fa9200bed95f7a0568f632495"
+    "sha1": "68fde3790abc3f7fa9200bed95f7a0568f632495",
+    "last_seen_sha": "68fde3790abc3f7fa9200bed95f7a0568f632495",
+    "last_seen_mtime": 1760844537.9318283,
+    "deleted_at": null,
+    "last_published_sha": null,
+    "last_published_mtime": null
   }
 }
