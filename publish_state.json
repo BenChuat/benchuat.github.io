@@ -9,7 +9,7 @@
     "sha1": "830acb08b157bfb154680dc33a78d65c2132a714",
     "first_seen": "2025-11-04T14:10:27.429630",
     "last_seen_sha": "768b3b315812007f967ecf79eca89a47b4ea1bec",
-    "last_seen_mtime": 1762245945.431071,
+    "last_seen_mtime": 1762263837.4100575,
     "deleted_at": null,
     "last_published_sha": "768b3b315812007f967ecf79eca89a47b4ea1bec",
     "last_published_mtime": 1762263837.4100575,
@@ -51,14 +51,18 @@
   },
   "D:\\Users\\Ben\\Desktop\\blog\\从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
-    "published": false,
-    "published_at": null,
+    "published": true,
+    "published_at": "2025-11-04T22:10:40.498500",
     "sha1": "dfef3983a9ff30521522e7052429dada93695057",
     "last_seen_sha": "dfef3983a9ff30521522e7052429dada93695057",
     "last_seen_mtime": 1762154039.8546462,
     "deleted_at": null,
-    "last_published_sha": null,
-    "last_published_mtime": null
+    "last_published_sha": "74d1dca5ef730b8c264fbdff1eab1f92f16dbc75",
+    "last_published_mtime": 1762265423.1097496,
+    "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\从-0-到上线用-hugo-blowfish主题打造一个超快超美超自由的个人博客.md",
+    "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\从-0-到上线用-hugo-blowfish主题打造一个超快超美超自由的个人博客.assets",
+    "title": "从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客",
+    "lang": "zh-cn"
   },
   "D:\\Users\\Ben\\Desktop\\blog\\使用 httpsok 给 QNAP NAS 添加阿里云域名的永久免费 HTTPS（SSL）证书.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
