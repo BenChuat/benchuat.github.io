@@ -1,6 +1,6 @@
 +++
 title = "用 Hugo 设置中英双站"
-date = "2025-11-04T14:11:01"
+date = "2025-11-04T14:11:01+08:00"
 lang = "zh-cn"
 draft = false
 slug = "用-hugo-设置中英双站"
