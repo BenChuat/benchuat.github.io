@@ -10,15 +10,6 @@ featured = false
 summary = ""
 +++
 
-# 用 Hugo 设置中英双站
-
-> 作者：**BenChuat**
->  更新时间：2025-10-30
->  标签：`Hugo`  `静态博客`  `Blowfish主题`  `多语言`  `GitHub Pages`
-
-```toml
-theme = "blowfish"
-```
 
 ## 开启多语言支持
 
@@ -27,7 +18,7 @@ theme = "blowfish"
 * 中文：主语言（默认）
 * 英文：可切换语言
 
-![image-20251030144528600](用 Hugo 设置中英双站.assets/396e4d402e99.png)
+![image-20251030144528600](/posts/用 Hugo 设置中英双站.assets/396e4d402e99.png)
 
 在 `config/_default/` 下新建两个语言配置文件：
 
@@ -245,9 +236,9 @@ content/zh-cn/posts/hello-hugo.md
 content/en/posts/hello-hugo.md
 ```
 
-![image-20251031095448807](用 Hugo 设置中英双站.assets/4ac99d544058.png)
+![image-20251031095448807](/posts/用 Hugo 设置中英双站.assets/4ac99d544058.png)
 
-![image-20251031095527896](用 Hugo 设置中英双站.assets/ba37a8563ba3.png)
+![image-20251031095527896](/posts/用 Hugo 设置中英双站.assets/ba37a8563ba3.png)
 
 ### 让中英文文章互相关联
 
