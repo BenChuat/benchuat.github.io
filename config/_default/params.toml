@@ -60,15 +60,15 @@ fingerprintAlgorithm = "sha512"
 
 [homepage]
   # 首页布局可选：
-  # page（普通页面）| profile（个人档案卡片）| hero（大背景图）| list（文章列表）| card（卡片网格）
-  layout = "profile"
+  # page（普通页面）| profile（个人档案卡片）| hero（大背景图）| list（文章列表）| card（卡片网格）| custom（自定义）
+  layout = "custom"
 
   # 如果你希望首页显示文章列表，可以改为：
   # layout = "list"
 
   # 首页展示文章数量（showRecent=true 时有效）
   showRecent = true
-  showRecentItems = 5
+  showRecentItems = 6
 
   # 是否显示“更多文章”链接
   showMoreLink = true
