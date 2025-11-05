@@ -21,8 +21,8 @@
     "published": true,
     "published_at": "2025-11-05T10:45:55.378457",
     "sha1": "54c884ed00a8391d115e976942724697a3bcf8c3",
-    "last_seen_sha": "54c884ed00a8391d115e976942724697a3bcf8c3",
-    "last_seen_mtime": 1761114445.468912,
+    "last_seen_sha": "87273967f3873b67c3f20b3c4d62860fa60489ea",
+    "last_seen_mtime": 1762310698.414642,
     "deleted_at": null,
     "last_published_sha": "87273967f3873b67c3f20b3c4d62860fa60489ea",
     "last_published_mtime": 1762310698.414642,
@@ -136,14 +136,18 @@
   },
   "D:\\Users\\Ben\\Desktop\\blog\\用公网 NAS 做中转访问校园内 Ubuntu 服务器（完整实战指南）.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
-    "published": false,
-    "published_at": null,
+    "published": true,
+    "published_at": "2025-11-05T10:51:01.295367",
     "sha1": "68fde3790abc3f7fa9200bed95f7a0568f632495",
     "last_seen_sha": "68fde3790abc3f7fa9200bed95f7a0568f632495",
     "last_seen_mtime": 1760844537.9318283,
     "deleted_at": null,
-    "last_published_sha": null,
-    "last_published_mtime": null
+    "last_published_sha": "bafe586b26967d00f6a72d2603cca86e9d56d1c9",
+    "last_published_mtime": 1762310892.9331582,
+    "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\ssh反向隧道-用公网nas做中转访问校园内ubuntu服务器.md",
+    "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\ssh反向隧道-用公网nas做中转访问校园内ubuntu服务器.assets",
+    "title": "SSH反向隧道-用公网NAS做中转访问校园内Ubuntu服务器",
+    "lang": "zh-cn"
   },
   "D:\\Users\\Ben\\Desktop\\blog\\从0到上线：用Hugo+blowfish主题打造一个超快、超美、超自由的个人博客.md": {
     "first_seen": "2025-11-04T22:15:26.438218",
