@@ -1,10 +1,28 @@
 {{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
+{{ $defaultBgImage := "" }}
+{{ $defaultBgImageURL := "" }}
+{{ with .Site.Params.defaultBackgroundImage }}
+  {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+    {{ $defaultBgImageURL = . }}
+  {{ else }}
+    {{ $defaultBgImage = resources.Get . }}
+    {{ if $defaultBgImage }}
+      {{ $defaultBgImageURL = $defaultBgImage.RelPermalink }}
+    {{ else }}
+      {{ $defaultBgImageURL = . | relURL }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
 <div class="homepage-hero-wrapper">
   <!-- Hero Section - Full Screen -->
   <section id="hero-section" class="hero-section">
     <!-- Background Image Container -->
     <div class="hero-background">
-      <div id="bing-image-container" class="bing-image-container">
+      <div 
+        id="bing-image-container" 
+        class="bing-image-container"
+        {{ if $defaultBgImageURL }}data-default-bg="{{ $defaultBgImageURL }}"{{ end }}>
         <!-- Bing每日一图将在这里动态加载 -->
       </div>
       <div class="hero-overlay"></div>
@@ -89,22 +107,26 @@
 <style>
 .homepage-hero-wrapper {
   position: relative;
+  width: 100%;
   min-height: 100vh;
 }
 
 .hero-section {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  z-index: 0;
 }
 
 .hero-background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -113,24 +135,26 @@
 }
 
 .bing-image-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   transition: opacity 0.5s ease-in-out;
+  z-index: 0;
 }
 
 .hero-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
   z-index: 1;
 }
 
@@ -141,6 +165,10 @@
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .hero-avatar {
@@ -227,9 +255,10 @@
 
 .recent-articles-section {
   position: relative;
-  z-index: 4;
+  z-index: 10;
   background-color: #fafafa;
-  min-height: 50vh;
+  min-height: 100vh;
+  padding-top: 100vh;
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.6s ease, transform 0.6s ease;

@@ -80,6 +80,13 @@ fingerprintAlgorithm = "sha512"
   layoutBackgroundBlur = false
   disableHeroImageFilter = false
 
+# ============ 默认背景图设置 ============
+# 默认背景图路径（用于主页）
+# 将图片放在 static/images/ 目录下，然后在这里填写路径
+# 例如：如果图片是 static/images/default-bg.jpg，则填写 "images/default-bg.jpg"
+# 也可以使用网络URL，例如："https://example.com/bg.jpg"
+defaultBackgroundImage = "images/default-bg.jpg"
+
 
 # ============ 文章页面（单页） ============
 

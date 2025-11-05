@@ -13,8 +13,20 @@
     const container = document.getElementById('bing-image-container');
     if (!container) return;
 
+    // 获取默认背景图
+    const defaultBg = container.getAttribute('data-default-bg');
+    
+    // 设置默认背景（如果有）
+    if (defaultBg) {
+      container.style.backgroundImage = `url(${defaultBg})`;
+      container.style.opacity = '1';
+    } else {
+      // 如果没有默认背景，使用渐变
+      container.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      container.style.opacity = '1';
+    }
+
     // Bing每日一图API
-    // 使用代理服务避免CORS问题，或者直接使用已知的Bing图片URL格式
     const bingAPI = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN';
     
     // 尝试从缓存获取
@@ -22,14 +34,22 @@
     const cacheTime = localStorage.getItem('bingDailyImageTime');
     const now = Date.now();
     
-    // 如果缓存存在且未过期（24小时），使用缓存
+    // 如果缓存存在且未过期（24小时），使用缓存覆盖默认背景
     if (cachedImage && cacheTime && (now - parseInt(cacheTime)) < 24 * 60 * 60 * 1000) {
-      container.style.backgroundImage = `url(${cachedImage})`;
-      container.style.opacity = '1';
-      return;
+      // 预加载缓存的图片
+      const img = new Image();
+      img.onload = function() {
+        container.style.backgroundImage = `url(${cachedImage})`;
+        container.style.opacity = '1';
+      };
+      img.onerror = function() {
+        // 如果缓存图片加载失败，保持默认背景
+        console.warn('Cached Bing image failed to load, using default background');
+      };
+      img.src = cachedImage;
     }
 
-    // 尝试使用fetch获取（Bing API通常支持CORS）
+    // 尝试获取新的Bing图片（异步，不阻塞默认背景显示）
     fetch(bingAPI)
       .then(response => {
         if (response.ok) {
@@ -45,29 +65,24 @@
           localStorage.setItem('bingDailyImage', imageUrl);
           localStorage.setItem('bingDailyImageTime', now.toString());
           
-          // 预加载图片
+          // 预加载新图片
           const img = new Image();
           img.onload = function() {
+            // 淡入新图片
+            container.style.transition = 'opacity 1s ease-in-out';
             container.style.backgroundImage = `url(${imageUrl})`;
             container.style.opacity = '1';
           };
           img.onerror = function() {
-            // 如果加载失败，使用默认背景
-            container.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-            container.style.opacity = '1';
+            // 如果加载失败，保持当前背景
+            console.warn('Failed to load new Bing image, keeping current background');
           };
           img.src = imageUrl;
-        } else {
-          // 如果API返回异常，使用默认背景
-          container.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-          container.style.opacity = '1';
         }
       })
       .catch(error => {
-        console.warn('Failed to load Bing daily image, using default background:', error);
-        // 使用默认背景
-        container.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        container.style.opacity = '1';
+        // 静默失败，保持默认背景
+        console.debug('Bing API not available, using default background');
       });
   }
 
