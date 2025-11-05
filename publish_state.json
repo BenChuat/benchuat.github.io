@@ -144,10 +144,10 @@
   "D:\\Users\\Ben\\Desktop\\blog\\从0到上线：用Hugo+blowfish主题打造一个超快、超美、超自由的个人博客.md": {
     "first_seen": "2025-11-04T22:15:26.438218",
     "last_seen_sha": "74d1dca5ef730b8c264fbdff1eab1f92f16dbc75",
-    "last_seen_mtime": 1762265423.1097496,
-    "published": true,
+    "last_seen_mtime": 1762265734.6589594,
+    "published": false,
     "published_at": "2025-11-04T22:15:45.503172",
-    "deleted_at": null,
+    "deleted_at": "2025-11-05T09:49:59.178069",
     "last_published_sha": "74d1dca5ef730b8c264fbdff1eab1f92f16dbc75",
     "last_published_mtime": 1762265734.6589594,
     "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\从-0-到上线用-hugo-blowfish主题打造一个超快超美超自由的个人博客.md",
