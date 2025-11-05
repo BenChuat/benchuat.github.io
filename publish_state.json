@@ -18,14 +18,18 @@
   },
   "D:\\Users\\Ben\\Desktop\\blog\\FRP 内网穿透全攻略：让校园服务器轻松被公网访问（基于 NAS 中转）.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
-    "published": false,
-    "published_at": null,
+    "published": true,
+    "published_at": "2025-11-05T10:45:55.378457",
     "sha1": "54c884ed00a8391d115e976942724697a3bcf8c3",
     "last_seen_sha": "54c884ed00a8391d115e976942724697a3bcf8c3",
     "last_seen_mtime": 1761114445.468912,
     "deleted_at": null,
-    "last_published_sha": null,
-    "last_published_mtime": null
+    "last_published_sha": "87273967f3873b67c3f20b3c4d62860fa60489ea",
+    "last_published_mtime": 1762310698.414642,
+    "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\frp-内网穿透全攻略让校园服务器轻松被公网访问基于-nas-中转.md",
+    "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\frp-内网穿透全攻略让校园服务器轻松被公网访问基于-nas-中转.assets",
+    "title": "FRP 内网穿透全攻略：让校园服务器轻松被公网访问（基于 NAS 中转）",
+    "lang": "zh-cn"
   },
   "D:\\Users\\Ben\\Desktop\\blog\\NextCloud安装报错 .htaccess.md": {
     "first_seen": "2025-11-04T14:10:27.428630",
@@ -158,7 +162,7 @@
   "D:\\Users\\Ben\\Desktop\\blog\\用Hug和blowfish搭建个人博客.md": {
     "first_seen": "2025-11-05T10:16:24.863566",
     "last_seen_sha": "dcdfc80f11f036363771f2142a0c88e4099e66b9",
-    "last_seen_mtime": 1762308991.9118936,
+    "last_seen_mtime": 1762310564.7298887,
     "published": true,
     "published_at": "2025-11-05T10:42:56.357441",
     "deleted_at": null,
