@@ -49,7 +49,8 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 输入 `A` 继续
 
-![image-20251028145415765](/zh-cn/posts/从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客.assets/06a9b6fc308e.png)
+![image-20251028145415765](/zh-cn/posts/从-0-到上线用-hugo-blowfish主题打造一个超快超美超自由的个人博客.assets/06a9b6fc308e.png)
+
 
 3.安装 Scoop
 
@@ -63,7 +64,7 @@ Invoke-WebRequest -useb get.scoop.sh | Invoke-Expression
 irm get.scoop.sh | iex
 ```
 
-![image-20251028145752998](/zh-cn/posts/从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客.assets/ae05aeef4840.png)
+![image-20251028145752998](/zh-cn/posts/从-0-到上线-用-Hugo-blowfish主题打造一个超快超美超自由的个人博客.assets/ae05aeef4840.png)
 
 4.验证 Scoop
 
