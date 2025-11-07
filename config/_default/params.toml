@@ -60,8 +60,14 @@ fingerprintAlgorithm = "sha512"
 
 [homepage]
   # 首页布局可选：
-  # page（普通页面）| profile（个人档案卡片）| hero（大背景图）| list（文章列表）| card（卡片网格）| custom（自定义）
-  layout = "custom"
+  # page（普通页面）| profile（个人档案卡片）| hero（大背景图）| background（背景布局）| list（文章列表）| card（卡片网格）
+  layout = "background"
+  
+  # 背景图路径（background/hero 模式使用）
+  # 将图片放在 static/images/ 目录下，然后在这里填写路径
+  # 例如：如果图片是 static/images/bg.jpg，则填写 "images/bg.jpg"
+  # 也可以使用网络URL，例如："https://example.com/bg.jpg"
+  homepageImage = "images/background.png"
 
   # 如果你希望首页显示文章列表，可以改为：
   # layout = "list"
@@ -81,11 +87,11 @@ fingerprintAlgorithm = "sha512"
   disableHeroImageFilter = false
 
 # ============ 默认背景图设置 ============
-# 默认背景图路径（用于主页）
+# 默认背景图路径（用于主页，如果未设置 homepageImage 则使用此）
 # 将图片放在 static/images/ 目录下，然后在这里填写路径
 # 例如：如果图片是 static/images/default-bg.jpg，则填写 "images/default-bg.jpg"
 # 也可以使用网络URL，例如："https://example.com/bg.jpg"
-defaultBackgroundImage = "images/default-bg.jpg"
+defaultBackgroundImage = ""
 
 
 # ============ 文章页面（单页） ============
