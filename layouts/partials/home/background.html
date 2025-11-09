@@ -608,7 +608,7 @@ header.hidden-on-scroll {
 }
 </style>
 
-<!-- Full Page Background -->
+<!-- Full Page Background (Homepage specific - uses same logic as global) -->
 <div class="full-page-background">
   {{ $defaultBgPath := "/images/background.png" }}
   {{ if .Site.BaseURL }}
@@ -623,7 +623,7 @@ header.hidden-on-scroll {
     onerror="console.error('Background image failed to load:', this.src); this.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'; this.style.display='block';">
 </div>
 
-<!-- Background Image Configuration -->
+<!-- Background Image Configuration (Homepage specific) -->
 <script>
   (function() {
     // Day images list
