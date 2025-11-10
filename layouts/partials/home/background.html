@@ -17,24 +17,6 @@ main#main-content {
   margin: 0 !important;
 }
 
-/* Original header - visible initially, hidden on scroll */
-header {
-  position: relative;
-  z-index: 100;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-header.hidden-on-scroll {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
 /* Full page background */
 .full-page-background {
   position: fixed;
@@ -238,151 +220,6 @@ header.hidden-on-scroll {
   }
 }
 
-/* Fixed top bar - always visible when scrolled */
-.fixed-top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 9999;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 0.75rem 2rem;
-  transform: translateY(0);
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-              background 0.3s ease,
-              transform 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-.dark .fixed-top-bar {
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.fixed-top-bar.visible {
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-}
-
-/* Fixed top menu styling */
-.fixed-top-right nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.fixed-top-right a,
-.fixed-top-right button {
-  color: #1a1a1a;
-  opacity: 0.8;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-
-.dark .fixed-top-right a,
-.dark .fixed-top-right button {
-  color: #f0f0f0;
-}
-
-.fixed-top-right a:hover,
-.fixed-top-right button:hover {
-  opacity: 1;
-  transform: translateY(-1px);
-}
-
-.fixed-top-bar-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.fixed-top-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex: 1;
-}
-
-.fixed-top-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  flex-shrink: 0;
-}
-
-.fixed-top-text {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.fixed-top-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #1a1a1a;
-  text-shadow: none;
-}
-
-.dark .fixed-top-title {
-  color: #f0f0f0;
-}
-
-.fixed-top-headline {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: normal;
-  color: #4b5563;
-  text-shadow: none;
-}
-
-.dark .fixed-top-headline {
-  color: #9ca3af;
-}
-
-.fixed-top-links {
-  display: flex;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  margin-left: 0;
-}
-
-.fixed-top-link {
-  color: #1a1a1a;
-  opacity: 0.8;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.dark .fixed-top-link {
-  color: #f0f0f0;
-}
-
-.fixed-top-link:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-.fixed-top-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: auto;
-}
-
 /* Articles section */
 .articles-section {
   position: relative;
@@ -570,23 +407,6 @@ header.hidden-on-scroll {
     font-size: 1rem;
   }
   
-  .fixed-top-bar {
-    padding: 0.5rem 1rem;
-  }
-  
-  .fixed-top-title {
-    font-size: 0.95rem;
-  }
-  
-  .fixed-top-headline {
-    font-size: 0.8rem;
-  }
-  
-  .fixed-top-avatar {
-    width: 32px;
-    height: 32px;
-  }
-  
   /* Article cards responsive */
   .articles-content {
     padding: 1rem;
@@ -743,60 +563,6 @@ header.hidden-on-scroll {
   })();
 </script>
 
-<!-- Fixed Top Bar (appears on scroll) - Must be outside page-content-wrapper to stay fixed -->
-<div id="fixed-top-bar" class="fixed-top-bar">
-  <div class="fixed-top-bar-content">
-    <div class="fixed-top-left">
-      {{ with .Site.Params.Author.image }}
-        {{ $authorImage := "" }}
-        {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
-          {{ $authorImage = resources.GetRemote . }}
-        {{ else }}
-          {{ $authorImage = resources.Get . }}
-        {{ end }}
-        {{ if $authorImage }}
-          {{ $final := $authorImage }}
-          {{ if not $disableImageOptimization }}
-            {{ $final = $authorImage.Fill (print "80x80 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
-          {{ end }}
-          <img
-            class="fixed-top-avatar"
-            width="40"
-            height="40"
-            alt="{{ $.Site.Params.Author.name | default `Author` }}"
-            src="{{ $final.RelPermalink }}">
-        {{ end }}
-      {{ end }}
-      <div class="fixed-top-text">
-        <h1 class="fixed-top-title">{{ .Site.Params.Author.name | default .Site.Title }}</h1>
-        <h2 id="fixed-top-headline" class="fixed-top-headline">
-          {{ .Site.Params.Author.headline | default "I'm only human" }}
-        </h2>
-      </div>
-      {{ with .Site.Params.Author.links }}
-        <div class="fixed-top-links">
-          {{ range $links := . }}
-            {{ range $name, $url := $links }}
-              <a
-                class="fixed-top-link"
-                href="{{ $url }}"
-                target="_blank"
-                aria-label="{{ $name | title }}"
-                title="{{ $name | title }}"
-                rel="me noopener noreferrer">
-                {{ partial "icon.html" $name }}
-              </a>
-            {{ end }}
-          {{ end }}
-        </div>
-      {{ end }}
-    </div>
-    <div class="fixed-top-right" id="fixed-top-menu">
-      <!-- Navigation menu will be inserted here by JavaScript -->
-    </div>
-  </div>
-</div>
-
 <!-- Page Content Wrapper with Frosted Glass Effect -->
 <div class="page-content-wrapper">
 
@@ -917,12 +683,6 @@ header.hidden-on-scroll {
         const cursor = document.createElement('span');
         cursor.className = 'cursor';
         element.appendChild(cursor);
-        
-        // Sync to fixed top bar
-        const fixedHeadline = document.getElementById('fixed-top-headline');
-        if (fixedHeadline) {
-          fixedHeadline.textContent = text;
-        }
       }
     }
     
@@ -934,14 +694,12 @@ header.hidden-on-scroll {
     const scrollArrow = document.getElementById('scroll-arrow');
     const articlesSection = document.getElementById('recent-articles-section');
     const heroCard = document.getElementById('hero-card');
-    const fixedTopBar = document.getElementById('fixed-top-bar');
     const heroSection = document.getElementById('hero-section');
     
-    if (!scrollArrow || !articlesSection || !heroCard || !fixedTopBar) return;
+    if (!scrollArrow || !articlesSection || !heroCard) return;
 
     let hasScrolled = false;
     let isAnimating = false;
-    let fixedTopBarShown = false; // Track if fixed top bar has been shown
 
     function handleScroll() {
       if (isAnimating) return;
@@ -951,25 +709,6 @@ header.hidden-on-scroll {
       const threshold = heroHeight * 0.3;
       const articlesThreshold = heroHeight * 0.5;
       const pageWrapper = document.querySelector('.page-content-wrapper');
-
-      // Toggle header and fixed top bar based on scroll
-      toggleHeaderVisibility(scrollPosition);
-      
-      // Show fixed top bar when scrolling down - ONCE SHOWN, KEEP IT VISIBLE FOREVER
-      // This ensures it stays visible throughout the entire page, including "more articles" section
-      if (scrollPosition > 50) {
-        if (!fixedTopBarShown) {
-          fixedTopBarShown = true;
-        }
-        // Once shown, always keep it visible
-        fixedTopBar.classList.add('visible');
-        fixedTopBar.style.opacity = '1';
-        fixedTopBar.style.visibility = 'visible';
-        fixedTopBar.style.pointerEvents = 'auto';
-      } else if (!fixedTopBarShown) {
-        // Only hide if it hasn't been shown yet
-        fixedTopBar.classList.remove('visible');
-      }
 
       // Handle articles visibility and blur effect
       if (scrollPosition > articlesThreshold) {
@@ -1124,151 +863,6 @@ header.hidden-on-scroll {
     articlesAnimated = true;
   }
 
-  // Copy navigation menu to fixed top bar
-  let menuCopied = false; // Flag to prevent multiple copies
-  
-  function initFixedMenu() {
-    // Prevent multiple calls
-    if (menuCopied) {
-      return;
-    }
-    
-    const fixedMenuContainer = document.getElementById('fixed-top-menu');
-    if (!fixedMenuContainer) {
-      return;
-    }
-    
-    // Check if menu already exists
-    if (fixedMenuContainer.children.length > 0) {
-      menuCopied = true;
-      return;
-    }
-    
-    // Wait for DOM to be ready
-    function tryCopyMenu() {
-      // Prevent multiple copies
-      if (menuCopied || fixedMenuContainer.children.length > 0) {
-        return;
-      }
-      
-      // Try multiple selectors to find the navigation menu
-      let originalMenu = document.querySelector('header nav.hidden.md\\:flex');
-      if (!originalMenu) {
-        originalMenu = document.querySelector('.main-menu nav.hidden.md\\:flex');
-      }
-      if (!originalMenu) {
-        originalMenu = document.querySelector('nav.hidden.md\\:flex');
-      }
-      if (!originalMenu) {
-        originalMenu = document.querySelector('header nav');
-      }
-      if (!originalMenu) {
-        originalMenu = document.querySelector('.main-menu > div > nav');
-      }
-      
-      if (originalMenu && !menuCopied) {
-        // Clear container first
-        fixedMenuContainer.innerHTML = '';
-        
-        const clonedMenu = originalMenu.cloneNode(true);
-        clonedMenu.classList.remove('hidden');
-        clonedMenu.style.display = 'flex';
-        clonedMenu.style.alignItems = 'center';
-        clonedMenu.style.gap = '1rem';
-        clonedMenu.style.flexWrap = 'nowrap';
-        
-        // Check if cloned menu already contains search and appearance switcher
-        const clonedSearchButton = clonedMenu.querySelector('#search-button');
-        const clonedAppearanceSwitcher = clonedMenu.querySelector('#appearance-switcher');
-        
-        // Remove duplicate search buttons and appearance switchers from cloned menu
-        if (clonedSearchButton) {
-          clonedSearchButton.id = 'fixed-search-button';
-          // Re-attach event listener
-          const originalSearchButton = document.getElementById('search-button');
-          if (originalSearchButton) {
-            clonedSearchButton.addEventListener('click', function(e) {
-              e.preventDefault();
-              originalSearchButton.click();
-            });
-          }
-        }
-        
-        if (clonedAppearanceSwitcher) {
-          clonedAppearanceSwitcher.id = 'fixed-appearance-switcher';
-          // Re-attach event listener
-          const originalAppearanceSwitcher = document.getElementById('appearance-switcher');
-          if (originalAppearanceSwitcher) {
-            clonedAppearanceSwitcher.addEventListener('click', function(e) {
-              e.preventDefault();
-              originalAppearanceSwitcher.click();
-            });
-          }
-        }
-        
-        fixedMenuContainer.appendChild(clonedMenu);
-        menuCopied = true;
-        
-        // Only add search and appearance switcher if they are NOT already in the cloned menu
-        if (!clonedSearchButton) {
-          const searchButton = document.getElementById('search-button');
-          if (searchButton && !document.getElementById('fixed-search-button')) {
-            const clonedSearch = searchButton.cloneNode(true);
-            clonedSearch.id = 'fixed-search-button';
-            fixedMenuContainer.appendChild(clonedSearch);
-            
-            // Re-attach event listeners
-            clonedSearch.addEventListener('click', function(e) {
-              e.preventDefault();
-              searchButton.click();
-            });
-          }
-        }
-        
-        if (!clonedAppearanceSwitcher) {
-          const appearanceSwitcher = document.getElementById('appearance-switcher');
-          if (appearanceSwitcher && !document.getElementById('fixed-appearance-switcher')) {
-            const clonedSwitcher = appearanceSwitcher.cloneNode(true);
-            clonedSwitcher.id = 'fixed-appearance-switcher';
-            fixedMenuContainer.appendChild(clonedSwitcher);
-            
-            // Re-attach event listeners
-            clonedSwitcher.addEventListener('click', function(e) {
-              e.preventDefault();
-              appearanceSwitcher.click();
-            });
-          }
-        }
-      } else if (!menuCopied) {
-        // Retry only once after a delay
-        setTimeout(function() {
-          if (!menuCopied && fixedMenuContainer.children.length === 0) {
-            tryCopyMenu();
-          }
-        }, 300);
-      }
-    }
-    
-    // Try once after a delay to ensure DOM is ready
-    setTimeout(tryCopyMenu, 500);
-  }
-
-  // Toggle header visibility based on scroll
-  function toggleHeaderVisibility(scrollPosition) {
-    const header = document.querySelector('header');
-    const threshold = 50;
-    
-    if (header) {
-      if (scrollPosition > threshold) {
-        // Hide original header when scrolled
-        header.classList.add('hidden-on-scroll');
-      } else {
-        // Show original header when at top
-        header.classList.remove('hidden-on-scroll');
-      }
-    }
-  }
-
   // Initialize
   function init() {
     if (document.readyState === 'loading') {
@@ -1279,18 +873,10 @@ header.hidden-on-scroll {
     typewriterEffect();
     initScrollHandling();
     
-    // Initialize fixed menu after a delay to ensure header is loaded
-    setTimeout(function() {
-      initFixedMenu();
-    }, 300);
-    
     // Initialize article animations after a short delay to ensure DOM is ready
     setTimeout(function() {
       initArticleAnimations();
     }, 500);
-    
-    // Initial header visibility check
-    toggleHeaderVisibility(window.pageYOffset || document.documentElement.scrollTop);
   }
 
   init();

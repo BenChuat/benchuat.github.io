@@ -14,7 +14,9 @@
   <body class="{{ $bodyLayout }} {{ $bodyColor }} {{ $bodyScrollbar }}">
     {{- partial "global-background.html" . -}}
     {{/* Global fixed top bar - show on all pages except homepage */}}
-    {{- partial "global-fixed-top-bar.html" . -}}
+    {{- if not .IsHome -}}
+      {{- partial "global-fixed-top-bar.html" . -}}
+    {{- end -}}
     <div id="the-top" class="absolute flex self-center">
       <a
         class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
