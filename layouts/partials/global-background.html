@@ -98,6 +98,228 @@ html body main#main-content .content-frosted-wrapper [class*="bg-slate"],
   max-width: none !important;
   width: auto !important;
 }
+/* Ensure article titles are visible - GLOBAL */
+.content-frosted-wrapper article h2,
+.content-frosted-wrapper article h2 a,
+.content-frosted-wrapper article header h2,
+.content-frosted-wrapper article header h2 a,
+.content-frosted-wrapper article header a h2 {
+  color: #1a1a1a !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+  position: relative !important;
+  z-index: 10 !important;
+  line-height: 1.5 !important;
+}
+
+.dark .content-frosted-wrapper article h2,
+.dark .content-frosted-wrapper article h2 a,
+.dark .content-frosted-wrapper article header h2,
+.dark .content-frosted-wrapper article header h2 a,
+.dark .content-frosted-wrapper article header a h2 {
+  color: #f0f0f0 !important;
+}
+
+/* Ensure article title links are clickable */
+.content-frosted-wrapper article header a {
+  position: relative !important;
+  z-index: 10 !important;
+  display: block !important;
+  color: #1a1a1a !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.dark .content-frosted-wrapper article header a {
+  color: #f0f0f0 !important;
+}
+
+.content-frosted-wrapper article header a:hover {
+  color: #3b82f6 !important;
+  text-decoration: underline !important;
+}
+
+.dark .content-frosted-wrapper article header a:hover {
+  color: #60a5fa !important;
+}
+
+.content-frosted-wrapper article header a::before {
+  display: none !important;
+}
+
+/* Override any dark:text-neutral classes that might hide text - use attribute selector */
+.content-frosted-wrapper article header a[class*="dark:text-neutral-100"],
+.content-frosted-wrapper article header a[class*="dark:text-neutral"] {
+  color: #1a1a1a !important;
+}
+
+.dark .content-frosted-wrapper article header a[class*="dark:text-neutral-100"],
+.dark .content-frosted-wrapper article header a[class*="dark:text-neutral"] {
+  color: #f0f0f0 !important;
+}
+
+/* Force override all text color classes on article title links */
+.content-frosted-wrapper article header a,
+.content-frosted-wrapper article header a *,
+.content-frosted-wrapper article header a h2,
+.content-frosted-wrapper article header a h2 * {
+  color: #1a1a1a !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.dark .content-frosted-wrapper article header a,
+.dark .content-frosted-wrapper article header a *,
+.dark .content-frosted-wrapper article header a h2,
+.dark .content-frosted-wrapper article header a h2 * {
+  color: #f0f0f0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+/* Override all Tailwind text color utilities that might hide text */
+.content-frosted-wrapper article header a[class*="text-"],
+.content-frosted-wrapper article header a h2[class*="text-"],
+.content-frosted-wrapper article header a[class*="dark:text-"],
+.content-frosted-wrapper article header a h2[class*="dark:text-"] {
+  color: #1a1a1a !important;
+}
+
+.dark .content-frosted-wrapper article header a[class*="text-"],
+.dark .content-frosted-wrapper article header a h2[class*="text-"],
+.dark .content-frosted-wrapper article header a[class*="dark:text-"],
+.dark .content-frosted-wrapper article header a h2[class*="dark:text-"] {
+  color: #f0f0f0 !important;
+}
+
+/* Force show all text in article headers */
+.content-frosted-wrapper article header,
+.content-frosted-wrapper article header *,
+.content-frosted-wrapper article header a,
+.content-frosted-wrapper article header a *,
+.content-frosted-wrapper article header a h2,
+.content-frosted-wrapper article header a h2 * {
+  color: #1a1a1a !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: auto !important;
+  order: -1 !important;
+}
+
+/* Ensure header is at the top of the article content */
+.content-frosted-wrapper article > div > header {
+  order: -1 !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 10 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Ensure article content div displays header first */
+.content-frosted-wrapper article > div.p-4 {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.content-frosted-wrapper article > div.p-4 > header {
+  order: 0 !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.content-frosted-wrapper article > div.p-4 > div.text-sm {
+  order: 1 !important;
+  flex-shrink: 0 !important;
+}
+
+.content-frosted-wrapper article > div.p-4 > div.prose {
+  order: 2 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Ensure header is always visible at the top */
+.content-frosted-wrapper article > div.p-4 > header {
+  position: relative !important;
+  z-index: 10 !important;
+  display: block !important;
+  width: 100% !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: auto !important;
+  overflow: visible !important;
+}
+
+/* Override any rules that might hide article headers */
+.content-frosted-wrapper article header,
+article header {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: auto !important;
+  overflow: visible !important;
+}
+
+.dark .content-frosted-wrapper article header,
+.dark .content-frosted-wrapper article header *,
+.dark .content-frosted-wrapper article header a,
+.dark .content-frosted-wrapper article header a *,
+.dark .content-frosted-wrapper article header a h2,
+.dark .content-frosted-wrapper article header a h2 * {
+  color: #f0f0f0 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure no element is blocking the link */
+.content-frosted-wrapper article header a * {
+  pointer-events: none !important;
+}
+
+.content-frosted-wrapper article header a {
+  pointer-events: auto !important;
+}
+
+/* Override ALL possible text color classes - highest priority */
+.content-frosted-wrapper article header a[class*="text-neutral"],
+.content-frosted-wrapper article header a h2[class*="text-neutral"],
+.content-frosted-wrapper article header a[class*="text-800"],
+.content-frosted-wrapper article header a h2[class*="text-800"],
+.content-frosted-wrapper article header a[class*="text-100"],
+.content-frosted-wrapper article header a h2[class*="text-100"] {
+  color: #1a1a1a !important;
+}
+
+.dark .content-frosted-wrapper article header a[class*="text-neutral"],
+.dark .content-frosted-wrapper article header a h2[class*="text-neutral"],
+.dark .content-frosted-wrapper article header a[class*="text-800"],
+.dark .content-frosted-wrapper article header a h2[class*="text-800"],
+.dark .content-frosted-wrapper article header a[class*="text-100"],
+.dark .content-frosted-wrapper article header a h2[class*="text-100"] {
+  color: #f0f0f0 !important;
+}
+
+.content-frosted-wrapper article h2 a:hover {
+  color: #3b82f6 !important;
+  text-decoration: underline !important;
+}
+
+.dark .content-frosted-wrapper article h2 a:hover {
+  color: #60a5fa !important;
+}
 
 /* Force remove all backgrounds with highest specificity */
 html body main#main-content .content-frosted-wrapper *,
@@ -112,6 +334,28 @@ html body main#main-content .content-frosted-wrapper *::after {
   border: none !important;
   border-radius: 0 !important;
   border-color: transparent !important;
+}
+
+/* Allow styling for article metadata and author sections - Use unset to allow custom styles */
+html body main#main-content .content-frosted-wrapper #single_header > div:first-of-type,
+html body main#main-content .content-frosted-wrapper #single_header > div:first-of-type *,
+html body main#main-content .content-frosted-wrapper #single_header .author,
+html body main#main-content .content-frosted-wrapper #single_header .author *,
+html body main#main-content .content-frosted-wrapper #single_header .author img,
+html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative,
+html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative *,
+html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative span {
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  backdrop-filter: unset !important;
+  -webkit-backdrop-filter: unset !important;
+  box-shadow: unset !important;
+  border: unset !important;
+  border-radius: unset !important;
+  border-color: unset !important;
+  border-width: unset !important;
+  border-style: unset !important;
 }
 </style>
 

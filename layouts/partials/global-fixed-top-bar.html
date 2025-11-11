@@ -1,13 +1,26 @@
 {{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
 <style>
 /* Hide default header on non-homepage pages where fixed top bar is shown */
-body:has(.fixed-top-bar) header,
-body:has(#fixed-top-bar) header {
+/* Only hide the main page header, not article headers */
+body:has(.fixed-top-bar) > header,
+body:has(#fixed-top-bar) > header,
+body:has(.fixed-top-bar) header:not(article header):not(.content-frosted-wrapper article header),
+body:has(#fixed-top-bar) header:not(article header):not(.content-frosted-wrapper article header) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   height: 0 !important;
   overflow: hidden !important;
+}
+
+/* Ensure article headers are always visible */
+.content-frosted-wrapper article header,
+article header {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 /* Fixed top bar - Same as homepage, always visible on non-homepage pages */

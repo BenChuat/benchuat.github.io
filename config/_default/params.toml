@@ -102,14 +102,18 @@ defaultBackgroundImage = ""
   showAuthor = true            # 显示作者信息
   showHero = false             # 是否显示文章封面图
   showBreadcrumbs = false      # 是否显示面包屑导航
-  showDraftLabel = true        # 是否显示“草稿”标签
-  showEdit = false             # 是否显示“编辑此页”按钮
+  showDraftLabel = true        # 是否显示"草稿"标签
+  showEdit = false             # 是否显示"编辑此页"按钮
   showReadingTime = true       # 是否显示阅读时长
   showTableOfContents = true   # 是否显示目录（建议 true）
   showTaxonomies = true        # 显示分类和标签
   showCategoryOnly = false
   showWordCount = true         # 显示字数统计
   showZenMode = false          # 是否开启沉浸模式（隐藏多余元素）
+
+# 智能目录 - 自动高亮当前阅读章节
+smartTOC = true
+smartTOCHideUnfocusedChildren = false
 
 
 # ============ 列表页（如 posts/ 标签页） ============

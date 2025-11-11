@@ -19,6 +19,528 @@
       flex-direction: row;
     }
   }
+
+  /* Beautify article metadata section - Clean and modern style */
+  /* Override global background rules with highest priority */
+  html body main#main-content .content-frosted-wrapper #single_header > div:first-of-type,
+  html body main#main-content .content-frosted-wrapper #single_header > div:first-of-type * {
+    background: initial !important;
+    background-color: initial !important;
+    background-image: initial !important;
+    border: initial !important;
+    border-radius: initial !important;
+    box-shadow: initial !important;
+  }
+
+  #single_header > div:first-of-type {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  /* Keep metadata in horizontal layout */
+  #single_header > div:first-of-type .flex {
+    gap: 0.5rem !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    display: flex !important;
+  }
+
+  /* Beautify metadata items - clean horizontal style */
+  #single_header > div:first-of-type .flex.flex-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+
+  #single_header > div:first-of-type time,
+  #single_header > div:first-of-type span:not(.px-2) {
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+    font-weight: normal !important;
+    transition: color 0.2s ease !important;
+    display: inline !important;
+  }
+
+  .dark #single_header > div:first-of-type time,
+  .dark #single_header > div:first-of-type span:not(.px-2) {
+    color: #9ca3af !important;
+  }
+
+  #single_header > div:first-of-type time:hover,
+  #single_header > div:first-of-type span:not(.px-2):hover {
+    color: #3b82f6 !important;
+  }
+
+  .dark #single_header > div:first-of-type time:hover,
+  .dark #single_header > div:first-of-type span:not(.px-2):hover {
+    color: #60a5fa !important;
+  }
+
+  /* Separator dots - subtle gray */
+  #single_header > div:first-of-type .px-2 {
+    color: #9ca3af !important;
+    font-size: 0.75rem !important;
+    font-weight: normal !important;
+    margin: 0 0.25rem !important;
+    display: inline !important;
+  }
+
+  .dark #single_header > div:first-of-type .px-2 {
+    color: #6b7280 !important;
+  }
+
+  /* Beautify taxonomy badges - Pill style with border */
+  /* Override global background rules with highest priority */
+  html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative,
+  html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative *,
+  html body main#main-content .content-frosted-wrapper #single_header .flex.flex-row.flex-wrap.items-center a.relative span {
+    background: initial !important;
+    background-color: initial !important;
+    background-image: initial !important;
+    border: initial !important;
+    border-radius: initial !important;
+    box-shadow: initial !important;
+  }
+
+  /* Beautify category/tag badges - pill style with border and shadow */
+  #single_header .flex.flex-row.flex-wrap.items-center a.relative {
+    background: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    color: #3b82f6 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    transition: all 0.2s ease !important;
+    border: 1.5px solid #3b82f6 !important;
+    border-width: 1.5px !important;
+    border-style: solid !important;
+    border-color: #3b82f6 !important;
+    text-decoration: none !important;
+    margin-top: 0.75rem !important;
+    margin-right: 0.5rem !important;
+    display: inline-block !important;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.2) !important;
+  }
+
+  .dark #single_header .flex.flex-row.flex-wrap.items-center a.relative {
+    background: rgba(30, 41, 59, 0.8) !important;
+    background-color: rgba(30, 41, 59, 0.8) !important;
+    color: #60a5fa !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3) !important;
+  }
+
+  #single_header .flex.flex-row.flex-wrap.items-center a.relative:hover {
+    background: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    color: #2563eb !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3) !important;
+  }
+
+  .dark #single_header .flex.flex-row.flex-wrap.items-center a.relative:hover {
+    background: rgba(30, 41, 59, 0.95) !important;
+    background-color: rgba(30, 41, 59, 0.95) !important;
+    color: #93c5fd !important;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4) !important;
+  }
+
+  #single_header .flex.flex-row.flex-wrap.items-center a.relative span {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    color: inherit !important;
+  }
+
+  /* Beautify author section - Clean card style */
+  /* Override global background rules with highest priority */
+  html body main#main-content .content-frosted-wrapper #single_header .author,
+  html body main#main-content .content-frosted-wrapper #single_header .author *,
+  html body main#main-content .content-frosted-wrapper #single_header .author img {
+    background: initial !important;
+    background-color: initial !important;
+    background-image: initial !important;
+    border: initial !important;
+    border-radius: initial !important;
+    box-shadow: initial !important;
+  }
+
+  #single_header .author {
+    background: rgba(255, 255, 255, 0.5) !important;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 12px !important;
+    padding: 1.25rem !important;
+    margin-top: 2rem !important;
+    border: 1px solid rgba(229, 231, 235, 0.5) !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: rgba(229, 231, 235, 0.5) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+  }
+
+  .dark #single_header .author {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  #single_header .author:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  .dark #single_header .author:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  #single_header .author img {
+    border: 2px solid rgba(59, 130, 246, 0.2) !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .dark #single_header .author img {
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  #single_header .author:hover img {
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  .dark #single_header .author:hover img {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+
+  #single_header .author .place-self-center {
+    flex: 1;
+  }
+
+  #single_header .author .text-\[0\.6rem\] {
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+    color: #6b7280;
+    text-transform: uppercase;
+  }
+
+  .dark #single_header .author .text-\[0\.6rem\] {
+    color: #9ca3af;
+  }
+
+  #single_header .author .font-semibold {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+    font-weight: 600;
+  }
+
+  .dark #single_header .author .font-semibold {
+    color: #f3f4f6;
+  }
+
+  #single_header .author .text-sm {
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    color: #6b7280;
+  }
+
+  .dark #single_header .author .text-sm {
+    color: #9ca3af;
+  }
+
+  #single_header .author .text-2xl a,
+  #single_header .author .text-lg a {
+    color: #6b7280 !important;
+    transition: color 0.2s ease, opacity 0.2s ease !important;
+    display: inline-block !important;
+    opacity: 0.7 !important;
+  }
+
+  .dark #single_header .author .text-2xl a,
+  .dark #single_header .author .text-lg a {
+    color: #9ca3af;
+  }
+
+  #single_header .author .text-2xl a:hover,
+  #single_header .author .text-lg a:hover {
+    opacity: 1 !important;
+    color: #3b82f6 !important;
+  }
+
+  .dark #single_header .author .text-2xl a:hover,
+  .dark #single_header .author .text-lg a:hover {
+    color: #60a5fa !important;
+  }
+
+  /* 1. 增大整体字号 */
+  .content-frosted-wrapper .prose {
+    font-size: 1.125rem !important;
+    line-height: 1.8 !important;
+  }
+
+  .content-frosted-wrapper .prose p {
+    font-size: 1.125rem !important;
+    line-height: 1.8 !important;
+  }
+
+  .content-frosted-wrapper .prose h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .content-frosted-wrapper .prose h2 {
+    font-size: 2rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .content-frosted-wrapper .prose h3 {
+    font-size: 1.75rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .content-frosted-wrapper .prose h4 {
+    font-size: 1.5rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .content-frosted-wrapper .prose li {
+    font-size: 1.125rem !important;
+    line-height: 1.8 !important;
+  }
+
+  /* 2. 优化代码块样式 - 深色背景和语法高亮 */
+  /* 支持多种代码块格式：.chroma, .highlight, pre code */
+  .content-frosted-wrapper .prose .chroma,
+  .content-frosted-wrapper .prose .highlight,
+  .content-frosted-wrapper .prose pre,
+  .content-frosted-wrapper .prose pre code {
+    background: #282c34 !important;
+    background-color: #282c34 !important;
+    color: #abb2bf !important;
+    border-radius: 8px !important;
+    padding: 1.25rem !important;
+    margin: 1.5rem 0 !important;
+    overflow-x: auto !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .content-frosted-wrapper .prose pre code {
+    padding: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  .content-frosted-wrapper .prose .chroma .lntable,
+  .content-frosted-wrapper .prose .highlight .lntable {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .content-frosted-wrapper .prose .chroma .lnt,
+  .content-frosted-wrapper .prose .chroma .ln,
+  .content-frosted-wrapper .prose .highlight .lnt,
+  .content-frosted-wrapper .prose .highlight .ln {
+    color: #5c6370 !important;
+    margin-right: 1rem !important;
+    padding: 0 !important;
+    user-select: none !important;
+  }
+
+  /* 代码高亮颜色 - 参考图片样式 */
+  .content-frosted-wrapper .prose .chroma .k,
+  .content-frosted-wrapper .prose .chroma .kd,
+  .content-frosted-wrapper .prose .chroma .kn,
+  .content-frosted-wrapper .prose .chroma .kp,
+  .content-frosted-wrapper .prose .chroma .kr,
+  .content-frosted-wrapper .prose .chroma .o,
+  .content-frosted-wrapper .prose .highlight .k,
+  .content-frosted-wrapper .prose .highlight .kd,
+  .content-frosted-wrapper .prose .highlight .kn,
+  .content-frosted-wrapper .prose .highlight .kp,
+  .content-frosted-wrapper .prose .highlight .kr,
+  .content-frosted-wrapper .prose .highlight .o {
+    color: #c678dd !important; /* 紫色 - 关键字 */
+  }
+
+  .content-frosted-wrapper .prose .chroma .s,
+  .content-frosted-wrapper .prose .chroma .s1,
+  .content-frosted-wrapper .prose .chroma .s2,
+  .content-frosted-wrapper .prose .chroma .sh,
+  .content-frosted-wrapper .prose .highlight .s,
+  .content-frosted-wrapper .prose .highlight .s1,
+  .content-frosted-wrapper .prose .highlight .s2,
+  .content-frosted-wrapper .prose .highlight .sh {
+    color: #98c379 !important; /* 绿色 - 字符串 */
+  }
+
+  .content-frosted-wrapper .prose .chroma .m,
+  .content-frosted-wrapper .prose .chroma .mi,
+  .content-frosted-wrapper .prose .chroma .mf,
+  .content-frosted-wrapper .prose .highlight .m,
+  .content-frosted-wrapper .prose .highlight .mi,
+  .content-frosted-wrapper .prose .highlight .mf {
+    color: #d19a66 !important; /* 橙色 - 数字 */
+  }
+
+  .content-frosted-wrapper .prose .chroma .c,
+  .content-frosted-wrapper .prose .chroma .c1,
+  .content-frosted-wrapper .prose .chroma .cm,
+  .content-frosted-wrapper .prose .highlight .c,
+  .content-frosted-wrapper .prose .highlight .c1,
+  .content-frosted-wrapper .prose .highlight .cm {
+    color: #5c6370 !important; /* 灰色 - 注释 */
+    font-style: italic !important;
+  }
+
+  .content-frosted-wrapper .prose .chroma .nf,
+  .content-frosted-wrapper .prose .chroma .na,
+  .content-frosted-wrapper .prose .highlight .nf,
+  .content-frosted-wrapper .prose .highlight .na {
+    color: #61afef !important; /* 蓝色 - 函数 */
+  }
+
+  .content-frosted-wrapper .prose .chroma .nb,
+  .content-frosted-wrapper .prose .highlight .nb {
+    color: #e5c07b !important; /* 黄色 - 内置函数 */
+  }
+
+  /* 行内代码样式 */
+  .content-frosted-wrapper .prose code:not(pre code) {
+    background: #f3f4f6 !important;
+    background-color: #f3f4f6 !important;
+    color: #e11d48 !important;
+    padding: 0.125rem 0.375rem !important;
+    border-radius: 0.25rem !important;
+    font-size: 0.875em !important;
+  }
+
+  .dark .content-frosted-wrapper .prose code:not(pre code) {
+    background: #374151 !important;
+    background-color: #374151 !important;
+    color: #f87171 !important;
+  }
+
+  /* 3. 优化表格显示 - 交替行背景色、表格线和表头样式 */
+  /* 覆盖全局背景规则 */
+  html body main#main-content .content-frosted-wrapper .prose table,
+  html body main#main-content .content-frosted-wrapper .prose table *,
+  html body main#main-content .content-frosted-wrapper .prose thead,
+  html body main#main-content .content-frosted-wrapper .prose thead *,
+  html body main#main-content .content-frosted-wrapper .prose tbody,
+  html body main#main-content .content-frosted-wrapper .prose tbody *,
+  html body main#main-content .content-frosted-wrapper .prose tbody tr,
+  html body main#main-content .content-frosted-wrapper .prose tbody tr *,
+  html body main#main-content .content-frosted-wrapper .prose tbody td,
+  html body main#main-content .content-frosted-wrapper .prose thead th {
+    background: unset !important;
+    background-color: unset !important;
+    background-image: unset !important;
+    border: unset !important;
+    border-radius: unset !important;
+    box-shadow: unset !important;
+  }
+
+  .content-frosted-wrapper .prose table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 1.5rem 0 !important;
+    font-size: 1.125rem !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .dark .content-frosted-wrapper .prose table {
+    border-color: #4b5563 !important;
+  }
+
+  .content-frosted-wrapper .prose thead {
+    background: #f3f4f6 !important;
+    background-color: #f3f4f6 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose thead {
+    background: #374151 !important;
+    background-color: #374151 !important;
+  }
+
+  .content-frosted-wrapper .prose thead th {
+    padding: 0.875rem 1rem !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    border-bottom: 2px solid #d1d5db !important;
+    font-size: 1.125rem !important;
+  }
+
+  .dark .content-frosted-wrapper .prose thead th {
+    color: #f3f4f6 !important;
+    border-bottom-color: #4b5563 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody tr {
+    border-bottom: 1px solid #e5e7eb !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .dark .content-frosted-wrapper .prose tbody tr {
+    border-bottom-color: #4b5563 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody tr:nth-child(even) {
+    background: #f9fafb !important;
+    background-color: #f9fafb !important;
+  }
+
+  .dark .content-frosted-wrapper .prose tbody tr:nth-child(even) {
+    background: #1f2937 !important;
+    background-color: #1f2937 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody tr:nth-child(odd) {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .dark .content-frosted-wrapper .prose tbody tr:nth-child(odd) {
+    background: #111827 !important;
+    background-color: #111827 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody tr:hover {
+    background: #f3f4f6 !important;
+    background-color: #f3f4f6 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose tbody tr:hover {
+    background: #374151 !important;
+    background-color: #374151 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody td {
+    padding: 0.875rem 1rem !important;
+    border-right: 1px solid #e5e7eb !important;
+    font-size: 1.125rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose tbody td {
+    border-right-color: #4b5563 !important;
+  }
+
+  .content-frosted-wrapper .prose tbody td:last-child {
+    border-right: none !important;
+  }
+
   </style>
   
   <div class="content-frosted-wrapper">
