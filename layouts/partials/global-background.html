@@ -55,6 +55,7 @@ main#main-content {
 }
 
 /* COMPLETELY REMOVE all backgrounds from ALL internal elements - GLOBAL - HIGHEST PRIORITY */
+/* 注意：表格元素在后面的规则中单独处理 */
 html body main#main-content .content-frosted-wrapper *,
 html body main#main-content .content-frosted-wrapper *::before,
 html body main#main-content .content-frosted-wrapper *::after,
@@ -72,17 +73,218 @@ html body main#main-content .content-frosted-wrapper *::after,
   border-color: transparent !important;
 }
 
+/* 表格元素例外 - 允许表格样式正常显示，并应用自定义样式 */
+html body main#main-content .content-frosted-wrapper .prose table,
+html body main#main-content .content-frosted-wrapper .article-content .prose table,
+html body main#main-content .content-frosted-wrapper article .prose table {
+  display: table !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  background-image: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  font-size: 1.125rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-sizing: border-box !important;
+  table-layout: auto !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose table,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose table,
+.dark html body main#main-content .content-frosted-wrapper article .prose table {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(35, 35, 35, 0.5) !important;
+  background-color: rgba(35, 35, 35, 0.5) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose thead,
+html body main#main-content .content-frosted-wrapper .article-content .prose thead,
+html body main#main-content .content-frosted-wrapper article .prose thead {
+  background: rgba(255, 255, 255, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  background-image: none !important;
+  display: table-header-group !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose thead,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose thead,
+.dark html body main#main-content .content-frosted-wrapper article .prose thead {
+  background: rgba(30, 30, 30, 0.55) !important;
+  background-color: rgba(30, 30, 30, 0.55) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose thead th,
+html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
+html body main#main-content .content-frosted-wrapper article .prose thead th {
+  background: rgba(255, 255, 255, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  background-image: none !important;
+  padding: 0.875rem 1rem !important;
+  text-align: left !important;
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 0 !important;
+  font-size: 1.125rem !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose thead th,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
+.dark html body main#main-content .content-frosted-wrapper article .prose thead th {
+  background: rgba(30, 30, 30, 0.55) !important;
+  background-color: rgba(30, 30, 30, 0.55) !important;
+  color: #d1d5db !important;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+  border-right-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody,
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody,
+html body main#main-content .content-frosted-wrapper article .prose tbody {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody tr,
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
+html body main#main-content .content-frosted-wrapper article .prose tbody tr {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 0 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose tbody tr,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr {
+  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
+html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-image: none !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
+  background: rgba(40, 40, 40, 0.35) !important;
+  background-color: rgba(40, 40, 40, 0.35) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
+html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-image: none !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
+  background: rgba(38, 38, 38, 0.3) !important;
+  background-color: rgba(38, 38, 38, 0.3) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:hover,
+html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  background-image: none !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:hover,
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover {
+  background: rgba(48, 48, 48, 0.45) !important;
+  background-color: rgba(48, 48, 48, 0.45) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose tbody td,
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody td,
+html body main#main-content .content-frosted-wrapper article .prose tbody td {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  padding: 0.875rem 1rem !important;
+  border: none !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 0 !important;
+  font-size: 1.125rem !important;
+  line-height: 1.6 !important;
+}
+
+.dark html body main#main-content .content-frosted-wrapper .prose tbody td,
+.dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody td,
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody td {
+  border-right-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html body main#main-content .content-frosted-wrapper .prose thead th:last-child,
+html body main#main-content .content-frosted-wrapper .article-content .prose thead th:last-child,
+html body main#main-content .content-frosted-wrapper article .prose thead th:last-child,
+html body main#main-content .content-frosted-wrapper .prose tbody td:last-child,
+html body main#main-content .content-frosted-wrapper .article-content .prose tbody td:last-child,
+html body main#main-content .content-frosted-wrapper article .prose tbody td:last-child {
+  border-right: none !important;
+  border-right-width: 0 !important;
+  border-right-style: none !important;
+  padding-right: 1rem !important;
+}
+
+
 /* Override all Tailwind bg- classes - GLOBAL - HIGHEST PRIORITY */
-html body main#main-content .content-frosted-wrapper [class*="bg-"],
-html body main#main-content .content-frosted-wrapper [class*="bg-neutral"],
-html body main#main-content .content-frosted-wrapper [class*="bg-white"],
-html body main#main-content .content-frosted-wrapper [class*="bg-gray"],
-html body main#main-content .content-frosted-wrapper [class*="bg-slate"],
-.content-frosted-wrapper [class*="bg-"],
-.content-frosted-wrapper [class*="bg-neutral"],
-.content-frosted-wrapper [class*="bg-white"],
-.content-frosted-wrapper [class*="bg-gray"],
-.content-frosted-wrapper [class*="bg-slate"] {
+/* 排除表格元素 */
+html body main#main-content .content-frosted-wrapper table [class*="bg-"],
+html body main#main-content .content-frosted-wrapper table [class*="bg-neutral"],
+html body main#main-content .content-frosted-wrapper table [class*="bg-white"],
+html body main#main-content .content-frosted-wrapper table [class*="bg-gray"],
+html body main#main-content .content-frosted-wrapper table [class*="bg-slate"],
+.content-frosted-wrapper table [class*="bg-"],
+.content-frosted-wrapper table [class*="bg-neutral"],
+.content-frosted-wrapper table [class*="bg-white"],
+.content-frosted-wrapper table [class*="bg-gray"],
+.content-frosted-wrapper table [class*="bg-slate"] {
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+}
+
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-neutral"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-white"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-gray"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-slate"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-neutral"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-white"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-gray"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-slate"] {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -322,9 +524,10 @@ article header {
 }
 
 /* Force remove all backgrounds with highest specificity */
-html body main#main-content .content-frosted-wrapper *,
-html body main#main-content .content-frosted-wrapper *::before,
-html body main#main-content .content-frosted-wrapper *::after {
+/* 排除表格元素，让表格样式可以正常显示 */
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th),
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)::before,
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)::after {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -334,6 +537,28 @@ html body main#main-content .content-frosted-wrapper *::after {
   border: none !important;
   border-radius: 0 !important;
   border-color: transparent !important;
+}
+
+/* 确保表格元素不受上面的规则影响 */
+html body main#main-content .content-frosted-wrapper table,
+html body main#main-content .content-frosted-wrapper table *,
+html body main#main-content .content-frosted-wrapper thead,
+html body main#main-content .content-frosted-wrapper thead *,
+html body main#main-content .content-frosted-wrapper tbody,
+html body main#main-content .content-frosted-wrapper tbody *,
+html body main#main-content .content-frosted-wrapper tr,
+html body main#main-content .content-frosted-wrapper tr *,
+html body main#main-content .content-frosted-wrapper td,
+html body main#main-content .content-frosted-wrapper th {
+  background: unset !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  backdrop-filter: unset !important;
+  -webkit-backdrop-filter: unset !important;
+  box-shadow: unset !important;
+  border: unset !important;
+  border-radius: unset !important;
+  border-color: unset !important;
 }
 
 /* Allow styling for article metadata and author sections - Use unset to allow custom styles */
@@ -366,10 +591,23 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
     const wrapper = document.querySelector('.content-frosted-wrapper');
     if (!wrapper) return;
     
-    // Get all elements inside wrapper
+    // Get all elements inside wrapper, but exclude table elements
     const allElements = wrapper.querySelectorAll('*');
     
+    // Table-related tag names to exclude
+    const tableTags = ['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR', 'TD', 'TH'];
+    
     allElements.forEach(function(el) {
+      // Skip table elements - let them use their custom styles
+      if (tableTags.includes(el.tagName)) {
+        return;
+      }
+      
+      // Also skip if element is inside a table
+      if (el.closest('table')) {
+        return;
+      }
+      
       // Force remove all backgrounds
       el.style.setProperty('background', 'transparent', 'important');
       el.style.setProperty('background-color', 'transparent', 'important');
@@ -426,6 +664,62 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
 
 <!-- Background Image Configuration -->
 <script>
+  console.log('=== 背景切换脚本开始执行 ===');
+  
+  // 立即设置主题切换监听（必须在其他代码之前）
+  (function() {
+    console.log('开始设置主题切换监听器...');
+    
+    function handleThemeClick(event) {
+      console.log('捕获到主题切换按钮点击！', event.target, event.currentTarget);
+      
+      // 阻止默认行为
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      
+      // 获取当前主题状态
+      const isCurrentlyDark = document.documentElement.classList.contains('dark');
+      const targetTheme = isCurrentlyDark ? '亮色' : '暗色';
+      const targetFolder = isCurrentlyDark ? 'day' : 'night';
+      
+      // 弹出确认框
+      const confirmed = confirm('检测到主题切换！\n\n当前主题：' + (isCurrentlyDark ? '暗色' : '亮色') + 
+                                '\n将切换到：' + targetTheme + 
+                                '\n背景图将切换到：' + targetFolder + ' 文件夹\n\n是否确认切换？');
+      
+      if (confirmed) {
+        // 用户确认后，手动切换主题
+        document.documentElement.classList.toggle('dark');
+        const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('appearance', newTheme);
+        
+        // 切换背景图
+        setTimeout(function() {
+          if (typeof loadBackgroundImage === 'function') {
+            loadBackgroundImage();
+          }
+          alert('主题已切换到：' + (newTheme === 'dark' ? '暗色' : '亮色') + '\n背景图已切换到：' + (newTheme === 'dark' ? 'night' : 'day') + ' 文件夹');
+        }, 100);
+      }
+      
+      return false;
+    }
+    
+    // 使用事件委托，在捕获阶段监听所有点击
+    document.addEventListener('click', function(event) {
+      const target = event.target;
+      // 检查是否点击了主题切换按钮或其子元素
+      const button = target.closest('#appearance-switcher, #appearance-switcher-mobile, #fixed-appearance-switcher');
+      if (button) {
+        console.log('找到主题切换按钮:', button.id, button);
+        handleThemeClick(event);
+      }
+    }, true); // 使用捕获阶段，确保在其他监听器之前执行
+    
+    console.log('事件委托监听器已设置');
+  })();
+  
   (function() {
     // Day images list
     const dayImages = [
@@ -471,6 +765,26 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
       return hour >= 6 && hour < 18;
     }
     
+    // Determine if should use day or night images
+    // Priority: manual theme toggle > time-based
+    function shouldUseDayImages() {
+      // Check if user has manually set a theme preference
+      const userPreference = localStorage.getItem("appearance");
+      const isDarkMode = document.documentElement.classList.contains("dark");
+      
+      // If user has manually set dark mode, use night images
+      // If user has manually set light mode, use day images
+      // Otherwise, use time-based logic
+      if (userPreference === "dark") {
+        return false; // Use night images
+      } else if (userPreference === "light") {
+        return true; // Use day images
+      } else {
+        // No manual preference, use time-based logic
+        return isDayTime();
+      }
+    }
+    
     // Get random image from array
     function getRandomImage(images) {
       if (images.length === 0) return null;
@@ -483,9 +797,9 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
       const bgImage = document.getElementById('global-background-image');
       if (!bgImage) return;
       
-      const isDay = isDayTime();
-      const imageFolder = isDay ? 'day' : 'night';
-      const imageList = isDay ? dayImages : nightImages;
+      const useDayImages = shouldUseDayImages();
+      const imageFolder = useDayImages ? 'day' : 'night';
+      const imageList = useDayImages ? dayImages : nightImages;
       
       // Get random image
       const randomImage = getRandomImage(imageList);
@@ -519,12 +833,39 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
       img.src = imagePath;
     }
     
-    // Load background when page loads
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadBackgroundImage);
-    } else {
-      loadBackgroundImage();
+    // Watch for theme changes - 使用 MutationObserver 监听主题变化
+    function watchThemeChanges() {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            setTimeout(function() {
+              loadBackgroundImage();
+            }, 100);
+          }
+        });
+      });
+      
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
     }
+    
+    // Initialize background and watch for changes
+    function initBackground() {
+      // Load background when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          loadBackgroundImage();
+          watchThemeChanges();
+        });
+      } else {
+        loadBackgroundImage();
+        watchThemeChanges();
+      }
+    }
+    
+    initBackground();
   })();
 </script>
 

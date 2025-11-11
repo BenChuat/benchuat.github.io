@@ -103,14 +103,18 @@
   },
   "D:\\Users\\Ben\\Desktop\\blog\\在 QNAP NAS 上部署 Nextcloud（复用已有 MySQLMariaDB 与 Redis 容器）.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
-    "published": false,
-    "published_at": null,
+    "published": true,
+    "published_at": "2025-11-11T15:19:34.513322",
     "sha1": "4ea45f1264baefa199566a16a4450e15eed2396d",
     "last_seen_sha": "4ea45f1264baefa199566a16a4450e15eed2396d",
     "last_seen_mtime": 1760809292.6219566,
     "deleted_at": null,
-    "last_published_sha": null,
-    "last_published_mtime": null
+    "last_published_sha": "9318e6bd95c0206a5478161944c332e319a86d72",
+    "last_published_mtime": 1762845550.3747783,
+    "target_md_path": "D:\\hugo\\blog\\content\\zh-cn\\posts\\威联通-nas-使用-yaml-部署-nextcloud复用现有-mariadb-redismacvlan-独立-ip.md",
+    "target_assets_dir": "D:\\hugo\\blog\\content\\zh-cn\\posts\\威联通-nas-使用-yaml-部署-nextcloud复用现有-mariadb-redismacvlan-独立-ip.assets",
+    "title": "威联通 NAS 使用 YAML 部署 Nextcloud（复用现有 MariaDB + Redis，macvlan 独立 IP）",
+    "lang": "zh-cn"
   },
   "D:\\Users\\Ben\\Desktop\\blog\\威联通 NAS 中的 macvlan 网络详解与实践.md": {
     "first_seen": "2025-11-04T14:10:27.429630",
@@ -180,7 +184,7 @@
   "D:\\Users\\Ben\\Desktop\\blog\\正则表达式详解与实战指南：从入门到常见案例.md": {
     "first_seen": "2025-11-09T19:44:06.246986",
     "last_seen_sha": "548fbc19dc7420ca607052e77a3ce84ac58dbd70",
-    "last_seen_mtime": 1762688576.37681,
+    "last_seen_mtime": 1762689090.662608,
     "published": true,
     "published_at": "2025-11-09T19:44:42.954483",
     "deleted_at": null,
