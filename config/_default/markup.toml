@@ -17,6 +17,14 @@
 
 [highlight]
   noClasses = false
+  lineNos = true
+  lineNumbersInTable = true
+  anchorLineNos = false
+  codeFences = true
+  guessSyntax = true
+  style = "github"
+  lineNosStart = 1
+  lineNoStart = 1
 
 [tableOfContents]
   startLevel = 2

@@ -576,83 +576,20 @@ main#main-content {
     
     // Watch for theme changes - 立即执行，不等待DOM
     (function() {
-      // 监听所有主题切换按钮的点击
-      function handleThemeClick(event) {
-        console.log('捕获到主题切换按钮点击！', event.target);
-        
-        // 阻止默认行为
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        
-        // 获取当前主题状态
-        const isCurrentlyDark = document.documentElement.classList.contains('dark');
-        const targetTheme = isCurrentlyDark ? '亮色' : '暗色';
-        const targetFolder = isCurrentlyDark ? 'day' : 'night';
-        
-        // 弹出确认框
-        const confirmed = confirm('检测到主题切换！\n\n当前主题：' + (isCurrentlyDark ? '暗色' : '亮色') + 
-                                  '\n将切换到：' + targetTheme + 
-                                  '\n背景图将切换到：' + targetFolder + ' 文件夹\n\n是否确认切换？');
-        
-        if (confirmed) {
-          // 用户确认后，手动切换主题
-          document.documentElement.classList.toggle('dark');
-          const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-          localStorage.setItem('appearance', newTheme);
-          
-          // 切换背景图
-          setTimeout(function() {
-            loadBackgroundImage();
-            alert('主题已切换到：' + (newTheme === 'dark' ? '暗色' : '亮色') + '\n背景图已切换到：' + (newTheme === 'dark' ? 'night' : 'day') + ' 文件夹');
-          }, 100);
-        }
-        
-        return false;
-      }
-      
       // 使用事件委托，在捕获阶段监听所有点击
       document.addEventListener('click', function(event) {
         const target = event.target;
         // 检查是否点击了主题切换按钮或其子元素
         const button = target.closest('#appearance-switcher, #appearance-switcher-mobile, #fixed-appearance-switcher');
         if (button) {
-          console.log('找到主题切换按钮:', button.id);
-          handleThemeClick(event);
+          // 等待 appearance.js 完成主题切换后，再切换背景图
+          setTimeout(function() {
+            if (typeof loadBackgroundImage === 'function') {
+              loadBackgroundImage();
+            }
+          }, 100);
         }
       }, true); // 使用捕获阶段，确保在其他监听器之前执行
-      
-      // 设置按钮监听器（作为备用）
-      function setupListeners() {
-        const buttonIds = ['appearance-switcher', 'appearance-switcher-mobile', 'fixed-appearance-switcher'];
-        buttonIds.forEach(function(buttonId) {
-          const button = document.getElementById(buttonId);
-          if (button) {
-            // 移除所有现有监听器，重新绑定
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            newButton.addEventListener('click', handleThemeClick, true);
-            console.log('已直接监听按钮:', buttonId);
-          }
-        });
-      }
-      
-      // 立即尝试设置监听器
-      setupListeners();
-      
-      // DOM加载后再次尝试
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          setupListeners();
-          setTimeout(setupListeners, 500);
-          setTimeout(setupListeners, 1000);
-          setTimeout(setupListeners, 2000);
-        });
-      } else {
-        setTimeout(setupListeners, 500);
-        setTimeout(setupListeners, 1000);
-        setTimeout(setupListeners, 2000);
-      }
     })();
     
     function watchThemeChanges() {
@@ -714,26 +651,31 @@ main#main-content {
     
     <!-- Card Content -->
     <div class="hero-card-content">
-      {{ with .Site.Params.Author.image }}
-        {{ $authorImage := "" }}
-        {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
-          {{ $authorImage = resources.GetRemote . }}
-        {{ else }}
-          {{ $authorImage = resources.Get . }}
+      {{/* Use avatar.jpg from static directory - static files use relURL, not resources.Get */}}
+      {{ $avatarURL := "avatar.jpg" | relURL }}
+      {{ $avatarImage := resources.Get "avatar.jpg" }}
+      {{ if $avatarImage }}
+        {{/* If found in assets directory, use it with optimization */}}
+        {{ $final := $avatarImage }}
+        {{ if not $disableImageOptimization }}
+          {{ $final = $avatarImage.Fill (print "288x288 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
         {{ end }}
-        {{ if $authorImage }}
-          {{ $final := $authorImage }}
-          {{ if not $disableImageOptimization }}
-            {{ $final = $authorImage.Fill (print "288x288 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
-          {{ end }}
-          <img
-            class="hero-avatar"
-            width="144"
-            height="144"
-            alt="{{ $.Site.Params.Author.name | default `Author` }}"
-            src="{{ $final.RelPermalink }}"
-            data-zoom-src="{{ $authorImage.RelPermalink }}">
-        {{ end }}
+        <img
+          class="hero-avatar"
+          width="144"
+          height="144"
+          alt="{{ $.Site.Params.Author.name | default `Author` }}"
+          src="{{ $final.RelPermalink }}"
+          data-zoom-src="{{ $avatarImage.RelPermalink }}">
+      {{ else }}
+        {{/* Use static/avatar.jpg directly with relURL */}}
+        <img
+          class="hero-avatar"
+          width="144"
+          height="144"
+          alt="{{ $.Site.Params.Author.name | default `Author` }}"
+          src="{{ $avatarURL }}"
+          onerror="this.onerror=null; this.style.display='none';">
       {{ end }}
 
       <h1 class="hero-title">
@@ -742,7 +684,7 @@ main#main-content {
 
       <div class="hero-headline">
         <h2 id="typewriter-headline" 
-            data-text="{{ .Site.Params.Author.headline | default `I'm only human` }}"
+            data-signature-pattern="signature"
             data-speed="100">
           <!-- Typewriter text will appear here -->
         </h2>
@@ -791,30 +733,188 @@ main#main-content {
 (function() {
   'use strict';
 
-  // Typewriter effect
+  // Typewriter effect with multiple signature files and time-based start
   function typewriterEffect() {
     const element = document.getElementById('typewriter-headline');
     if (!element) return;
 
-    const text = element.getAttribute('data-text') || "I'm only human";
+    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
     const speed = parseInt(element.getAttribute('data-speed')) || 100;
+    const waitTime = 2000; // Wait time after typing complete
+    const deleteSpeed = speed / 2; // Delete speed
     
-    let index = 0;
-    element.textContent = '';
+    // Get base URL
+    const baseURL = window.location.origin;
     
-    function type() {
-      if (index < text.length) {
-        element.textContent += text.charAt(index);
-        index++;
-        setTimeout(type, speed);
+    // Try to discover signature files by attempting to fetch common patterns
+    const signatureFiles = [];
+    const maxFiles = 10; // Try up to 10 files (signature.txt, signature1.txt, ..., signature9.txt)
+    
+    // First, try to get a list from a known file or use common patterns
+    function discoverSignatureFiles() {
+      const files = [];
+      // Always try signature.txt first
+      files.push('/signature.txt');
+      // Then try numbered versions
+      for (let i = 1; i < maxFiles; i++) {
+        files.push(`/signature${i}.txt`);
+      }
+      return files;
+    }
+    
+    const filesToTry = discoverSignatureFiles();
+    
+    // Load all signature files
+    Promise.all(
+      filesToTry.map(file => 
+        fetch(file)
+          .then(response => {
+            if (response.ok) {
+              return response.text().then(text => ({ file, text, success: true }));
+            }
+            return { file, text: '', success: false };
+          })
+          .catch(() => ({ file, text: '', success: false }))
+      )
+    ).then(results => {
+      // Combine all successful file contents
+      let allLines = [];
+      results.forEach(result => {
+        if (result.success && result.text) {
+          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
+          allLines = allLines.concat(lines);
+        }
+      });
+      
+      if (allLines.length === 0) {
+        element.textContent = "I'm only human";
+        return;
+      }
+      
+      // Calculate time-based start position
+      // Use current time in seconds since epoch to determine starting position
+      const now = Date.now();
+      const secondsSinceEpoch = Math.floor(now / 1000);
+      
+      // Calculate total time for one complete cycle (all lines)
+      // Each line: typing time + wait time + deleting time
+      let totalCycleTime = 0;
+      allLines.forEach(line => {
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        totalCycleTime += typingTime + waitTime + deletingTime + 500; // +500 for pause between lines
+      });
+      
+      // Calculate which line and position we should be at based on time
+      let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
+      let currentLineIndex = 0;
+      let currentCharIndex = 0;
+      let isDeleting = false;
+      
+      // Find the current position
+      for (let i = 0; i < allLines.length; i++) {
+        const line = allLines[i];
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
+        
+        if (elapsedTime < typingTime) {
+          // Currently typing this line
+          currentLineIndex = i;
+          currentCharIndex = Math.floor(elapsedTime / speed);
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime) {
+          // Currently waiting after typing
+          currentLineIndex = i;
+          currentCharIndex = line.length;
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
+          // Currently deleting this line
+          currentLineIndex = i;
+          const deletingElapsed = elapsedTime - typingTime - waitTime;
+          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
+          isDeleting = true;
+          break;
       } else {
+          // Move to next line
+          elapsedTime -= lineTotalTime;
+        }
+      }
+      
+      // Add cursor element
         const cursor = document.createElement('span');
         cursor.className = 'cursor';
+      element.appendChild(cursor);
+      
+      // Set initial display
+      function updateDisplay() {
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        const textNode = element.childNodes[0];
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+          textNode.textContent = currentLine.substring(0, currentCharIndex);
+        } else {
+          element.textContent = currentLine.substring(0, currentCharIndex);
         element.appendChild(cursor);
       }
     }
     
+      updateDisplay();
+      
+      function type() {
+        if (allLines.length === 0) return;
+        
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        if (!isDeleting && currentCharIndex < currentLine.length) {
+          // Typing forward
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex + 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex++;
+          setTimeout(type, speed);
+        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
+          // Finished typing line, wait then start deleting
+          setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, waitTime);
+        } else if (isDeleting && currentCharIndex > 0) {
+          // Deleting backward
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex - 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex--;
+          setTimeout(type, deleteSpeed);
+        } else {
+          // Finished deleting, move to next line
+          isDeleting = false;
+          currentLineIndex = (currentLineIndex + 1) % allLines.length;
+          currentCharIndex = 0;
+          element.textContent = '';
+          element.appendChild(cursor);
     setTimeout(type, 500);
+        }
+      }
+      
+      // Start typing from calculated position
+      setTimeout(type, 100);
+    }).catch(error => {
+      console.error('Error loading signature files:', error);
+      element.textContent = "I'm only human";
+    });
   }
 
   // Scroll handling

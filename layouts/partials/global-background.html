@@ -55,13 +55,13 @@ main#main-content {
 }
 
 /* COMPLETELY REMOVE all backgrounds from ALL internal elements - GLOBAL - HIGHEST PRIORITY */
-/* 注意：表格元素在后面的规则中单独处理 */
-html body main#main-content .content-frosted-wrapper *,
-html body main#main-content .content-frosted-wrapper *::before,
-html body main#main-content .content-frosted-wrapper *::after,
-.content-frosted-wrapper *,
-.content-frosted-wrapper *::before,
-.content-frosted-wrapper *::after {
+/* 注意：表格元素和代码块在后面的规则中单独处理 */
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label),
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::before,
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::after,
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label),
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::before,
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::after {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -75,8 +75,10 @@ html body main#main-content .content-frosted-wrapper *::after,
 
 /* 表格元素例外 - 允许表格样式正常显示，并应用自定义样式 */
 html body main#main-content .content-frosted-wrapper .prose table,
+html body main#main-content .content-frosted-wrapper .article-content table,
 html body main#main-content .content-frosted-wrapper .article-content .prose table,
-html body main#main-content .content-frosted-wrapper article .prose table {
+html body main#main-content .content-frosted-wrapper article .prose table,
+html body main#main-content .content-frosted-wrapper article .article-content table {
   display: table !important;
   background: rgba(255, 255, 255, 0.5) !important;
   background-color: rgba(255, 255, 255, 0.5) !important;
@@ -102,16 +104,20 @@ html body main#main-content .content-frosted-wrapper article .prose table {
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose table,
+.dark html body main#main-content .content-frosted-wrapper .article-content table,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose table,
-.dark html body main#main-content .content-frosted-wrapper article .prose table {
-  border-color: rgba(255, 255, 255, 0.12) !important;
-  background: rgba(35, 35, 35, 0.5) !important;
-  background-color: rgba(35, 35, 35, 0.5) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose table,
+.dark html body main#main-content .content-frosted-wrapper article .article-content table {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(22, 22, 22, 0.7) !important;
+  background-color: rgba(22, 22, 22, 0.7) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose thead,
+html body main#main-content .content-frosted-wrapper .article-content thead,
 html body main#main-content .content-frosted-wrapper .article-content .prose thead,
-html body main#main-content .content-frosted-wrapper article .prose thead {
+html body main#main-content .content-frosted-wrapper article .prose thead,
+html body main#main-content .content-frosted-wrapper article .article-content thead {
   background: rgba(255, 255, 255, 0.7) !important;
   background-color: rgba(255, 255, 255, 0.7) !important;
   background-image: none !important;
@@ -121,15 +127,19 @@ html body main#main-content .content-frosted-wrapper article .prose thead {
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose thead,
+.dark html body main#main-content .content-frosted-wrapper .article-content thead,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose thead,
-.dark html body main#main-content .content-frosted-wrapper article .prose thead {
-  background: rgba(30, 30, 30, 0.55) !important;
-  background-color: rgba(30, 30, 30, 0.55) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose thead,
+.dark html body main#main-content .content-frosted-wrapper article .article-content thead {
+  background: rgba(40, 40, 40, 0.9) !important;
+  background-color: rgba(40, 40, 40, 0.9) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose thead th,
+html body main#main-content .content-frosted-wrapper .article-content thead th,
 html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
-html body main#main-content .content-frosted-wrapper article .prose thead th {
+html body main#main-content .content-frosted-wrapper article .prose thead th,
+html body main#main-content .content-frosted-wrapper article .article-content thead th {
   background: rgba(255, 255, 255, 0.7) !important;
   background-color: rgba(255, 255, 255, 0.7) !important;
   background-image: none !important;
@@ -145,11 +155,13 @@ html body main#main-content .content-frosted-wrapper article .prose thead th {
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose thead th,
+.dark html body main#main-content .content-frosted-wrapper .article-content thead th,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
-.dark html body main#main-content .content-frosted-wrapper article .prose thead th {
-  background: rgba(30, 30, 30, 0.55) !important;
-  background-color: rgba(30, 30, 30, 0.55) !important;
-  color: #d1d5db !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose thead th,
+.dark html body main#main-content .content-frosted-wrapper article .article-content thead th {
+  background: rgba(40, 40, 40, 0.9) !important;
+  background-color: rgba(40, 40, 40, 0.9) !important;
+  color: #ffffff !important;
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
   border-right-color: rgba(255, 255, 255, 0.08) !important;
 }
@@ -163,8 +175,10 @@ html body main#main-content .content-frosted-wrapper article .prose tbody {
 }
 
 html body main#main-content .content-frosted-wrapper .prose tbody tr,
+html body main#main-content .content-frosted-wrapper .article-content tbody tr,
 html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
-html body main#main-content .content-frosted-wrapper article .prose tbody tr {
+html body main#main-content .content-frosted-wrapper article .prose tbody tr,
+html body main#main-content .content-frosted-wrapper article .article-content tbody tr {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -175,39 +189,49 @@ html body main#main-content .content-frosted-wrapper article .prose tbody tr {
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose tbody tr,
+.dark html body main#main-content .content-frosted-wrapper .article-content tbody tr,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
-.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr {
-  border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr,
+.dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(even),
 html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
-html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
+html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even),
+html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(even) {
   background: rgba(255, 255, 255, 0.3) !important;
   background-color: rgba(255, 255, 255, 0.3) !important;
   background-image: none !important;
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+.dark html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(even),
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
-.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
-  background: rgba(40, 40, 40, 0.35) !important;
-  background-color: rgba(40, 40, 40, 0.35) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even),
+.dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(even) {
+  background: rgba(35, 35, 35, 0.7) !important;
+  background-color: rgba(35, 35, 35, 0.7) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(odd),
 html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
-html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
+html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd),
+html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(odd) {
   background: rgba(255, 255, 255, 0.2) !important;
   background-color: rgba(255, 255, 255, 0.2) !important;
   background-image: none !important;
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+.dark html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(odd),
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
-.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
-  background: rgba(38, 38, 38, 0.3) !important;
-  background-color: rgba(38, 38, 38, 0.3) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd),
+.dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(odd) {
+  background: rgba(30, 30, 30, 0.7) !important;
+  background-color: rgba(30, 30, 30, 0.7) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
@@ -221,8 +245,8 @@ html body main#main-content .content-frosted-wrapper article .prose tbody tr:hov
 .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:hover,
 .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover {
-  background: rgba(48, 48, 48, 0.45) !important;
-  background-color: rgba(48, 48, 48, 0.45) !important;
+  background: rgba(32, 32, 32, 0.6) !important;
+  background-color: rgba(32, 32, 32, 0.6) !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose tbody td,
@@ -240,9 +264,12 @@ html body main#main-content .content-frosted-wrapper article .prose tbody td {
 }
 
 .dark html body main#main-content .content-frosted-wrapper .prose tbody td,
+.dark html body main#main-content .content-frosted-wrapper .article-content tbody td,
 .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody td,
-.dark html body main#main-content .content-frosted-wrapper article .prose tbody td {
-  border-right-color: rgba(255, 255, 255, 0.12) !important;
+.dark html body main#main-content .content-frosted-wrapper article .prose tbody td,
+.dark html body main#main-content .content-frosted-wrapper article .article-content tbody td {
+  border-right-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
 }
 
 html body main#main-content .content-frosted-wrapper .prose thead th:last-child,
@@ -257,9 +284,36 @@ html body main#main-content .content-frosted-wrapper article .prose tbody td:las
   padding-right: 1rem !important;
 }
 
+/* 代码块元素例外 - 允许代码块样式正常显示 */
+/* 注意：具体样式在 single.html 中定义，这里只排除全局规则 */
+html body main#main-content .content-frosted-wrapper .prose .chroma,
+html body main#main-content .content-frosted-wrapper .prose .highlight,
+html body main#main-content .content-frosted-wrapper .prose pre,
+html body main#main-content .content-frosted-wrapper .prose pre code,
+html body main#main-content .content-frosted-wrapper .prose .code-lang-label {
+  /* 不设置 background: initial，让 single.html 中的样式生效 */
+}
+
+/* 暗色模式代码块背景 - 直接在这里设置，确保不被覆盖 */
+html body.dark main#main-content .content-frosted-wrapper .prose .chroma,
+html body.dark main#main-content .content-frosted-wrapper .prose .highlight,
+html body.dark main#main-content .content-frosted-wrapper .prose pre[class*="language-"],
+html body.dark main#main-content .content-frosted-wrapper .prose pre,
+html body.dark main#main-content .content-frosted-wrapper .prose .chroma *,
+html body.dark main#main-content .content-frosted-wrapper .prose .highlight *,
+html body.dark main#main-content .content-frosted-wrapper .prose pre *,
+html body.dark main#main-content .content-frosted-wrapper .prose .chroma .lntd,
+html body.dark main#main-content .content-frosted-wrapper .prose .chroma .lntd:first-child,
+html body.dark main#main-content .content-frosted-wrapper .prose .chroma .lntd:last-child {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+}
+
+
 
 /* Override all Tailwind bg- classes - GLOBAL - HIGHEST PRIORITY */
-/* 排除表格元素 */
+/* 排除表格元素和代码块元素 */
 html body main#main-content .content-frosted-wrapper table [class*="bg-"],
 html body main#main-content .content-frosted-wrapper table [class*="bg-neutral"],
 html body main#main-content .content-frosted-wrapper table [class*="bg-white"],
@@ -275,16 +329,16 @@ html body main#main-content .content-frosted-wrapper table [class*="bg-slate"],
   background-image: unset !important;
 }
 
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-"],
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-neutral"],
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-white"],
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-gray"],
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-slate"],
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-"],
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-neutral"],
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-white"],
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-gray"],
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th)[class*="bg-slate"] {
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-neutral"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-white"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-gray"],
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-slate"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-neutral"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-white"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-gray"],
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)[class*="bg-slate"] {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -514,6 +568,17 @@ article header {
   color: #f0f0f0 !important;
 }
 
+/* Ensure article titles in archive/list pages respect dark theme */
+.dark .content-frosted-wrapper article header a.text-neutral-800,
+.dark .content-frosted-wrapper article header a h2 {
+  color: #f0f0f0 !important;
+}
+
+.dark .content-frosted-wrapper article header a.text-neutral-800:hover,
+.dark .content-frosted-wrapper article header a h2:hover {
+  color: #60a5fa !important;
+}
+
 .content-frosted-wrapper article h2 a:hover {
   color: #3b82f6 !important;
   text-decoration: underline !important;
@@ -524,10 +589,10 @@ article header {
 }
 
 /* Force remove all backgrounds with highest specificity */
-/* 排除表格元素，让表格样式可以正常显示 */
-html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th),
-html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)::before,
-html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)::after {
+/* 排除表格元素和代码块元素，让它们样式可以正常显示 */
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label),
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::before,
+html body main#main-content .content-frosted-wrapper *:not(table):not(thead):not(tbody):not(tr):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::after {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -588,10 +653,11 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
 // Force apply styles after page load
 (function() {
   function forceRemoveBackgrounds() {
+    // 排除代码块和表格元素
     const wrapper = document.querySelector('.content-frosted-wrapper');
     if (!wrapper) return;
     
-    // Get all elements inside wrapper, but exclude table elements
+    // Get all elements inside wrapper, but exclude table and code block elements
     const allElements = wrapper.querySelectorAll('*');
     
     // Table-related tag names to exclude
@@ -605,6 +671,20 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
       
       // Also skip if element is inside a table
       if (el.closest('table')) {
+        return;
+      }
+      
+      // Skip code block elements - let them use their custom styles
+      if (el.classList.contains('chroma') || 
+          el.classList.contains('highlight') || 
+          el.tagName === 'PRE' || 
+          el.tagName === 'CODE' ||
+          el.classList.contains('code-lang-label')) {
+        return;
+      }
+      
+      // Also skip if element is inside a code block
+      if (el.closest('.chroma') || el.closest('.highlight') || el.closest('pre')) {
         return;
       }
       
@@ -644,7 +724,187 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
   // Also run after a delay to catch dynamically loaded content
   setTimeout(forceRemoveBackgrounds, 500);
   setTimeout(forceRemoveBackgrounds, 1000);
+  
+  // Force table background based on theme
+  function forceTableBackground() {
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    // Get all table elements
+    const tableHeaders = document.querySelectorAll('.content-frosted-wrapper .article-content thead, .content-frosted-wrapper .prose thead, .content-frosted-wrapper .article-content .prose thead');
+    const headerCells = document.querySelectorAll('.content-frosted-wrapper .article-content thead th, .content-frosted-wrapper .prose thead th, .content-frosted-wrapper .article-content .prose thead th');
+    const evenRows = document.querySelectorAll('.content-frosted-wrapper .article-content tbody tr:nth-child(even), .content-frosted-wrapper .prose tbody tr:nth-child(even), .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even)');
+    const oddRows = document.querySelectorAll('.content-frosted-wrapper .article-content tbody tr:nth-child(odd), .content-frosted-wrapper .prose tbody tr:nth-child(odd), .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd)');
+    const tableCells = document.querySelectorAll('.content-frosted-wrapper .article-content tbody td, .content-frosted-wrapper .prose tbody td, .content-frosted-wrapper .article-content .prose tbody td');
+    
+    if (isDark) {
+      // Dark mode: apply dark styles
+      tableHeaders.forEach(function(thead) {
+        thead.style.setProperty('background', 'rgba(40, 40, 40, 0.9)', 'important');
+        thead.style.setProperty('background-color', 'rgba(40, 40, 40, 0.9)', 'important');
+        thead.style.setProperty('background-image', 'none', 'important');
+      });
+      
+      headerCells.forEach(function(th) {
+        th.style.setProperty('background', 'rgba(40, 40, 40, 0.9)', 'important');
+        th.style.setProperty('background-color', 'rgba(40, 40, 40, 0.9)', 'important');
+        th.style.setProperty('background-image', 'none', 'important');
+        th.style.setProperty('color', '#ffffff', 'important');
+      });
+      
+      evenRows.forEach(function(row) {
+        row.style.setProperty('background', 'rgba(35, 35, 35, 0.7)', 'important');
+        row.style.setProperty('background-color', 'rgba(35, 35, 35, 0.7)', 'important');
+        row.style.setProperty('background-image', 'none', 'important');
+      });
+      
+      oddRows.forEach(function(row) {
+        row.style.setProperty('background', 'rgba(30, 30, 30, 0.7)', 'important');
+        row.style.setProperty('background-color', 'rgba(30, 30, 30, 0.7)', 'important');
+        row.style.setProperty('background-image', 'none', 'important');
+      });
+      
+      tableCells.forEach(function(td) {
+        td.style.setProperty('color', '#ffffff', 'important');
+      });
+    } else {
+      // Light mode: remove inline styles to let CSS rules apply
+      tableHeaders.forEach(function(thead) {
+        thead.style.removeProperty('background');
+        thead.style.removeProperty('background-color');
+        thead.style.removeProperty('background-image');
+      });
+      
+      headerCells.forEach(function(th) {
+        th.style.removeProperty('background');
+        th.style.removeProperty('background-color');
+        th.style.removeProperty('background-image');
+        th.style.removeProperty('color');
+      });
+      
+      evenRows.forEach(function(row) {
+        row.style.removeProperty('background');
+        row.style.removeProperty('background-color');
+        row.style.removeProperty('background-image');
+      });
+      
+      oddRows.forEach(function(row) {
+        row.style.removeProperty('background');
+        row.style.removeProperty('background-color');
+        row.style.removeProperty('background-image');
+      });
+      
+      tableCells.forEach(function(td) {
+        td.style.removeProperty('color');
+      });
+    }
+  }
+  
+  // Force code block background based on theme
+  function forceCodeBlockBackground() {
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    // 移除外层容器（.chroma, .highlight）的背景色，保持透明
+    const outerContainers = document.querySelectorAll('.content-frosted-wrapper .prose .chroma, .content-frosted-wrapper .prose .highlight');
+    outerContainers.forEach(function(container) {
+      container.style.setProperty('background', 'transparent', 'important');
+      container.style.setProperty('background-color', 'transparent', 'important');
+      container.style.setProperty('background-image', 'none', 'important');
+      container.style.setProperty('border', 'none', 'important');
+      container.style.setProperty('box-shadow', 'none', 'important');
+    });
+    
+    // 移除 .lntable 的背景色，保持透明
+    const lntables = document.querySelectorAll('.content-frosted-wrapper .prose .chroma .lntable, .content-frosted-wrapper .prose .highlight .lntable');
+    lntables.forEach(function(el) {
+      el.style.setProperty('background', 'transparent', 'important');
+      el.style.setProperty('background-color', 'transparent', 'important');
+      el.style.setProperty('background-image', 'none', 'important');
+    });
+    
+    // 移除 tr 的背景色，保持透明
+    const trs = document.querySelectorAll('.content-frosted-wrapper .prose .chroma tr, .content-frosted-wrapper .prose .highlight tr');
+    trs.forEach(function(el) {
+      el.style.setProperty('background', 'transparent', 'important');
+      el.style.setProperty('background-color', 'transparent', 'important');
+      el.style.setProperty('background-image', 'none', 'important');
+    });
+    
+    // 只对内部的 pre 元素设置透明背景
+    const preElements = document.querySelectorAll('.content-frosted-wrapper .prose .chroma pre, .content-frosted-wrapper .prose .highlight pre, .content-frosted-wrapper .prose pre');
+    preElements.forEach(function(pre) {
+      pre.style.setProperty('background', 'transparent', 'important');
+      pre.style.setProperty('background-color', 'transparent', 'important');
+      pre.style.setProperty('background-image', 'none', 'important');
+    });
+    
+    // 对代码列设置透明背景
+    const codeColumns = document.querySelectorAll('.content-frosted-wrapper .prose .chroma .lntd:last-child, .content-frosted-wrapper .prose .highlight .lntd:last-child');
+    codeColumns.forEach(function(column) {
+      column.style.setProperty('background', 'transparent', 'important');
+      column.style.setProperty('background-color', 'transparent', 'important');
+      column.style.setProperty('background-image', 'none', 'important');
+    });
+    
+    const lineNumberColumns = document.querySelectorAll('.content-frosted-wrapper .prose .chroma .lntd:first-child, .content-frosted-wrapper .prose .highlight .lntd:first-child');
+    lineNumberColumns.forEach(function(column) {
+      column.style.setProperty('background', 'transparent', 'important');
+      column.style.setProperty('background-color', 'transparent', 'important');
+      column.style.setProperty('background-image', 'none', 'important');
+    });
+  }
+  
+  // Run immediately
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(forceTableBackground, 100);
+      setTimeout(forceTableBackground, 500);
+      setTimeout(forceTableBackground, 1000);
+      setTimeout(forceCodeBlockBackground, 100);
+      setTimeout(forceCodeBlockBackground, 500);
+      setTimeout(forceCodeBlockBackground, 1000);
+    });
+  } else {
+    setTimeout(forceTableBackground, 100);
+    setTimeout(forceTableBackground, 500);
+    setTimeout(forceTableBackground, 1000);
+    setTimeout(forceCodeBlockBackground, 100);
+    setTimeout(forceCodeBlockBackground, 500);
+    setTimeout(forceCodeBlockBackground, 1000);
+  }
+  
+  // Watch for theme changes
+  const themeObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        setTimeout(forceTableBackground, 100);
+        setTimeout(forceTableBackground, 500);
+        setTimeout(forceCodeBlockBackground, 100);
+        setTimeout(forceCodeBlockBackground, 500);
+      }
+    });
+  });
+  
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+  
+  // Watch for new code blocks and tables
+  const contentObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        setTimeout(forceTableBackground, 100);
+        setTimeout(forceCodeBlockBackground, 100);
+      }
+    });
+  });
+  
+  contentObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 })();
+
 </script>
 
 <!-- Global Background -->
@@ -664,60 +924,22 @@ html body main#main-content .content-frosted-wrapper #single_header .flex.flex-r
 
 <!-- Background Image Configuration -->
 <script>
-  console.log('=== 背景切换脚本开始执行 ===');
-  
   // 立即设置主题切换监听（必须在其他代码之前）
   (function() {
-    console.log('开始设置主题切换监听器...');
-    
-    function handleThemeClick(event) {
-      console.log('捕获到主题切换按钮点击！', event.target, event.currentTarget);
-      
-      // 阻止默认行为
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      
-      // 获取当前主题状态
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      const targetTheme = isCurrentlyDark ? '亮色' : '暗色';
-      const targetFolder = isCurrentlyDark ? 'day' : 'night';
-      
-      // 弹出确认框
-      const confirmed = confirm('检测到主题切换！\n\n当前主题：' + (isCurrentlyDark ? '暗色' : '亮色') + 
-                                '\n将切换到：' + targetTheme + 
-                                '\n背景图将切换到：' + targetFolder + ' 文件夹\n\n是否确认切换？');
-      
-      if (confirmed) {
-        // 用户确认后，手动切换主题
-        document.documentElement.classList.toggle('dark');
-        const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        localStorage.setItem('appearance', newTheme);
-        
-        // 切换背景图
-        setTimeout(function() {
-          if (typeof loadBackgroundImage === 'function') {
-            loadBackgroundImage();
-          }
-          alert('主题已切换到：' + (newTheme === 'dark' ? '暗色' : '亮色') + '\n背景图已切换到：' + (newTheme === 'dark' ? 'night' : 'day') + ' 文件夹');
-        }, 100);
-      }
-      
-      return false;
-    }
-    
     // 使用事件委托，在捕获阶段监听所有点击
     document.addEventListener('click', function(event) {
       const target = event.target;
       // 检查是否点击了主题切换按钮或其子元素
       const button = target.closest('#appearance-switcher, #appearance-switcher-mobile, #fixed-appearance-switcher');
       if (button) {
-        console.log('找到主题切换按钮:', button.id, button);
-        handleThemeClick(event);
+        // 等待 appearance.js 完成主题切换后，再切换背景图
+        setTimeout(function() {
+          if (typeof loadBackgroundImage === 'function') {
+            loadBackgroundImage();
+          }
+        }, 100);
       }
     }, true); // 使用捕获阶段，确保在其他监听器之前执行
-    
-    console.log('事件委托监听器已设置');
   })();
   
   (function() {

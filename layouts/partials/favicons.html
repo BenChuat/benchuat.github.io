@@ -1,0 +1,10 @@
+{{/* Custom favicons using logo.png from static directory */}}
+{{ $logoURL := "logo.png" | relURL }}
+<link rel="icon" type="image/png" href="{{ $logoURL }}">
+<link rel="shortcut icon" type="image/png" href="{{ $logoURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ $logoURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ $logoURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ $logoURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+<meta name="msapplication-TileImage" content="{{ $logoURL }}">
+

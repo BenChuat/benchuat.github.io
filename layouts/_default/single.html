@@ -1,7 +1,35 @@
 {{ define "main" }}
   {{ .Scratch.Set "scope" "single" }}
+  
+  {{/* 加载 GitHub 样式主题 - 仅应用于文章内容区域 */}}
+  {{ $githubStyle := resources.Get "style/github.css" }}
+  {{ if $githubStyle }}
+    {{ $githubStyleContent := $githubStyle.Content }}
+    {{/* 将 #write 选择器替换为 .content-frosted-wrapper .prose */}}
+    {{ $scopedContent := replace $githubStyleContent "#write" ".content-frosted-wrapper .prose" }}
+    {{/* 移除 html 和 body 的全局样式，只保留内容相关样式 */}}
+    {{ $scopedContent = replace $scopedContent "html {" "/* html styles removed for scoping */" }}
+    {{ $scopedContent = replace $scopedContent "body {" "/* body styles removed for scoping */" }}
+    <style>
+    /* GitHub 样式主题 - 作用域限制在文章内容区域 */
+    {{ $scopedContent | safeCSS }}
+    </style>
+  {{ end }}
+  
   <style>
   /* Additional page-specific styles - global styles are in global-background.html */
+  
+  /* 确保目录导航不受 GitHub 样式影响 */
+  .content-frosted-wrapper .toc,
+  .content-frosted-wrapper .toc * {
+    /* 保持原有样式，不受 GitHub 主题影响 */
+  }
+  
+  /* 确保底部毛玻璃效果不受 GitHub 样式影响 */
+  .content-frosted-wrapper > article > footer,
+  .content-frosted-wrapper > article > footer * {
+    /* 保持原有样式 */
+  }
   .content-frosted-wrapper > article {
     display: flex;
     flex-direction: column;
@@ -320,123 +348,13 @@
     line-height: 1.8 !important;
   }
 
-  /* 2. 优化代码块样式 - 深色背景和语法高亮 */
-  /* 支持多种代码块格式：.chroma, .highlight, pre code */
-  .content-frosted-wrapper .prose .chroma,
-  .content-frosted-wrapper .prose .highlight,
-  .content-frosted-wrapper .prose pre,
-  .content-frosted-wrapper .prose pre code {
-    background: #282c34 !important;
-    background-color: #282c34 !important;
-    color: #abb2bf !important;
-    border-radius: 8px !important;
-    padding: 1.25rem !important;
-    margin: 1.5rem 0 !important;
-    overflow-x: auto !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  .content-frosted-wrapper .prose pre code {
-    padding: 0 !important;
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-
-  .content-frosted-wrapper .prose .chroma .lntable,
-  .content-frosted-wrapper .prose .highlight .lntable {
-    background: transparent !important;
-    padding: 0 !important;
-  }
-
-  .content-frosted-wrapper .prose .chroma .lnt,
-  .content-frosted-wrapper .prose .chroma .ln,
-  .content-frosted-wrapper .prose .highlight .lnt,
-  .content-frosted-wrapper .prose .highlight .ln {
-    color: #5c6370 !important;
-    margin-right: 1rem !important;
-    padding: 0 !important;
-    user-select: none !important;
-  }
-
-  /* 代码高亮颜色 - 参考图片样式 */
-  .content-frosted-wrapper .prose .chroma .k,
-  .content-frosted-wrapper .prose .chroma .kd,
-  .content-frosted-wrapper .prose .chroma .kn,
-  .content-frosted-wrapper .prose .chroma .kp,
-  .content-frosted-wrapper .prose .chroma .kr,
-  .content-frosted-wrapper .prose .chroma .o,
-  .content-frosted-wrapper .prose .highlight .k,
-  .content-frosted-wrapper .prose .highlight .kd,
-  .content-frosted-wrapper .prose .highlight .kn,
-  .content-frosted-wrapper .prose .highlight .kp,
-  .content-frosted-wrapper .prose .highlight .kr,
-  .content-frosted-wrapper .prose .highlight .o {
-    color: #c678dd !important; /* 紫色 - 关键字 */
-  }
-
-  .content-frosted-wrapper .prose .chroma .s,
-  .content-frosted-wrapper .prose .chroma .s1,
-  .content-frosted-wrapper .prose .chroma .s2,
-  .content-frosted-wrapper .prose .chroma .sh,
-  .content-frosted-wrapper .prose .highlight .s,
-  .content-frosted-wrapper .prose .highlight .s1,
-  .content-frosted-wrapper .prose .highlight .s2,
-  .content-frosted-wrapper .prose .highlight .sh {
-    color: #98c379 !important; /* 绿色 - 字符串 */
-  }
-
-  .content-frosted-wrapper .prose .chroma .m,
-  .content-frosted-wrapper .prose .chroma .mi,
-  .content-frosted-wrapper .prose .chroma .mf,
-  .content-frosted-wrapper .prose .highlight .m,
-  .content-frosted-wrapper .prose .highlight .mi,
-  .content-frosted-wrapper .prose .highlight .mf {
-    color: #d19a66 !important; /* 橙色 - 数字 */
-  }
-
-  .content-frosted-wrapper .prose .chroma .c,
-  .content-frosted-wrapper .prose .chroma .c1,
-  .content-frosted-wrapper .prose .chroma .cm,
-  .content-frosted-wrapper .prose .highlight .c,
-  .content-frosted-wrapper .prose .highlight .c1,
-  .content-frosted-wrapper .prose .highlight .cm {
-    color: #5c6370 !important; /* 灰色 - 注释 */
-    font-style: italic !important;
-  }
-
-  .content-frosted-wrapper .prose .chroma .nf,
-  .content-frosted-wrapper .prose .chroma .na,
-  .content-frosted-wrapper .prose .highlight .nf,
-  .content-frosted-wrapper .prose .highlight .na {
-    color: #61afef !important; /* 蓝色 - 函数 */
-  }
-
-  .content-frosted-wrapper .prose .chroma .nb,
-  .content-frosted-wrapper .prose .highlight .nb {
-    color: #e5c07b !important; /* 黄色 - 内置函数 */
-  }
-
-  /* 行内代码样式 */
-  .content-frosted-wrapper .prose code:not(pre code) {
-    background: #f3f4f6 !important;
-    background-color: #f3f4f6 !important;
-    color: #e11d48 !important;
-    padding: 0.125rem 0.375rem !important;
-    border-radius: 0.25rem !important;
-    font-size: 0.875em !important;
-  }
-
-  .dark .content-frosted-wrapper .prose code:not(pre code) {
-    background: #374151 !important;
-    background-color: #374151 !important;
-    color: #f87171 !important;
-  }
-
   /* 3. 优化表格显示 - 毛玻璃风格，与整体协调 */
   /* 使用最高优先级选择器覆盖所有全局规则 */
   html body main#main-content .content-frosted-wrapper .prose table,
+  html body main#main-content .content-frosted-wrapper .article-content table,
   html body main#main-content .content-frosted-wrapper .article-content .prose table,
-  html body main#main-content .content-frosted-wrapper article .prose table {
+  html body main#main-content .content-frosted-wrapper article .prose table,
+  html body main#main-content .content-frosted-wrapper article .article-content table {
     display: table !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -461,16 +379,20 @@
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose table,
+  .dark html body main#main-content .content-frosted-wrapper .article-content table,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose table,
-  .dark html body main#main-content .content-frosted-wrapper article .prose table {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    background: rgba(35, 35, 35, 0.5) !important;
-    background-color: rgba(35, 35, 35, 0.5) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose table,
+  .dark html body main#main-content .content-frosted-wrapper article .article-content table {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(22, 22, 22, 0.7) !important;
+    background-color: rgba(22, 22, 22, 0.7) !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose thead,
+  html body main#main-content .content-frosted-wrapper .article-content thead,
   html body main#main-content .content-frosted-wrapper .article-content .prose thead,
-  html body main#main-content .content-frosted-wrapper article .prose thead {
+  html body main#main-content .content-frosted-wrapper article .prose thead,
+  html body main#main-content .content-frosted-wrapper article .article-content thead {
     background: rgba(255, 255, 255, 0.7) !important;
     background-color: rgba(255, 255, 255, 0.7) !important;
     display: table-header-group !important;
@@ -479,15 +401,19 @@
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose thead,
+  .dark html body main#main-content .content-frosted-wrapper .article-content thead,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose thead,
-  .dark html body main#main-content .content-frosted-wrapper article .prose thead {
-    background: rgba(30, 30, 30, 0.55) !important;
-    background-color: rgba(30, 30, 30, 0.55) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose thead,
+  .dark html body main#main-content .content-frosted-wrapper article .article-content thead {
+    background: rgba(40, 40, 40, 0.9) !important;
+    background-color: rgba(40, 40, 40, 0.9) !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose thead th,
+  html body main#main-content .content-frosted-wrapper .article-content thead th,
   html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
-  html body main#main-content .content-frosted-wrapper article .prose thead th {
+  html body main#main-content .content-frosted-wrapper article .prose thead th,
+  html body main#main-content .content-frosted-wrapper article .article-content thead th {
     padding: 0.875rem 1rem !important;
     text-align: left !important;
     font-weight: 600 !important;
@@ -500,68 +426,79 @@
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose thead th,
+  .dark html body main#main-content .content-frosted-wrapper .article-content thead th,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose thead th,
-  .dark html body main#main-content .content-frosted-wrapper article .prose thead th {
-    color: #d1d5db !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose thead th,
+  .dark html body main#main-content .content-frosted-wrapper article .article-content thead th {
+    color: #ffffff !important;
     border-bottom-color: rgba(255, 255, 255, 0.1) !important;
     border-right-color: rgba(255, 255, 255, 0.08) !important;
-    background: rgba(30, 30, 30, 0.55) !important;
-    background-color: rgba(30, 30, 30, 0.55) !important;
+    background: rgba(40, 40, 40, 0.9) !important;
+    background-color: rgba(40, 40, 40, 0.9) !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose tbody tr,
+  html body main#main-content .content-frosted-wrapper .article-content tbody tr,
   html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
-  html body main#main-content .content-frosted-wrapper article .prose tbody tr {
+  html body main#main-content .content-frosted-wrapper article .prose tbody tr,
+  html body main#main-content .content-frosted-wrapper article .article-content tbody tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
     transition: background-color 0.2s ease !important;
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose tbody tr,
+  .dark html body main#main-content .content-frosted-wrapper .article-content tbody tr,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr,
-  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr {
-    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr,
+  .dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr {
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+  html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(even),
   html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
-  html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
+  html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even),
+  html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.3) !important;
     background-color: rgba(255, 255, 255, 0.3) !important;
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(even),
+  .dark html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(even),
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(even),
-  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even) {
-    background: rgba(40, 40, 40, 0.35) !important;
-    background-color: rgba(40, 40, 40, 0.35) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(even),
+  .dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(even) {
+    background: rgba(35, 35, 35, 0.7) !important;
+    background-color: rgba(35, 35, 35, 0.7) !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+  html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(odd),
   html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
-  html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
+  html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd),
+  html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(odd) {
     background: rgba(255, 255, 255, 0.2) !important;
     background-color: rgba(255, 255, 255, 0.2) !important;
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:nth-child(odd),
+  .dark html body main#main-content .content-frosted-wrapper .article-content tbody tr:nth-child(odd),
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:nth-child(odd),
-  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd) {
-    background: rgba(38, 38, 38, 0.3) !important;
-    background-color: rgba(38, 38, 38, 0.3) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:nth-child(odd),
+  .dark html body main#main-content .content-frosted-wrapper article .article-content tbody tr:nth-child(odd) {
+    background: rgba(30, 30, 30, 0.7) !important;
+    background-color: rgba(30, 30, 30, 0.7) !important;
   }
 
+  /* 移除表格行 hover 效果 */
   html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
   html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:hover,
-  html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover {
-    background: rgba(255, 255, 255, 0.5) !important;
-    background-color: rgba(255, 255, 255, 0.5) !important;
-  }
-
+  html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover,
   .dark html body main#main-content .content-frosted-wrapper .prose tbody tr:hover,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody tr:hover,
   .dark html body main#main-content .content-frosted-wrapper article .prose tbody tr:hover {
-    background: rgba(48, 48, 48, 0.45) !important;
-    background-color: rgba(48, 48, 48, 0.45) !important;
+    background: inherit !important;
+    background-color: inherit !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose tbody td,
@@ -571,12 +508,16 @@
     border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
     font-size: 1.125rem !important;
     line-height: 1.6 !important;
+    color: inherit !important;
   }
 
   .dark html body main#main-content .content-frosted-wrapper .prose tbody td,
+  .dark html body main#main-content .content-frosted-wrapper .article-content tbody td,
   .dark html body main#main-content .content-frosted-wrapper .article-content .prose tbody td,
-  .dark html body main#main-content .content-frosted-wrapper article .prose tbody td {
-    border-right-color: rgba(255, 255, 255, 0.12) !important;
+  .dark html body main#main-content .content-frosted-wrapper article .prose tbody td,
+  .dark html body main#main-content .content-frosted-wrapper article .article-content tbody td {
+    border-right-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
   }
 
   html body main#main-content .content-frosted-wrapper .prose thead th:last-child,
@@ -590,7 +531,571 @@
     border-right-style: none !important;
     padding-right: 1rem !important;
   }
+
+  /* 4. 代码块语法高亮样式 - GitHub 风格 */
+  /* 确保代码块有正确的背景和文字颜色 */
+  .content-frosted-wrapper .prose .chroma,
+  .content-frosted-wrapper .prose .highlight,
+  .content-frosted-wrapper .prose pre {
+    background: #f6f8fa !important;
+    background-color: #f6f8fa !important;
+    color: #24292e !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 移除代码块外层容器的背景色和边框 */
+  .content-frosted-wrapper .prose .chroma,
+  .content-frosted-wrapper .prose .highlight {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
   
+  /* 确保代码块内部的 pre 元素 - 透明背景与页面融合 */
+  .content-frosted-wrapper .prose .chroma pre,
+  .content-frosted-wrapper .prose .highlight pre,
+  .content-frosted-wrapper .prose pre {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    padding: 1rem 1.2rem !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+  
+  /* 代码块容器响应式 */
+  .content-frosted-wrapper .prose .chroma,
+  .content-frosted-wrapper .prose .highlight {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+  }
+  
+  /* 代码块内部表格容器 - 透明背景，固定布局 */
+  .content-frosted-wrapper .prose .chroma .lntable,
+  .content-frosted-wrapper .prose .highlight .lntable {
+    display: table !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* 行号列的表格行 - 确保行号正确显示 */
+  .content-frosted-wrapper .prose .chroma .lntable tr,
+  .content-frosted-wrapper .prose .highlight .lntable tr {
+    display: table-row !important;
+  }
+  
+  /* 行号列 - 固定宽度 3em，透明背景与页面融合 */
+  .content-frosted-wrapper .prose .chroma .lntd:first-child,
+  .content-frosted-wrapper .prose .highlight .lntd:first-child {
+    width: 3em !important;
+    min-width: 3em !important;
+    max-width: 3em !important;
+    padding: 0 !important;
+    text-align: right !important;
+    user-select: none !important;
+    vertical-align: top !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border-right: none !important;
+  }
+  
+  /* 行号列的 pre 元素 - 与代码列 padding 一致 */
+  .content-frosted-wrapper .prose .chroma .lntd:first-child pre,
+  .content-frosted-wrapper .prose .highlight .lntd:first-child pre {
+    margin: 0 !important;
+    padding: 1rem 0.5rem 1rem 0.5rem !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    background: transparent !important;
+    border: none !important;
+    line-height: 1.7 !important;
+  }
+  
+  /* 行号数字本身 - 右对齐，颜色 */
+  .content-frosted-wrapper .prose .chroma .lntd:first-child .lnt,
+  .content-frosted-wrapper .prose .chroma .lntd:first-child .ln,
+  .content-frosted-wrapper .prose .highlight .lntd:first-child .lnt,
+  .content-frosted-wrapper .prose .highlight .lntd:first-child .ln {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: right !important;
+    line-height: 1.7 !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    color: #9ca3af !important;
+  }
+  
+  .dark .content-frosted-wrapper .prose .chroma .lntd:first-child .lnt,
+  .dark .content-frosted-wrapper .prose .chroma .lntd:first-child .ln,
+  .dark .content-frosted-wrapper .prose .highlight .lntd:first-child .lnt,
+  .dark .content-frosted-wrapper .prose .highlight .lntd:first-child .ln {
+    color: #6b7280 !important;
+  }
+  
+  /* 行号列的 code 元素 - 无滚动条 */
+  .content-frosted-wrapper .prose .chroma .lntd:first-child code,
+  .content-frosted-wrapper .prose .highlight .lntd:first-child code {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    background: transparent !important;
+    border: none !important;
+    line-height: 1.7 !important;
+  }
+  
+  /* 代码块内部的 tr 元素 - 透明背景 */
+  .content-frosted-wrapper .prose .chroma tr,
+  .content-frosted-wrapper .prose .highlight tr {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  
+  /* 代码列 - 允许横向滚动 */
+  .content-frosted-wrapper .prose .chroma .lntd:last-child,
+  .content-frosted-wrapper .prose .highlight .lntd:last-child {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+  }
+  
+  /* 代码内容 - 横向滚动，与行号列的 padding 一致，参考 Prism.js 样式，隐藏滚动条 */
+  .content-frosted-wrapper .prose .chroma .lntd:last-child pre,
+  .content-frosted-wrapper .prose .highlight .lntd:last-child pre {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
+    margin: 0 !important;
+    padding: 1rem 1.2rem 1rem 0.5rem !important;
+    line-height: 1.7 !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+  }
+  
+  /* 隐藏代码块的横向滚动条（Webkit浏览器） */
+  .content-frosted-wrapper .prose .chroma .lntd:last-child pre::-webkit-scrollbar,
+  .content-frosted-wrapper .prose .highlight .lntd:last-child pre::-webkit-scrollbar,
+  .content-frosted-wrapper .prose .chroma pre::-webkit-scrollbar,
+  .content-frosted-wrapper .prose .highlight pre::-webkit-scrollbar,
+  .content-frosted-wrapper .prose pre::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  
+  /* 隐藏代码块容器的横向滚动条 */
+  .content-frosted-wrapper .prose .chroma,
+  .content-frosted-wrapper .prose .highlight {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+  }
+  
+  .content-frosted-wrapper .prose .chroma::-webkit-scrollbar,
+  .content-frosted-wrapper .prose .highlight::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  
+  /* 独立的 pre 元素（无行号时）- 隐藏滚动条 */
+  .content-frosted-wrapper .prose .chroma pre,
+  .content-frosted-wrapper .prose .highlight pre,
+  .content-frosted-wrapper .prose pre {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
+    line-height: 1.7 !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+  }
+  
+  /* 修复复制按钮样式 - 确保暗色模式和亮色模式一致，不是一长条 */
+  .content-frosted-wrapper .prose .highlight .copy-button,
+  .content-frosted-wrapper .prose .chroma .copy-button {
+    width: auto !important;
+    min-width: 5rem !important;
+    max-width: 5rem !important;
+    padding: 0.25rem 0.75rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    border-radius: 0.375rem 0 0 0.375rem !important;
+  }
+  
+  .dark .content-frosted-wrapper .prose .highlight .copy-button,
+  .dark .content-frosted-wrapper .prose .chroma .copy-button {
+    width: auto !important;
+    min-width: 5rem !important;
+    max-width: 5rem !important;
+    padding: 0.25rem 0.75rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  /* 代码内容 - 防止换行 */
+  .content-frosted-wrapper .prose .chroma code,
+  .content-frosted-wrapper .prose .highlight code,
+  .content-frosted-wrapper .prose pre code {
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  /* 暗色模式：移除外层容器背景 */
+  .dark .content-frosted-wrapper .prose .chroma,
+  .dark .content-frosted-wrapper .prose .highlight {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* 暗色模式：确保代码块内部的 pre 元素有背景色 */
+  .dark .content-frosted-wrapper .prose .chroma pre,
+  .dark .content-frosted-wrapper .prose .highlight pre,
+  .dark .content-frosted-wrapper .prose pre,
+  .dark .content-frosted-wrapper .prose .chroma *,
+  .dark .content-frosted-wrapper .prose .highlight *,
+  .dark .content-frosted-wrapper .prose pre * {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    color: #d4d4d4 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+  }
+  
+  /* 暗色模式：确保 pre 元素有圆角和内边距 */
+  .dark .content-frosted-wrapper .prose .chroma pre,
+  .dark .content-frosted-wrapper .prose .highlight pre,
+  .dark .content-frosted-wrapper .prose pre {
+    border-radius: 6px !important;
+    padding: 1rem !important;
+    margin: 1.5rem 0 !important;
+  }
+
+  /* 关键字 - 蓝色 */
+  .content-frosted-wrapper .prose .chroma .k,
+  .content-frosted-wrapper .prose .chroma .kd,
+  .content-frosted-wrapper .prose .chroma .kn,
+  .content-frosted-wrapper .prose .chroma .kp,
+  .content-frosted-wrapper .prose .chroma .kr,
+  .content-frosted-wrapper .prose .chroma .kt {
+    color: #005cc5 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .k,
+  .dark .content-frosted-wrapper .prose .chroma .kd,
+  .dark .content-frosted-wrapper .prose .chroma .kn,
+  .dark .content-frosted-wrapper .prose .chroma .kp,
+  .dark .content-frosted-wrapper .prose .chroma .kr,
+  .dark .content-frosted-wrapper .prose .chroma .kt {
+    color: #4fc3f7 !important;
+  }
+
+  /* 关键字常量 - 深蓝色 */
+  .content-frosted-wrapper .prose .chroma .kc {
+    color: #005cc5 !important;
+    font-weight: 600 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .kc {
+    color: #4fc3f7 !important;
+    font-weight: 600 !important;
+  }
+
+  /* 字符串 - 绿色/橙色 */
+  .content-frosted-wrapper .prose .chroma .s,
+  .content-frosted-wrapper .prose .chroma .s1,
+  .content-frosted-wrapper .prose .chroma .s2,
+  .content-frosted-wrapper .prose .chroma .sb,
+  .content-frosted-wrapper .prose .chroma .sc,
+  .content-frosted-wrapper .prose .chroma .sd,
+  .content-frosted-wrapper .prose .chroma .sh,
+  .content-frosted-wrapper .prose .chroma .si,
+  .content-frosted-wrapper .prose .chroma .sx,
+  .content-frosted-wrapper .prose .chroma .sr,
+  .content-frosted-wrapper .prose .chroma .ss,
+  .content-frosted-wrapper .prose .chroma .sa,
+  .content-frosted-wrapper .prose .chroma .dl {
+    color: #032f62 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .s,
+  .dark .content-frosted-wrapper .prose .chroma .s1,
+  .dark .content-frosted-wrapper .prose .chroma .s2,
+  .dark .content-frosted-wrapper .prose .chroma .sb,
+  .dark .content-frosted-wrapper .prose .chroma .sc,
+  .dark .content-frosted-wrapper .prose .chroma .sd,
+  .dark .content-frosted-wrapper .prose .chroma .sh,
+  .dark .content-frosted-wrapper .prose .chroma .si,
+  .dark .content-frosted-wrapper .prose .chroma .sx,
+  .dark .content-frosted-wrapper .prose .chroma .sr,
+  .dark .content-frosted-wrapper .prose .chroma .ss,
+  .dark .content-frosted-wrapper .prose .chroma .sa,
+  .dark .content-frosted-wrapper .prose .chroma .dl {
+    color: #ce9178 !important;
+  }
+
+  /* 字符串转义 - 橙色 */
+  .content-frosted-wrapper .prose .chroma .se {
+    color: #e36209 !important;
+    font-weight: 600 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .se {
+    color: #d7ba7d !important;
+    font-weight: 600 !important;
+  }
+
+  /* 数字 - 蓝色 */
+  .content-frosted-wrapper .prose .chroma .m,
+  .content-frosted-wrapper .prose .chroma .mb,
+  .content-frosted-wrapper .prose .chroma .mf,
+  .content-frosted-wrapper .prose .chroma .mh,
+  .content-frosted-wrapper .prose .chroma .mi,
+  .content-frosted-wrapper .prose .chroma .il,
+  .content-frosted-wrapper .prose .chroma .mo {
+    color: #005cc5 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .m,
+  .dark .content-frosted-wrapper .prose .chroma .mb,
+  .dark .content-frosted-wrapper .prose .chroma .mf,
+  .dark .content-frosted-wrapper .prose .chroma .mh,
+  .dark .content-frosted-wrapper .prose .chroma .mi,
+  .dark .content-frosted-wrapper .prose .chroma .il,
+  .dark .content-frosted-wrapper .prose .chroma .mo {
+    color: #b5cea8 !important;
+  }
+
+  /* 注释 - 灰色斜体 */
+  .content-frosted-wrapper .prose .chroma .c,
+  .content-frosted-wrapper .prose .chroma .c1,
+  .content-frosted-wrapper .prose .chroma .cm,
+  .content-frosted-wrapper .prose .chroma .cp,
+  .content-frosted-wrapper .prose .chroma .cpf,
+  .content-frosted-wrapper .prose .chroma .cs {
+    color: #6a737d !important;
+    font-style: italic !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .c,
+  .dark .content-frosted-wrapper .prose .chroma .c1,
+  .dark .content-frosted-wrapper .prose .chroma .cm,
+  .dark .content-frosted-wrapper .prose .chroma .cp,
+  .dark .content-frosted-wrapper .prose .chroma .cpf,
+  .dark .content-frosted-wrapper .prose .chroma .cs {
+    color: #6a9955 !important;
+    font-style: italic !important;
+  }
+
+  /* 函数名 - 黄色/绿色 */
+  .content-frosted-wrapper .prose .chroma .nf,
+  .content-frosted-wrapper .prose .chroma .fm {
+    color: #6f42c1 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nf,
+  .dark .content-frosted-wrapper .prose .chroma .fm {
+    color: #dcdcaa !important;
+  }
+
+  /* 类名 - 青色/绿色 */
+  .content-frosted-wrapper .prose .chroma .nc {
+    color: #6f42c1 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nc {
+    color: #4ec9b0 !important;
+  }
+
+  /* 变量名 - 浅蓝色 */
+  .content-frosted-wrapper .prose .chroma .nv,
+  .content-frosted-wrapper .prose .chroma .vi,
+  .content-frosted-wrapper .prose .chroma .vm {
+    color: #e36209 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nv,
+  .dark .content-frosted-wrapper .prose .chroma .vi,
+  .dark .content-frosted-wrapper .prose .chroma .vm {
+    color: #9cdcfe !important;
+  }
+
+  /* 内置函数/变量 - 浅蓝色 */
+  .content-frosted-wrapper .prose .chroma .nb,
+  .content-frosted-wrapper .prose .chroma .bp {
+    color: #005cc5 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nb,
+  .dark .content-frosted-wrapper .prose .chroma .bp {
+    color: #4fc3f7 !important;
+  }
+
+  /* 操作符 - 默认颜色 */
+  .content-frosted-wrapper .prose .chroma .o,
+  .content-frosted-wrapper .prose .chroma .ow {
+    color: #d73a49 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .o,
+  .dark .content-frosted-wrapper .prose .chroma .ow {
+    color: #d4d4d4 !important;
+  }
+
+  /* 属性名 - 浅蓝色 */
+  .content-frosted-wrapper .prose .chroma .na,
+  .content-frosted-wrapper .prose .chroma .py {
+    color: #005cc5 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .na,
+  .dark .content-frosted-wrapper .prose .chroma .py {
+    color: #4fc3f7 !important;
+  }
+
+  /* 标签名 - 蓝色（HTML标签） */
+  .content-frosted-wrapper .prose .chroma .nt {
+    color: #22863a !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nt {
+    color: #4fc3f7 !important;
+  }
+
+  /* 常量 - 亮蓝色 */
+  .content-frosted-wrapper .prose .chroma .no {
+    color: #005cc5 !important;
+    font-weight: 600 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .no {
+    color: #4fc3f7 !important;
+    font-weight: 600 !important;
+  }
+
+  /* 类型名 - 青色 */
+  .content-frosted-wrapper .prose .chroma .n,
+  .content-frosted-wrapper .prose .chroma .nx {
+    color: #24292e !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .n,
+  .dark .content-frosted-wrapper .prose .chroma .nx {
+    color: #d4d4d4 !important;
+  }
+
+  /* 其他名称 - 青色/绿色 */
+  .content-frosted-wrapper .prose .chroma .nd,
+  .content-frosted-wrapper .prose .chroma .ni,
+  .content-frosted-wrapper .prose .chroma .nl,
+  .content-frosted-wrapper .prose .chroma .ne,
+  .content-frosted-wrapper .prose .chroma .vg {
+    color: #6f42c1 !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .nd,
+  .dark .content-frosted-wrapper .prose .chroma .ni,
+  .dark .content-frosted-wrapper .prose .chroma .nl,
+  .dark .content-frosted-wrapper .prose .chroma .ne,
+  .dark .content-frosted-wrapper .prose .chroma .vg {
+    color: #4ec9b0 !important;
+  }
+
+  /* 行号 - 灰色 */
+  .content-frosted-wrapper .prose .chroma .lnt,
+  .content-frosted-wrapper .prose .chroma .ln {
+    color: #6a737d !important;
+  }
+
+  .dark .content-frosted-wrapper .prose .chroma .lnt,
+  .dark .content-frosted-wrapper .prose .chroma .ln {
+    color: #858585 !important;
+  }
+
+  /* 5. 引用块样式 - 明显的颜色区分 */
+  .content-frosted-wrapper .prose blockquote {
+    border-left: 4px solid #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+    padding: 1rem 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    border-radius: 4px !important;
+    color: #1e293b !important;
+  }
+
+  .dark .content-frosted-wrapper .prose blockquote {
+    border-left-color: #60a5fa !important;
+    background: rgba(96, 165, 250, 0.15) !important;
+    color: #e2e8f0 !important;
+  }
+
+  .content-frosted-wrapper .prose blockquote p {
+    color: inherit !important;
+    margin: 0 !important;
+  }
+
+  /* 行内代码 - 明显的背景色 */
+  .content-frosted-wrapper .prose code:not(pre code) {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #1e40af !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 3px !important;
+    font-size: 0.9em !important;
+  }
+
+  .dark .content-frosted-wrapper .prose code:not(pre code) {
+    background: rgba(96, 165, 250, 0.2) !important;
+    color: #93c5fd !important;
+  }
 
   </style>
   
@@ -701,6 +1206,228 @@
       </footer>
     </article>
   </div>
+
+{{/* Ensure typewriter animation works on article pages */}}
+<script>
+(function() {
+  // Force initialize typewriter on article pages
+  function forceInitTypewriter() {
+    const element = document.getElementById('fixed-top-typewriter-headline');
+    if (!element) {
+      console.warn('[Article Page] Typewriter element not found');
+      return;
+    }
+    
+    // Check if already initialized and working
+    const currentText = element.textContent || '';
+    if (element.dataset.initialized === 'true' && currentText !== '' && currentText !== "I'm only human") {
+      console.log('[Article Page] Typewriter already initialized');
+      return;
+    }
+    
+    console.log('[Article Page] Force initializing typewriter...');
+    
+    // Reset initialization flag to allow reinitialization
+    element.dataset.initialized = 'false';
+    
+    // Trigger the typewriter initialization from global-fixed-top-bar
+    // The function should be available in the global scope or we need to call it directly
+    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
+    const speed = parseInt(element.getAttribute('data-speed')) || 100;
+    const waitTime = 2000;
+    const deleteSpeed = speed / 2;
+    
+    // Try to discover signature files
+    const maxFiles = 10;
+    function discoverSignatureFiles() {
+      const files = [];
+      files.push('/signature.txt');
+      for (let i = 1; i < maxFiles; i++) {
+        files.push(`/signature${i}.txt`);
+      }
+      return files;
+    }
+    
+    const filesToTry = discoverSignatureFiles();
+    
+    // Load all signature files
+    Promise.all(
+      filesToTry.map(file => 
+        fetch(file)
+          .then(response => {
+            if (response.ok) {
+              return response.text().then(text => ({ file, text, success: true }));
+            }
+            return { file, text: '', success: false };
+          })
+          .catch(() => ({ file, text: '', success: false }))
+      )
+    ).then(results => {
+      // Combine all successful file contents
+      let allLines = [];
+      results.forEach(result => {
+        if (result.success && result.text) {
+          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
+          allLines = allLines.concat(lines);
+        }
+      });
+      
+      if (allLines.length === 0) {
+        element.textContent = "I'm only human";
+        return;
+      }
+      
+      // Calculate time-based start position
+      const now = Date.now();
+      const secondsSinceEpoch = Math.floor(now / 1000);
+      
+      // Calculate total time for one complete cycle
+      let totalCycleTime = 0;
+      allLines.forEach(line => {
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        totalCycleTime += typingTime + waitTime + deletingTime + 500;
+      });
+      
+      // Calculate which line and position we should be at based on time
+      let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
+      let currentLineIndex = 0;
+      let currentCharIndex = 0;
+      let isDeleting = false;
+      
+      // Find the current position
+      for (let i = 0; i < allLines.length; i++) {
+        const line = allLines[i];
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
+        
+        if (elapsedTime < typingTime) {
+          currentLineIndex = i;
+          currentCharIndex = Math.floor(elapsedTime / speed);
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime) {
+          currentLineIndex = i;
+          currentCharIndex = line.length;
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
+          currentLineIndex = i;
+          const deletingElapsed = elapsedTime - typingTime - waitTime;
+          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
+          isDeleting = true;
+          break;
+        } else {
+          elapsedTime -= lineTotalTime;
+        }
+      }
+      
+      // Mark as initialized
+      element.dataset.initialized = 'true';
+      
+      // Add cursor element if not exists
+      let cursor = element.querySelector('.cursor');
+      if (!cursor) {
+        cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        cursor.style.display = 'inline-block';
+        cursor.style.width = '2px';
+        cursor.style.height = '0.9em';
+        cursor.style.backgroundColor = 'currentColor';
+        cursor.style.marginLeft = '2px';
+        cursor.style.animation = 'blink 1s infinite';
+        element.appendChild(cursor);
+      }
+      
+      // Set initial display
+      function updateDisplay() {
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        const textNode = element.childNodes[0];
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+          textNode.textContent = currentLine.substring(0, currentCharIndex);
+        } else {
+          element.textContent = currentLine.substring(0, currentCharIndex);
+          if (cursor && !element.contains(cursor)) {
+            element.appendChild(cursor);
+          }
+        }
+      }
+      
+      updateDisplay();
+      
+      function type() {
+        if (allLines.length === 0) return;
+        
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        if (!isDeleting && currentCharIndex < currentLine.length) {
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex + 1);
+            if (cursor && !element.contains(cursor)) {
+              element.appendChild(cursor);
+            }
+          }
+          currentCharIndex++;
+          setTimeout(type, speed);
+        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
+          setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, waitTime);
+        } else if (isDeleting && currentCharIndex > 0) {
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex - 1);
+            if (cursor && !element.contains(cursor)) {
+              element.appendChild(cursor);
+            }
+          }
+          currentCharIndex--;
+          setTimeout(type, deleteSpeed);
+        } else {
+          isDeleting = false;
+          currentLineIndex = (currentLineIndex + 1) % allLines.length;
+          currentCharIndex = 0;
+          element.textContent = '';
+          if (cursor && !element.contains(cursor)) {
+            element.appendChild(cursor);
+          }
+          setTimeout(type, 500);
+        }
+      }
+      
+      setTimeout(type, 100);
+    }).catch(error => {
+      console.error('[Article Page] Error loading signature files:', error);
+      element.textContent = "I'm only human";
+    });
+  }
+  
+  // Try multiple times to ensure it works
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(forceInitTypewriter, 200);
+      setTimeout(forceInitTypewriter, 1000);
+    });
+  } else {
+    setTimeout(forceInitTypewriter, 200);
+    setTimeout(forceInitTypewriter, 1000);
+  }
+  
+  window.addEventListener('load', function() {
+    setTimeout(forceInitTypewriter, 500);
+  });
+})();
+</script>
 {{ end }}
 
 {{ define "SingleAuthor" }}

@@ -1,0 +1,15 @@
+{
+  "name": "BenChuat's Blog",
+  "short_name": "BenChuat",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
+

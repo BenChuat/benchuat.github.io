@@ -80,8 +80,15 @@ article header {
 
 .fixed-top-text {
   display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.fixed-top-name-section {
+  display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -103,10 +110,25 @@ article header {
   font-weight: normal;
   color: #4b5563;
   text-shadow: none;
+  min-height: 1.2rem;
 }
 
 .dark .fixed-top-headline {
   color: #9ca3af;
+}
+
+.fixed-top-headline .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background-color: currentColor;
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 .fixed-top-links {
@@ -199,55 +221,344 @@ body:has(.fixed-top-bar) main#main-content {
 <div id="fixed-top-bar" class="fixed-top-bar{{ if .IsHome }} global-fixed-top-bar{{ end }}" style="display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 99999 !important;">
   <div class="fixed-top-bar-content">
     <div class="fixed-top-left">
-      {{ with .Site.Params.Author.image }}
-        {{ $authorImage := "" }}
-        {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
-          {{ $authorImage = resources.GetRemote . }}
-        {{ else }}
-          {{ $authorImage = resources.Get . }}
+      {{/* Use avatar.jpg from static directory */}}
+      {{ $avatarPath := "avatar.jpg" }}
+      {{ $avatarImage := resources.Get $avatarPath }}
+      {{ if $avatarImage }}
+        {{ $final := $avatarImage }}
+        {{ if not $disableImageOptimization }}
+          {{ $final = $avatarImage.Fill (print "80x80 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
         {{ end }}
-        {{ if $authorImage }}
-          {{ $final := $authorImage }}
-          {{ if not $disableImageOptimization }}
-            {{ $final = $authorImage.Fill (print "80x80 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
+        <img
+          class="fixed-top-avatar"
+          width="40"
+          height="40"
+          alt="{{ $.Site.Params.Author.name | default `Author` }}"
+          src="{{ $final.RelPermalink }}">
+      {{ else }}
+        {{/* Fallback to Author.image if avatar.jpg doesn't exist */}}
+        {{ with .Site.Params.Author.image }}
+          {{ $authorImage := "" }}
+          {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+            {{ $authorImage = resources.GetRemote . }}
+          {{ else }}
+            {{ $authorImage = resources.Get . }}
           {{ end }}
-          <img
-            class="fixed-top-avatar"
-            width="40"
-            height="40"
-            alt="{{ $.Site.Params.Author.name | default `Author` }}"
-            src="{{ $final.RelPermalink }}">
+          {{ if $authorImage }}
+            {{ $final := $authorImage }}
+            {{ if not $disableImageOptimization }}
+              {{ $final = $authorImage.Fill (print "80x80 q" ( $.Site.Params.Author.imagequality | default "96" )) }}
+            {{ end }}
+            <img
+              class="fixed-top-avatar"
+              width="40"
+              height="40"
+              alt="{{ $.Site.Params.Author.name | default `Author` }}"
+              src="{{ $final.RelPermalink }}">
+          {{ end }}
         {{ end }}
       {{ end }}
       <div class="fixed-top-text">
-        <h1 class="fixed-top-title">{{ .Site.Params.Author.name | default .Site.Title }}</h1>
-        <h2 class="fixed-top-headline">
-          {{ .Site.Params.Author.headline | default "I'm only human" }}
-        </h2>
-      </div>
-      {{ with .Site.Params.Author.links }}
-        <div class="fixed-top-links">
-          {{ range $links := . }}
-            {{ range $name, $url := $links }}
-              <a
-                class="fixed-top-link"
-                href="{{ $url }}"
-                target="_blank"
-                aria-label="{{ $name | title }}"
-                title="{{ $name | title }}"
-                rel="me noopener noreferrer">
-                {{ partial "icon.html" $name }}
-              </a>
-            {{ end }}
+        <div class="fixed-top-name-section">
+          <h1 class="fixed-top-title">{{ .Site.Params.Author.name | default .Site.Title }}</h1>
+          {{ with .Site.Params.Author.links }}
+            <div class="fixed-top-links">
+              {{ range $links := . }}
+                {{ range $name, $url := $links }}
+                  <a
+                    class="fixed-top-link"
+                    href="{{ $url }}"
+                    target="_blank"
+                    aria-label="{{ $name | title }}"
+                    title="{{ $name | title }}"
+                    rel="me noopener noreferrer">
+                    {{ partial "icon.html" $name }}
+                  </a>
+                {{ end }}
+              {{ end }}
+            </div>
           {{ end }}
         </div>
-      {{ end }}
+        <h2 class="fixed-top-headline" id="fixed-top-typewriter-headline" data-signature-pattern="signature" data-speed="100" data-initialized="false">
+          <!-- Typewriter text will appear here -->
+        </h2>
+      </div>
     </div>
     <div class="fixed-top-right" id="fixed-top-menu">
       <!-- Navigation menu will be inserted here by JavaScript -->
     </div>
   </div>
 </div>
+
+<script>
+// Typewriter effect for fixed top bar with multiple signature files and time-based start
+(function() {
+  function initFixedTopTypewriter() {
+    const element = document.getElementById('fixed-top-typewriter-headline');
+    if (!element) {
+      console.warn('Typewriter element not found: fixed-top-typewriter-headline');
+      return;
+    }
+    
+    // Prevent multiple initializations (but allow if explicitly reset)
+    if (element.dataset.initialized === 'true') {
+      const currentText = element.textContent || '';
+      // If already initialized and has content (not default), skip
+      if (currentText !== '' && currentText !== "I'm only human" && currentText.length > 5) {
+        console.log('[Global Fixed Top Bar] Typewriter already initialized and working');
+        return;
+      }
+    }
+    
+    console.log('[Global Fixed Top Bar] Initializing typewriter...');
+    element.dataset.initialized = 'true';
+
+    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
+    const speed = parseInt(element.getAttribute('data-speed')) || 100;
+    const waitTime = 2000;
+    const deleteSpeed = speed / 2;
+    
+    // Try to discover signature files
+    const maxFiles = 10;
+    function discoverSignatureFiles() {
+      const files = [];
+      files.push('/signature.txt');
+      for (let i = 1; i < maxFiles; i++) {
+        files.push(`/signature${i}.txt`);
+      }
+      return files;
+    }
+    
+    const filesToTry = discoverSignatureFiles();
+    
+    console.log('[Global Fixed Top Bar] Attempting to load signature files:', filesToTry);
+    
+    // Load all signature files
+    Promise.all(
+      filesToTry.map(file => 
+        fetch(file)
+          .then(response => {
+            if (response.ok) {
+              return response.text().then(text => {
+                console.log('[Global Fixed Top Bar] Successfully loaded:', file, 'lines:', text.split('\n').filter(l => l.trim()).length);
+                return { file, text, success: true };
+              });
+            }
+            console.log('[Global Fixed Top Bar] Failed to load (not found):', file);
+            return { file, text: '', success: false };
+          })
+          .catch(err => {
+            console.log('[Global Fixed Top Bar] Error loading:', file, err);
+            return { file, text: '', success: false };
+          })
+      )
+    ).then(results => {
+      // Combine all successful file contents
+      let allLines = [];
+      results.forEach(result => {
+        if (result.success && result.text) {
+          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
+          allLines = allLines.concat(lines);
+        }
+      });
+      
+      console.log('[Global Fixed Top Bar] Total lines loaded:', allLines.length);
+      
+      if (allLines.length === 0) {
+        console.warn('[Global Fixed Top Bar] No signature lines found, using default');
+        element.textContent = "I'm only human";
+        return;
+      }
+      
+      console.log('[Global Fixed Top Bar] Starting typewriter animation with', allLines.length, 'lines');
+      
+      // Calculate time-based start position
+      const now = Date.now();
+      const secondsSinceEpoch = Math.floor(now / 1000);
+      
+      // Calculate total time for one complete cycle
+      let totalCycleTime = 0;
+      allLines.forEach(line => {
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        totalCycleTime += typingTime + waitTime + deletingTime + 500;
+      });
+      
+      // Calculate which line and position we should be at based on time
+      let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
+      let currentLineIndex = 0;
+      let currentCharIndex = 0;
+      let isDeleting = false;
+      
+      // Find the current position
+      for (let i = 0; i < allLines.length; i++) {
+        const line = allLines[i];
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
+        
+        if (elapsedTime < typingTime) {
+          currentLineIndex = i;
+          currentCharIndex = Math.floor(elapsedTime / speed);
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime) {
+          currentLineIndex = i;
+          currentCharIndex = line.length;
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
+          currentLineIndex = i;
+          const deletingElapsed = elapsedTime - typingTime - waitTime;
+          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
+          isDeleting = true;
+          break;
+        } else {
+          elapsedTime -= lineTotalTime;
+        }
+      }
+      
+      // Add cursor element
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      cursor.style.display = 'inline-block';
+      cursor.style.width = '2px';
+      cursor.style.height = '0.9em';
+      cursor.style.backgroundColor = 'currentColor';
+      cursor.style.marginLeft = '2px';
+      cursor.style.animation = 'blink 1s infinite';
+      element.appendChild(cursor);
+      
+      // Set initial display
+      function updateDisplay() {
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        const textNode = element.childNodes[0];
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+          textNode.textContent = currentLine.substring(0, currentCharIndex);
+        } else {
+          element.textContent = currentLine.substring(0, currentCharIndex);
+          element.appendChild(cursor);
+        }
+      }
+      
+      updateDisplay();
+      
+      function type() {
+        if (allLines.length === 0) return;
+        
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        if (!isDeleting && currentCharIndex < currentLine.length) {
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex + 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex++;
+          setTimeout(type, speed);
+        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
+          setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, waitTime);
+        } else if (isDeleting && currentCharIndex > 0) {
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex - 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex--;
+          setTimeout(type, deleteSpeed);
+        } else {
+          isDeleting = false;
+          currentLineIndex = (currentLineIndex + 1) % allLines.length;
+          currentCharIndex = 0;
+          element.textContent = '';
+          element.appendChild(cursor);
+          setTimeout(type, 500);
+        }
+      }
+      
+      setTimeout(type, 100);
+    }).catch(error => {
+      console.error('Error loading signature files:', error);
+      element.textContent = "I'm only human";
+    });
+  }
+  
+  // Initialize when DOM is ready - with retry mechanism
+  function init() {
+    // Wait a bit to ensure DOM is fully ready
+    setTimeout(function() {
+      const element = document.getElementById('fixed-top-typewriter-headline');
+      if (element) {
+        // Check if already initialized (has text content that's not the default)
+        const currentText = element.textContent || '';
+        if (currentText.trim() === '' || currentText === "I'm only human" || !element.dataset.initialized) {
+          initFixedTopTypewriter();
+        }
+      } else {
+        // Element not found, try again later
+        console.warn('Typewriter element not found, will retry...');
+      }
+    }, 100);
+  }
+  
+  // Multiple initialization attempts to ensure it works on all pages
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  
+  // Retry after short delay
+  setTimeout(init, 500);
+  
+  // Also try after a longer delay to ensure element exists (for dynamically loaded content)
+  setTimeout(function() {
+    const element = document.getElementById('fixed-top-typewriter-headline');
+    if (element) {
+      // Only reinitialize if still showing default or empty
+      const currentText = element.textContent || '';
+      if (currentText.trim() === '' || currentText === "I'm only human" || !element.dataset.initialized) {
+        console.log('Retrying typewriter initialization on article page...');
+        initFixedTopTypewriter();
+      }
+    } else {
+      console.warn('Typewriter element still not found after 2 seconds');
+    }
+  }, 2000);
+  
+  // Final retry after page fully loaded
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      const element = document.getElementById('fixed-top-typewriter-headline');
+      if (element && (!element.dataset.initialized || element.textContent === "I'm only human")) {
+        console.log('Final retry: initializing typewriter after page load...');
+        element.dataset.initialized = 'false'; // Reset to allow reinitialization
+        initFixedTopTypewriter();
+      }
+    }, 500);
+  });
+  
+  // Listen for custom event to force reinitialization
+  document.addEventListener('forceTypewriterInit', function() {
+    const element = document.getElementById('fixed-top-typewriter-headline');
+    if (element) {
+      console.log('Received forceTypewriterInit event, reinitializing...');
+      element.dataset.initialized = 'false';
+      initFixedTopTypewriter();
+    }
+  });
+})();
+</script>
 
 <script>
 // Copy navigation menu to fixed top bar - Same logic as homepage
