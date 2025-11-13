@@ -293,10 +293,19 @@ body:has(.fixed-top-bar) main#main-content {
 <script>
 // Typewriter effect for fixed top bar with multiple signature files and time-based start
 (function() {
+  // Global flag to prevent multiple simultaneous initializations
+  let isInitializing = false;
+  
   function initFixedTopTypewriter() {
     const element = document.getElementById('fixed-top-typewriter-headline');
     if (!element) {
       console.warn('Typewriter element not found: fixed-top-typewriter-headline');
+      return;
+    }
+    
+    // Prevent multiple simultaneous initializations
+    if (isInitializing) {
+      console.log('[Global Fixed Top Bar] Typewriter initialization already in progress, skipping...');
       return;
     }
     
@@ -311,6 +320,7 @@ body:has(.fixed-top-bar) main#main-content {
     }
     
     console.log('[Global Fixed Top Bar] Initializing typewriter...');
+    isInitializing = true;
     element.dataset.initialized = 'true';
 
     const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
@@ -490,6 +500,8 @@ body:has(.fixed-top-bar) main#main-content {
     }).catch(error => {
       console.error('Error loading signature files:', error);
       element.textContent = "I'm only human";
+    }).finally(() => {
+      isInitializing = false;
     });
   }
   
@@ -548,13 +560,19 @@ body:has(.fixed-top-bar) main#main-content {
     }, 500);
   });
   
-  // Listen for custom event to force reinitialization
+  // Listen for custom event to force reinitialization (only if not already working)
   document.addEventListener('forceTypewriterInit', function() {
     const element = document.getElementById('fixed-top-typewriter-headline');
     if (element) {
-      console.log('Received forceTypewriterInit event, reinitializing...');
-      element.dataset.initialized = 'false';
-      initFixedTopTypewriter();
+      const currentText = element.textContent || '';
+      // Only reinitialize if not working properly
+      if (currentText === '' || currentText === "I'm only human" || currentText.length <= 5) {
+        console.log('Received forceTypewriterInit event, reinitializing...');
+        element.dataset.initialized = 'false';
+        initFixedTopTypewriter();
+      } else {
+        console.log('Received forceTypewriterInit event, but typewriter is already working, skipping...');
+      }
     }
   });
 })();

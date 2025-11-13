@@ -45,59 +45,7 @@
       {{ end }}
     </div>
     
-    {{/* Ensure typewriter animation works on all pages including article pages */}}
-    {{ if not .IsHome }}
-    <script>
-    (function() {
-      console.log('[Base Layout] Typewriter checker initialized for article/non-home pages');
-      
-      // Multiple attempts to ensure typewriter works
-      function checkAndFixTypewriter() {
-        const element = document.getElementById('fixed-top-typewriter-headline');
-        if (!element) {
-          console.warn('[Base Layout] Typewriter element not found yet');
-          return false;
-        }
-        
-        const currentText = element.textContent || '';
-        const isInitialized = element.dataset.initialized === 'true';
-        
-        // Check if it's working (has animated content)
-        if (isInitialized && currentText !== '' && currentText !== "I'm only human" && currentText.length > 3) {
-          console.log('[Base Layout] Typewriter is working, text:', currentText.substring(0, 20) + '...');
-          return true;
-        }
-        
-        // Not working, trigger fix
-        console.log('[Base Layout] Typewriter not working, current text:', currentText, 'initialized:', isInitialized);
-        element.dataset.initialized = 'false';
-        const event = new CustomEvent('forceTypewriterInit');
-        document.dispatchEvent(event);
-        return false;
-      }
-      
-      // Try immediately
-      setTimeout(checkAndFixTypewriter, 500);
-      
-      // Try after DOM ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(checkAndFixTypewriter, 500);
-          setTimeout(checkAndFixTypewriter, 2000);
-        });
-      } else {
-        setTimeout(checkAndFixTypewriter, 500);
-        setTimeout(checkAndFixTypewriter, 2000);
-      }
-      
-      // Try after page load
-      window.addEventListener('load', function() {
-        setTimeout(checkAndFixTypewriter, 1000);
-        setTimeout(checkAndFixTypewriter, 3000);
-      });
-    })();
-    </script>
-    {{ end }}
+    {{/* Typewriter animation is handled by global-fixed-top-bar.html, no need to duplicate here */}}
   </body>
   {{ if site.Params.buymeacoffee.globalWidget | default false }}
     <script
