@@ -779,26 +779,26 @@ public class ConversionExercise5 {
 
 | 源类型 | 可自动转换的目标类型 | 转换方向 | 是否安全 |
 |--------|---------------------|----------|----------|
-| byte | short, int, long, float, double | 小→大 | ✅ 安全 |
-| short | int, long, float, double | 小→大 | ✅ 安全 |
-| int | long, float, double | 小→大 | ✅ 安全 |
-| long | float, double | 小→大 | ⚠️ 可能精度损失 |
-| float | double | 小→大 | ✅ 安全 |
-| char | int, long, float, double | 小→大 | ✅ 安全 |
-| boolean | 无 | - | ❌ 不能转换 |
+| byte | short, int, long, float, double | 小→大 | 安全 |
+| short | int, long, float, double | 小→大 | 安全 |
+| int | long, float, double | 小→大 | 安全 |
+| long | float, double | 小→大 | 可能精度损失 |
+| float | double | 小→大 | 安全 |
+| char | int, long, float, double | 小→大 | 安全 |
+| boolean | 无 | - | 不能转换 |
 
 ### 6.2 强制类型转换规则表
 
 | 源类型 | 可强制转换的目标类型 | 转换方向 | 风险说明 |
 |--------|---------------------|----------|----------|
-| short | byte | 大→小 | ⚠️ 可能溢出 |
-| int | byte, short | 大→小 | ⚠️ 可能溢出 |
-| long | byte, short, int | 大→小 | ⚠️ 可能溢出 |
-| float | byte, short, int, long | 大→小 | ⚠️ 截断小数部分 |
-| double | byte, short, int, long, float | 大→小 | ⚠️ 截断小数部分，可能精度损失 |
-| int | char | - | ✅ 安全（在有效范围内） |
-| char | byte, short | - | ⚠️ 可能溢出 |
-| boolean | 任何类型 | - | ❌ 不能转换 |
+| short | byte | 大→小 | 可能溢出 |
+| int | byte, short | 大→小 | 可能溢出 |
+| long | byte, short, int | 大→小 | 可能溢出 |
+| float | byte, short, int, long | 大→小 | 截断小数部分 |
+| double | byte, short, int, long, float | 大→小 | 截断小数部分，可能精度损失 |
+| int | char | - | 安全（在有效范围内） |
+| char | byte, short | - | 可能溢出 |
+| boolean | 任何类型 | - | 不能转换 |
 
 ### 6.3 类型转换优先级与顺序
 

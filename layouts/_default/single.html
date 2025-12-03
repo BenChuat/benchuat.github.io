@@ -349,6 +349,14 @@
   }
 
   /* 3. 优化表格显示 - 毛玻璃风格，与整体协调 */
+  /* 为包含表格的容器添加横向滚动，防止表格超出容器 */
+  html body main#main-content .content-frosted-wrapper .prose:has(table),
+  html body main#main-content .content-frosted-wrapper .article-content:has(table) {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
   /* 使用最高优先级选择器覆盖所有全局规则 */
   html body main#main-content .content-frosted-wrapper .prose table,
   html body main#main-content .content-frosted-wrapper .article-content table,
@@ -358,11 +366,10 @@
     display: table !important;
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 100% !important;
+    min-width: min-content !important;
     border-collapse: collapse !important;
     margin: 1.5rem 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    table-layout: auto !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     font-size: 1.125rem !important;
