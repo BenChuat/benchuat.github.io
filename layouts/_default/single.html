@@ -46,16 +46,36 @@
     overflow-x: visible !important;
   }
   
-  /* 确保 TOC 的 active 链接样式正常显示 */
+  /* 确保 TOC 的 active 链接样式正常显示，添加过渡动画 */
+  .content-frosted-wrapper .toc a {
+    transition: all 0.3s ease !important;
+    position: relative !important;
+  }
+  
   .content-frosted-wrapper .toc a.active {
     text-decoration-line: underline !important;
     text-decoration-thickness: 3px !important;
     text-underline-offset: 4px !important;
     font-weight: 600 !important;
     color: #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    border-radius: 4px !important;
   }
   
   .dark .content-frosted-wrapper .toc a.active {
+    color: #60a5fa !important;
+    background-color: rgba(96, 165, 250, 0.15) !important;
+  }
+  
+  /* 添加 hover 效果 */
+  .content-frosted-wrapper .toc a:hover {
+    color: #3b82f6 !important;
+    text-decoration-line: underline !important;
+  }
+  
+  .dark .content-frosted-wrapper .toc a:hover {
     color: #60a5fa !important;
   }
   
