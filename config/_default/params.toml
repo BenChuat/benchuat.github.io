@@ -110,6 +110,7 @@ defaultBackgroundImage = ""
   showCategoryOnly = false
   showWordCount = true         # 显示字数统计
   showZenMode = false          # 是否开启沉浸模式（隐藏多余元素）
+  showComments = true          # 显示评论（全局设置，可在单篇文章中覆盖）
 
 # 智能目录 - 自动高亮当前阅读章节
 smartTOC = true
@@ -140,6 +141,56 @@ smartTOCHideUnfocusedChildren = false
   showHero = false
   showTableOfContents = true
   groupByYear = false
+
+
+# ============ 评论系统配置 ============
+
+# Waline 评论系统配置
+[waline]
+  # 是否启用 Waline
+  enable = true
+  
+  # Waline 服务端地址（必填）
+  # 格式: http://your-waline-server:8360 或 https://waline.your-domain.com
+  # 请替换为你的实际 NAS 服务器地址
+  serverURL = "http://your-nas-ip:8360"  # ⚠️ 请修改为你的实际地址
+  
+  # CDN 地址（可选，使用默认即可）
+  # cssURL = "https://unpkg.com/@waline/client@v2/dist/waline.css"
+  # jsURL = "https://unpkg.com/@waline/client@v2/dist/waline.mjs"
+  
+  # 语言设置（可选，默认自动检测）
+  lang = "zh-CN"  # 可选: zh-CN, en-US, zh-TW, pt-BR, ru-RU, jp-JP, es-ES
+  
+  # 表情设置（可选，使用默认表情包）
+  # emoji = ["https://unpkg.com/@waline/emojis@1.1.0/weibo", "https://unpkg.com/@waline/emojis@1.1.0/qq", "https://unpkg.com/@waline/emojis@1.1.0/bilibili"]
+  
+  # 必填信息（可选）
+  # requiredMeta = ["nick", "mail"]  # 可选: nick, mail, link
+  
+  # 字数限制（可选，0 表示不限制）
+  # wordLimit = 0
+  
+  # 每页评论数（可选）
+  # pageSize = 10
+  
+  # 登录方式（可选）
+  # login = "enable"  # enable: 启用登录, disable: 禁用登录, force: 强制登录
+  
+  # 访问量统计（可选）
+  # visitor = true
+  
+  # 表情反应（可选）
+  # reaction = true
+  
+  # 评论功能（可选）
+  # comment = true
+  
+  # 浏览量统计（可选）
+  # pageview = true
+  
+  # 暗色模式（可选）
+  # dark = "auto"  # auto: 自动, "dark": 强制暗色, "light": 强制亮色
 
 
 # ============ 分析统计（可选） ============

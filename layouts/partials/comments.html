@@ -1,0 +1,59 @@
+{{- if .Site.Params.waline.enable | default false -}}
+<div id="waline-container"></div>
+<link rel="stylesheet" href="{{ .Site.Params.waline.cssURL | default "https://unpkg.com/@waline/client@v2/dist/waline.css" }}" />
+<script type="module">
+  import { init } from '{{ .Site.Params.waline.jsURL | default "https://unpkg.com/@waline/client@v2/dist/waline.mjs" }}';
+  
+  init({
+    el: '#waline-container',
+    serverURL: '{{ .Site.Params.waline.serverURL }}',
+    {{- if .Site.Params.waline.lang }}
+    lang: '{{ .Site.Params.waline.lang }}',
+    {{- end }}
+    {{- if .Site.Params.waline.emoji }}
+    emoji: {{ .Site.Params.waline.emoji }},
+    {{- end }}
+    {{- if .Site.Params.waline.requiredMeta }}
+    requiredMeta: {{ .Site.Params.waline.requiredMeta }},
+    {{- end }}
+    {{- if .Site.Params.waline.wordLimit }}
+    wordLimit: {{ .Site.Params.waline.wordLimit }},
+    {{- end }}
+    {{- if .Site.Params.waline.pageSize }}
+    pageSize: {{ .Site.Params.waline.pageSize }},
+    {{- end }}
+    {{- if .Site.Params.waline.imageUploader }}
+    imageUploader: {{ .Site.Params.waline.imageUploader }},
+    {{- end }}
+    {{- if .Site.Params.waline.highlight }}
+    highlight: {{ .Site.Params.waline.highlight }},
+    {{- end }}
+    {{- if .Site.Params.waline.math }}
+    math: {{ .Site.Params.waline.math }},
+    {{- end }}
+    {{- if .Site.Params.waline.login }}
+    login: '{{ .Site.Params.waline.login }}',
+    {{- end }}
+    {{- if .Site.Params.waline.visitor }}
+    visitor: {{ .Site.Params.waline.visitor }},
+    {{- end }}
+    {{- if .Site.Params.waline.reaction }}
+    reaction: {{ .Site.Params.waline.reaction }},
+    {{- end }}
+    {{- if .Site.Params.waline.comment }}
+    comment: {{ .Site.Params.waline.comment }},
+    {{- end }}
+    {{- if .Site.Params.waline.pageview }}
+    pageview: {{ .Site.Params.waline.pageview }},
+    {{- end }}
+    {{- if .Site.Params.waline.dark }}
+    dark: '{{ .Site.Params.waline.dark }}',
+    {{- end }}
+    {{- if .Site.Params.waline.locale }}
+    locale: {{ .Site.Params.waline.locale }},
+    {{- end }}
+    path: '{{ .RelPermalink }}',
+  });
+</script>
+{{- end -}}
+
