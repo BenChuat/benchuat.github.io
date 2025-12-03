@@ -95,6 +95,10 @@ defaultBackgroundImage = ""
 
 
 # ============ 文章页面（单页） ============
+#
+# 智能目录（全局开关，供主题的 smartTOC 使用）
+smartTOC = true
+smartTOCHideUnfocusedChildren = false
 
 [article]
   showDate = true              # 显示发布日期
@@ -112,9 +116,6 @@ defaultBackgroundImage = ""
   showZenMode = false          # 是否开启沉浸模式（隐藏多余元素）
   showComments = true          # 显示评论（全局设置，可在单篇文章中覆盖）
 
-# 智能目录 - 自动高亮当前阅读章节
-smartTOC = true
-smartTOCHideUnfocusedChildren = false
 
 
 # ============ 列表页（如 posts/ 标签页） ============
