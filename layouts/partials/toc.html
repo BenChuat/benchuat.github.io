@@ -24,8 +24,10 @@
 
 {{ if .Site.Params.smartTOC }}
 <script>
+  console.log('smartTOC script loading...')
   (function () {
     'use strict'
+    console.log('smartTOC script executing...')
 
     const SCROLL_OFFSET_RATIO = 0.33
     // 尝试多个可能的 TOC 选择器
@@ -232,13 +234,27 @@
     }
 
     // 确保在 DOM 加载完成后初始化
+    console.log('Setting up TOC initialization, readyState:', document.readyState)
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTOC)
+      console.log('Waiting for DOMContentLoaded...')
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded fired, initializing TOC...')
+        initTOC()
+      })
     } else {
       // DOM 已经加载完成，延迟一点确保所有内容都渲染完成
-      setTimeout(initTOC, 100)
+      console.log('DOM already loaded, initializing TOC with delay...')
+      setTimeout(function() {
+        console.log('Delayed initialization starting...')
+        initTOC()
+      }, 100)
     }
   })()
+  console.log('smartTOC script loaded')
+</script>
+{{ else }}
+<script>
+  console.warn('smartTOC is disabled in config')
 </script>
 {{ end }}
 
