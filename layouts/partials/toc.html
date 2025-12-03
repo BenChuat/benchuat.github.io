@@ -22,6 +22,15 @@
   </div>
 </details>
 
+{{/* 调试：输出 smartTOC 配置值 */}}
+<script>
+  console.log('smartTOC config check:', {
+    'Site.Params.smartTOC': {{ if .Site.Params.smartTOC }}true{{ else }}false{{ end }},
+    'site.Params.smartTOC': {{ if site.Params.smartTOC }}true{{ else }}false{{ end }},
+    'raw value': '{{ .Site.Params.smartTOC }}'
+  })
+</script>
+
 {{ if .Site.Params.smartTOC }}
 <script>
   console.log('smartTOC script loading...')
