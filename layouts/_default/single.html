@@ -19,10 +19,44 @@
   <style>
   /* Additional page-specific styles - global styles are in global-background.html */
   
-  /* 确保目录导航不受 GitHub 样式影响 */
-  .content-frosted-wrapper .toc,
+  /* 确保目录导航不受 GitHub 样式影响，并保持 sticky 定位和滚动功能 */
+  .content-frosted-wrapper .toc {
+    position: sticky !important;
+    align-self: flex-start !important;
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+  }
+  
   .content-frosted-wrapper .toc * {
     /* 保持原有样式，不受 GitHub 主题影响 */
+  }
+  
+  /* 确保 TOC 容器不会阻止 sticky 定位 */
+  .content-frosted-wrapper section.flex {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+  }
+  
+  /* 确保 TOC 的父容器不会阻止 sticky 定位 */
+  .content-frosted-wrapper .toc-right {
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    overflow-x: visible !important;
+  }
+  
+  /* 确保 TOC 的 active 链接样式正常显示 */
+  .content-frosted-wrapper .toc a.active {
+    text-decoration-line: underline !important;
+    text-decoration-thickness: 3px !important;
+    text-underline-offset: 4px !important;
+    font-weight: 600 !important;
+    color: #3b82f6 !important;
+  }
+  
+  .dark .content-frosted-wrapper .toc a.active {
+    color: #60a5fa !important;
   }
   
   /* 确保底部毛玻璃效果不受 GitHub 样式影响 */
@@ -350,11 +384,19 @@
 
   /* 3. 优化表格显示 - 毛玻璃风格，与整体协调 */
   /* 为包含表格的容器添加横向滚动，防止表格超出容器 */
+  /* 注意：只针对直接包含表格的容器，不影响 TOC 的父容器 */
   html body main#main-content .content-frosted-wrapper .prose:has(table),
   html body main#main-content .content-frosted-wrapper .article-content:has(table) {
     overflow-x: auto !important;
     overflow-y: visible !important;
     -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* 确保包含 TOC 的 section 不受表格 overflow 影响，保持 sticky 定位 */
+  html body main#main-content .content-frosted-wrapper section.flex:has(.toc) {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
   }
 
   /* 使用最高优先级选择器覆盖所有全局规则 */
