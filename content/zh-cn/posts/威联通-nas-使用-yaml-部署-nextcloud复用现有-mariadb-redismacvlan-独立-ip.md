@@ -2,14 +2,13 @@
 title = "威联通 NAS 使用 YAML 部署 Nextcloud（复用现有 MariaDB + Redis，macvlan 独立 IP）"
 date = "2025-11-11T15:19:10.383768+08:00"
 lang = "zh-cn"
-draft = false
-slug = "威联通-nas-使用-yaml-部署-nextcloud复用现有-mariadb-redismacvlan-独立-ip"
+draft = "false"
+slug = "nextcloud"
 categories = []
-tags = [ "NAS",]
-featured = false
+tags = [ "NAS", "" ]
+featured = "false"
 summary = ""
 +++
-
 # 威联通 NAS 使用 YAML 部署 Nextcloud（复用现有 MariaDB + Redis，macvlan 独立 IP）
 
 ------

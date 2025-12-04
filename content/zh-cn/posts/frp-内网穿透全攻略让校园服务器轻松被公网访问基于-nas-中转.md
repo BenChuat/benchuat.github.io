@@ -2,14 +2,13 @@
 title = "FRP 内网穿透全攻略：让校园服务器轻松被公网访问（基于 NAS 中转）"
 date = "2025-11-05T10:44:58.432051+08:00"
 lang = "zh-cn"
-draft = false
-slug = "frp-内网穿透全攻略让校园服务器轻松被公网访问基于-nas-中转"
+draft = "false"
+slug = "frp"
 categories = []
-tags = [ "内网穿透", "FRP", "NAS",]
-featured = false
+tags = [ "内网穿透", "FRP", "NAS", "" ]
+featured = "false"
 summary = ""
 +++
-
 # FRP 内网穿透全攻略：让校园服务器轻松被公网访问（基于 NAS 中转）
 
 > **作者：BenChuat**

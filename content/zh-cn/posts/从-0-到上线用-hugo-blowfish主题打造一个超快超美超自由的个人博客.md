@@ -2,14 +2,13 @@
 title = "从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客"
 date = "2025-11-05T10:42:44.754422+08:00"
 lang = "zh-cn"
-draft = false
-slug = "从-0-到上线用-hugo-blowfish主题打造一个超快超美超自由的个人博客"
+draft = "false"
+slug = "hugo-and-blowfish"
 categories = []
-tags = [ "Blowfish", "Hugo", "博客搭建",]
-featured = false
+tags = [ "Blowfish", "Hugo", "博客搭建", "" ]
+featured = "false"
 summary = ""
 +++
-
 # 从 0 到上线：用 Hugo + blowfish主题打造一个超快、超美、超自由的个人博客
 
 一生中要做三件浪漫的小事：

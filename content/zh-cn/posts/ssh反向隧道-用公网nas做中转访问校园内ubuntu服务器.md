@@ -2,14 +2,13 @@
 title = "SSH反向隧道-用公网NAS做中转访问校园内Ubuntu服务器"
 date = "2025-11-05T10:48:12.948831+08:00"
 lang = "zh-cn"
-draft = false
-slug = "ssh反向隧道-用公网nas做中转访问校园内ubuntu服务器"
+draft = "false"
+slug = "ssh"
 categories = []
-tags = [ "NAS", "内网穿透", "SSH",]
-featured = false
+tags = [ "NAS", "内网穿透", "SSH", "" ]
+featured = "false"
 summary = ""
 +++
-
 # 用公网 NAS 做中转访问校园内 Ubuntu 服务器（完整实战指南）
 
 > 场景：你在学校有一台只能主动访问外网、外网无法直接访问的 Ubuntu 服务器（内网/校园网环境）。你还有一台可以被公网访问的 NAS（例如 QNAP/群晖 或 任意有公网 IP / 端口映射的机器）。目标是：通过 NAS 做“中转/跳板”，从外网安全、稳定地远程 SSH 登录校园服务器。

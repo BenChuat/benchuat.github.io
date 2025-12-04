@@ -291,250 +291,29 @@ body:has(.fixed-top-bar) main#main-content {
 </div>
 
 <script>
-// Typewriter effect for fixed top bar with multiple signature files and time-based start
+// Typewriter effect for fixed top bar - uses shared function
 (function() {
-  // Global flag to prevent multiple simultaneous initializations
-  let isInitializing = false;
-  
   function initFixedTopTypewriter() {
-    const element = document.getElementById('fixed-top-typewriter-headline');
-    if (!element) {
-      console.warn('Typewriter element not found: fixed-top-typewriter-headline');
-      return;
-    }
-    
-    // Prevent multiple simultaneous initializations
-    if (isInitializing) {
-      console.log('[Global Fixed Top Bar] Typewriter initialization already in progress, skipping...');
-      return;
-    }
-    
-    // Prevent multiple initializations (but allow if explicitly reset)
-    if (element.dataset.initialized === 'true') {
-      const currentText = element.textContent || '';
-      // If already initialized and has content (not default), skip
-      if (currentText !== '' && currentText !== "I'm only human" && currentText.length > 5) {
-        console.log('[Global Fixed Top Bar] Typewriter already initialized and working');
-        return;
-      }
-    }
-    
-    console.log('[Global Fixed Top Bar] Initializing typewriter...');
-    isInitializing = true;
-    element.dataset.initialized = 'true';
-
-    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
-    const speed = parseInt(element.getAttribute('data-speed')) || 100;
-    const waitTime = 2000;
-    const deleteSpeed = speed / 2;
-    
-    // Optimized: Only try to load signature files that exist
-    // First check which files exist, then load only those
-    async function discoverSignatureFiles() {
-      const filesToCheck = ['/signature.txt'];
-      for (let i = 1; i <= 2; i++) { // Only check signature1.txt and signature2.txt
-        filesToCheck.push(`/signature${i}.txt`);
-      }
-      
-      const existingFiles = [];
-      // Check files in parallel but don't log 404s
-      const checkPromises = filesToCheck.map(async (file) => {
-        try {
-          const response = await fetch(file, { method: 'HEAD' });
-          if (response.ok) {
-            return file;
-          }
-          return null;
-        } catch {
-          return null;
-        }
-      });
-      
-      const results = await Promise.all(checkPromises);
-      return results.filter(f => f !== null);
-    }
-    
-    // Load signature files asynchronously (non-blocking)
-    discoverSignatureFiles().then(filesToLoad => {
-      if (filesToLoad.length === 0) {
-        // No signature files, use default text
+    if (window.initTypewriterEffect) {
+      window.initTypewriterEffect('fixed-top-typewriter-headline', { maxFiles: 10 });
+    } else {
+      console.error('Shared typewriter function not loaded');
+      const element = document.getElementById('fixed-top-typewriter-headline');
+      if (element) {
         element.textContent = "I'm only human";
-        isInitializing = false;
-        return;
       }
-      
-      // Load only existing files
-      Promise.all(
-        filesToLoad.map(file => 
-          fetch(file)
-            .then(response => {
-              if (response.ok) {
-                return response.text().then(text => {
-                  return { file, text, success: true };
-                });
-              }
-              return { file, text: '', success: false };
-            })
-            .catch(() => {
-              return { file, text: '', success: false };
-            })
-        )
-      ).then(results => {
-        // Combine all successful file contents
-        let allLines = [];
-        results.forEach(result => {
-          if (result.success && result.text) {
-            const lines = result.text.split('\n').filter(line => line.trim().length > 0);
-            allLines = allLines.concat(lines);
-          }
-        });
-        
-        if (allLines.length === 0) {
-          element.textContent = "I'm only human";
-          isInitializing = false;
-          return;
-        }
-      
-        // Calculate time-based start position
-        const now = Date.now();
-        const secondsSinceEpoch = Math.floor(now / 1000);
-        
-        // Calculate total time for one complete cycle
-        let totalCycleTime = 0;
-        allLines.forEach(line => {
-          const typingTime = line.length * speed;
-          const deletingTime = line.length * deleteSpeed;
-          totalCycleTime += typingTime + waitTime + deletingTime + 500;
-        });
-        
-        // Calculate which line and position we should be at based on time
-        let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
-        let currentLineIndex = 0;
-        let currentCharIndex = 0;
-        let isDeleting = false;
-        
-        // Find the current position
-        for (let i = 0; i < allLines.length; i++) {
-          const line = allLines[i];
-          const typingTime = line.length * speed;
-          const deletingTime = line.length * deleteSpeed;
-          const lineTotalTime = typingTime + waitTime + deletingTime + 500;
-          
-          if (elapsedTime < typingTime) {
-            currentLineIndex = i;
-            currentCharIndex = Math.floor(elapsedTime / speed);
-            isDeleting = false;
-            break;
-          } else if (elapsedTime < typingTime + waitTime) {
-            currentLineIndex = i;
-            currentCharIndex = line.length;
-            isDeleting = false;
-            break;
-          } else if (elapsedTime < typingTime + waitTime + deletingTime) {
-            currentLineIndex = i;
-            const deletingElapsed = elapsedTime - typingTime - waitTime;
-            currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
-            isDeleting = true;
-            break;
-          } else {
-            elapsedTime -= lineTotalTime;
-          }
-        }
-        
-        // Add cursor element
-        const cursor = document.createElement('span');
-        cursor.className = 'cursor';
-        cursor.style.display = 'inline-block';
-        cursor.style.width = '2px';
-        cursor.style.height = '0.9em';
-        cursor.style.backgroundColor = 'currentColor';
-        cursor.style.marginLeft = '2px';
-        cursor.style.animation = 'blink 1s infinite';
-        element.appendChild(cursor);
-        
-        // Set initial display
-        function updateDisplay() {
-          const currentLine = allLines[currentLineIndex];
-          if (!currentLine) return;
-          
-          const textNode = element.childNodes[0];
-          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = currentLine.substring(0, currentCharIndex);
-          } else {
-            element.textContent = currentLine.substring(0, currentCharIndex);
-            element.appendChild(cursor);
-          }
-        }
-        
-        updateDisplay();
-        
-        function type() {
-          if (allLines.length === 0) return;
-          
-          const currentLine = allLines[currentLineIndex];
-          if (!currentLine) return;
-          
-          if (!isDeleting && currentCharIndex < currentLine.length) {
-            const textNode = element.childNodes[0];
-            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-              textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
-            } else {
-              element.textContent = currentLine.substring(0, currentCharIndex + 1);
-              element.appendChild(cursor);
-            }
-            currentCharIndex++;
-            setTimeout(type, speed);
-          } else if (!isDeleting && currentCharIndex >= currentLine.length) {
-            setTimeout(() => {
-              isDeleting = true;
-              type();
-            }, waitTime);
-          } else if (isDeleting && currentCharIndex > 0) {
-            const textNode = element.childNodes[0];
-            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-              textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
-            } else {
-              element.textContent = currentLine.substring(0, currentCharIndex - 1);
-              element.appendChild(cursor);
-            }
-            currentCharIndex--;
-            setTimeout(type, deleteSpeed);
-          } else {
-            isDeleting = false;
-            currentLineIndex = (currentLineIndex + 1) % allLines.length;
-            currentCharIndex = 0;
-            element.textContent = '';
-            element.appendChild(cursor);
-            setTimeout(type, 500);
-          }
-        }
-        
-        setTimeout(type, 100);
-        isInitializing = false;
-      }).catch(() => {
-        element.textContent = "I'm only human";
-        isInitializing = false;
-      });
-    }).catch(() => {
-      element.textContent = "I'm only human";
-      isInitializing = false;
-    });
+    }
   }
   
   // Initialize when DOM is ready - with retry mechanism
   function init() {
-    // Wait a bit to ensure DOM is fully ready
+    // Wait a bit to ensure DOM is fully ready and shared function is loaded
     setTimeout(function() {
-      const element = document.getElementById('fixed-top-typewriter-headline');
-      if (element) {
-        // Check if already initialized (has text content that's not the default)
-        const currentText = element.textContent || '';
-        if (currentText.trim() === '' || currentText === "I'm only human" || !element.dataset.initialized) {
-          initFixedTopTypewriter();
-        }
+      if (window.initTypewriterEffect) {
+        initFixedTopTypewriter();
       } else {
-        // Element not found, try again later
-        console.warn('Typewriter element not found, will retry...');
+        // Retry if shared function not loaded yet
+        setTimeout(init, 100);
       }
     }, 100);
   }
@@ -551,43 +330,31 @@ body:has(.fixed-top-bar) main#main-content {
   
   // Also try after a longer delay to ensure element exists (for dynamically loaded content)
   setTimeout(function() {
-    const element = document.getElementById('fixed-top-typewriter-headline');
-    if (element) {
-      // Only reinitialize if still showing default or empty
-      const currentText = element.textContent || '';
-      if (currentText.trim() === '' || currentText === "I'm only human" || !element.dataset.initialized) {
-        console.log('Retrying typewriter initialization on article page...');
-        initFixedTopTypewriter();
-      }
-    } else {
-      console.warn('Typewriter element still not found after 2 seconds');
+    if (window.initTypewriterEffect) {
+      initFixedTopTypewriter();
     }
   }, 2000);
   
   // Final retry after page fully loaded
   window.addEventListener('load', function() {
     setTimeout(function() {
-      const element = document.getElementById('fixed-top-typewriter-headline');
-      if (element && (!element.dataset.initialized || element.textContent === "I'm only human")) {
-        console.log('Final retry: initializing typewriter after page load...');
-        element.dataset.initialized = 'false'; // Reset to allow reinitialization
-        initFixedTopTypewriter();
+      if (window.initTypewriterEffect) {
+        const element = document.getElementById('fixed-top-typewriter-headline');
+        if (element) {
+          element.dataset.typewriterInitialized = 'false'; // Reset to allow reinitialization
+          initFixedTopTypewriter();
+        }
       }
     }, 500);
   });
   
-  // Listen for custom event to force reinitialization (only if not already working)
+  // Listen for custom event to force reinitialization
   document.addEventListener('forceTypewriterInit', function() {
-    const element = document.getElementById('fixed-top-typewriter-headline');
-    if (element) {
-      const currentText = element.textContent || '';
-      // Only reinitialize if not working properly
-      if (currentText === '' || currentText === "I'm only human" || currentText.length <= 5) {
-        console.log('Received forceTypewriterInit event, reinitializing...');
-        element.dataset.initialized = 'false';
+    if (window.initTypewriterEffect) {
+      const element = document.getElementById('fixed-top-typewriter-headline');
+      if (element) {
+        element.dataset.typewriterInitialized = 'false';
         initFixedTopTypewriter();
-      } else {
-        console.log('Received forceTypewriterInit event, but typewriter is already working, skipping...');
       }
     }
   });

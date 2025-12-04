@@ -1,0 +1,230 @@
+{{/* Shared typewriter effect function - Global synchronized across all pages */}}
+<script>
+(function() {
+  'use strict';
+  
+  // Global session start time - shared across all pages in the same browser session
+  const SESSION_STORAGE_KEY = 'typewriter_session_start';
+  
+  // Initialize or retrieve session start time
+  function getSessionStartTime() {
+    let sessionStart = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (!sessionStart) {
+      // First visit in this session - set current time as session start
+      sessionStart = Date.now().toString();
+      sessionStorage.setItem(SESSION_STORAGE_KEY, sessionStart);
+    }
+    return parseInt(sessionStart);
+  }
+  
+  // Shared typewriter effect function - synchronized across all pages
+  window.initTypewriterEffect = function(elementId, options) {
+    const element = document.getElementById(elementId);
+    if (!element) {
+      console.warn(`Typewriter element not found: ${elementId}`);
+      return;
+    }
+    
+    // Prevent multiple simultaneous initializations
+    if (element.dataset.typewriterInitializing === 'true') {
+      return;
+    }
+    
+    // Check if already initialized and working
+    if (element.dataset.typewriterInitialized === 'true') {
+      const currentText = element.textContent || '';
+      if (currentText !== '' && currentText !== "I'm only human" && currentText.length > 5) {
+        return; // Already working
+      }
+    }
+    
+    element.dataset.typewriterInitializing = 'true';
+    element.dataset.typewriterInitialized = 'true';
+    
+    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
+    const speed = parseInt(element.getAttribute('data-speed')) || 100;
+    const waitTime = 2000;
+    const deleteSpeed = speed / 2;
+    const maxFiles = options?.maxFiles || 10; // Default to 10 files
+    
+    // Discover signature files - unified logic
+    function discoverSignatureFiles() {
+      const files = [];
+      // Always try signature.txt first
+      files.push('/signature.txt');
+      // Then try numbered versions
+      for (let i = 1; i < maxFiles; i++) {
+        files.push(`/signature${i}.txt`);
+      }
+      return files;
+    }
+    
+    const filesToTry = discoverSignatureFiles();
+    
+    // Load all signature files - unified loading logic
+    Promise.all(
+      filesToTry.map(file => 
+        fetch(file)
+          .then(response => {
+            if (response.ok) {
+              return response.text().then(text => ({ file, text, success: true }));
+            }
+            return { file, text: '', success: false };
+          })
+          .catch(() => ({ file, text: '', success: false }))
+      )
+    ).then(results => {
+      // Combine all successful file contents
+      let allLines = [];
+      results.forEach(result => {
+        if (result.success && result.text) {
+          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
+          allLines = allLines.concat(lines);
+        }
+      });
+      
+      if (allLines.length === 0) {
+        element.textContent = "I'm only human";
+        element.dataset.typewriterInitializing = 'false';
+        return;
+      }
+      
+      // Calculate total time for one complete cycle
+      let totalCycleTime = 0;
+      allLines.forEach(line => {
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        totalCycleTime += typingTime + waitTime + deletingTime + 500;
+      });
+      
+      // Get session start time (shared across all pages)
+      const sessionStartTime = getSessionStartTime();
+      
+      // Calculate elapsed time since session start
+      const now = Date.now();
+      const elapsedTimeSinceSessionStart = now - sessionStartTime;
+      
+      // Calculate which line and position we should be at based on session elapsed time
+      // This ensures continuity across page navigations
+      let elapsedTime = elapsedTimeSinceSessionStart % totalCycleTime;
+      let currentLineIndex = 0;
+      let currentCharIndex = 0;
+      let isDeleting = false;
+      
+      // Find the current position based on elapsed time since session start
+      for (let i = 0; i < allLines.length; i++) {
+        const line = allLines[i];
+        const typingTime = line.length * speed;
+        const deletingTime = line.length * deleteSpeed;
+        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
+        
+        if (elapsedTime < typingTime) {
+          // Currently typing this line
+          currentLineIndex = i;
+          currentCharIndex = Math.floor(elapsedTime / speed);
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime) {
+          // Currently waiting after typing
+          currentLineIndex = i;
+          currentCharIndex = line.length;
+          isDeleting = false;
+          break;
+        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
+          // Currently deleting this line
+          currentLineIndex = i;
+          const deletingElapsed = elapsedTime - typingTime - waitTime;
+          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
+          isDeleting = true;
+          break;
+        } else {
+          // Move to next line
+          elapsedTime -= lineTotalTime;
+        }
+      }
+      
+      // Add cursor element
+      const cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      cursor.style.display = 'inline-block';
+      cursor.style.width = '2px';
+      cursor.style.height = '0.9em';
+      cursor.style.backgroundColor = 'currentColor';
+      cursor.style.marginLeft = '2px';
+      cursor.style.animation = 'blink 1s infinite';
+      element.appendChild(cursor);
+      
+      // Set initial display based on calculated position
+      function updateDisplay() {
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        const textNode = element.childNodes[0];
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+          textNode.textContent = currentLine.substring(0, currentCharIndex);
+        } else {
+          element.textContent = currentLine.substring(0, currentCharIndex);
+          element.appendChild(cursor);
+        }
+      }
+      
+      updateDisplay();
+      
+      // Continue typing from the calculated position
+      function type() {
+        if (allLines.length === 0) return;
+        
+        const currentLine = allLines[currentLineIndex];
+        if (!currentLine) return;
+        
+        if (!isDeleting && currentCharIndex < currentLine.length) {
+          // Typing forward
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex + 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex++;
+          setTimeout(type, speed);
+        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
+          // Finished typing line, wait then start deleting
+          setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, waitTime);
+        } else if (isDeleting && currentCharIndex > 0) {
+          // Deleting backward
+          const textNode = element.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+          } else {
+            element.textContent = currentLine.substring(0, currentCharIndex - 1);
+            element.appendChild(cursor);
+          }
+          currentCharIndex--;
+          setTimeout(type, deleteSpeed);
+        } else {
+          // Finished deleting, move to next line
+          isDeleting = false;
+          currentLineIndex = (currentLineIndex + 1) % allLines.length;
+          currentCharIndex = 0;
+          element.textContent = '';
+          element.appendChild(cursor);
+          setTimeout(type, 500);
+        }
+      }
+      
+      // Start typing from calculated position (with small delay to ensure display is updated)
+      setTimeout(type, 100);
+      element.dataset.typewriterInitializing = 'false';
+    }).catch(error => {
+      console.error('Error loading signature files:', error);
+      element.textContent = "I'm only human";
+      element.dataset.typewriterInitializing = 'false';
+    });
+  };
+})();
+</script>
+

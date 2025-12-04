@@ -12,7 +12,10 @@ theme = "blowfish"
 buildDrafts = false  # 不构建草稿
 buildFuture = true   # 构建未来日期的文章（允许发布计划发布的文章）
 
-
+# Permalink 配置：使用 slug 字段生成友好的 URL
+# 如果文章有 slug 字段，使用它；否则使用文件名（不含扩展名）
+[permalinks]
+  posts = "/posts/:slug/"
 
 [languages]
 [languages."zh-cn"]

@@ -2,14 +2,13 @@
 title = "Anaconda 常用指令和示例指南"
 date = "2025-12-04T14:35:18.035520+08:00"
 lang = "zh-cn"
-draft = false
-slug = "anaconda-常用指令和示例指南"
+draft = "false"
+slug = "anaconda"
 categories = []
-tags = [ "python",]
-featured = false
+tags = [ "python", "" ]
+featured = "false"
 summary = ""
 +++
-
 # Anaconda 常用指令和示例指南
 
 ## 一、环境管理

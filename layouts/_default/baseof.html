@@ -7,6 +7,7 @@
   data-auto-appearance="{{ site.Params.autoSwitchAppearance | default `true` }}">
   {{- partial "head.html" . -}}
   {{- partialCached "init.html" . -}}
+  {{- partial "typewriter-shared.html" . -}}
 
   {{ $bodyLayout := "flex flex-col h-screen m-auto leading-7" }}
   {{ $bodyColor := "text-lg text-neutral-900 dark:text-neutral" }}

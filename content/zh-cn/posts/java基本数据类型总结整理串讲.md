@@ -2,14 +2,13 @@
 title = "Java基本数据类型总结整理串讲"
 date = "2025-12-03T17:33:49.873556+08:00"
 lang = "zh-cn"
-draft = false
-slug = "java基本数据类型总结整理串讲"
+draft = "false"
+slug = "java01"
 categories = []
-tags = [ "JAVA", "编程",]
-featured = false
+tags = [ "JAVA", "编程", "" ]
+featured = "false"
 summary = ""
 +++
-
 # Java基本数据类型总结整理串讲
 
 ## 一、Java基本数据类型概述

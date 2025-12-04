@@ -733,188 +733,17 @@ main#main-content {
 (function() {
   'use strict';
 
-  // Typewriter effect with multiple signature files and time-based start
+  // Use shared typewriter effect function
   function typewriterEffect() {
-    const element = document.getElementById('typewriter-headline');
-    if (!element) return;
-
-    const signaturePattern = element.getAttribute('data-signature-pattern') || 'signature';
-    const speed = parseInt(element.getAttribute('data-speed')) || 100;
-    const waitTime = 2000; // Wait time after typing complete
-    const deleteSpeed = speed / 2; // Delete speed
-    
-    // Get base URL
-    const baseURL = window.location.origin;
-    
-    // Try to discover signature files by attempting to fetch common patterns
-    const signatureFiles = [];
-    const maxFiles = 10; // Try up to 10 files (signature.txt, signature1.txt, ..., signature9.txt)
-    
-    // First, try to get a list from a known file or use common patterns
-    function discoverSignatureFiles() {
-      const files = [];
-      // Always try signature.txt first
-      files.push('/signature.txt');
-      // Then try numbered versions
-      for (let i = 1; i < maxFiles; i++) {
-        files.push(`/signature${i}.txt`);
-      }
-      return files;
-    }
-    
-    const filesToTry = discoverSignatureFiles();
-    
-    // Load all signature files
-    Promise.all(
-      filesToTry.map(file => 
-        fetch(file)
-          .then(response => {
-            if (response.ok) {
-              return response.text().then(text => ({ file, text, success: true }));
-            }
-            return { file, text: '', success: false };
-          })
-          .catch(() => ({ file, text: '', success: false }))
-      )
-    ).then(results => {
-      // Combine all successful file contents
-      let allLines = [];
-      results.forEach(result => {
-        if (result.success && result.text) {
-          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
-          allLines = allLines.concat(lines);
-        }
-      });
-      
-      if (allLines.length === 0) {
+    if (window.initTypewriterEffect) {
+      window.initTypewriterEffect('typewriter-headline', { maxFiles: 10 });
+    } else {
+      console.error('Shared typewriter function not loaded');
+      const element = document.getElementById('typewriter-headline');
+      if (element) {
         element.textContent = "I'm only human";
-        return;
-      }
-      
-      // Calculate time-based start position
-      // Use current time in seconds since epoch to determine starting position
-      const now = Date.now();
-      const secondsSinceEpoch = Math.floor(now / 1000);
-      
-      // Calculate total time for one complete cycle (all lines)
-      // Each line: typing time + wait time + deleting time
-      let totalCycleTime = 0;
-      allLines.forEach(line => {
-        const typingTime = line.length * speed;
-        const deletingTime = line.length * deleteSpeed;
-        totalCycleTime += typingTime + waitTime + deletingTime + 500; // +500 for pause between lines
-      });
-      
-      // Calculate which line and position we should be at based on time
-      let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
-      let currentLineIndex = 0;
-      let currentCharIndex = 0;
-      let isDeleting = false;
-      
-      // Find the current position
-      for (let i = 0; i < allLines.length; i++) {
-        const line = allLines[i];
-        const typingTime = line.length * speed;
-        const deletingTime = line.length * deleteSpeed;
-        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
-        
-        if (elapsedTime < typingTime) {
-          // Currently typing this line
-          currentLineIndex = i;
-          currentCharIndex = Math.floor(elapsedTime / speed);
-          isDeleting = false;
-          break;
-        } else if (elapsedTime < typingTime + waitTime) {
-          // Currently waiting after typing
-          currentLineIndex = i;
-          currentCharIndex = line.length;
-          isDeleting = false;
-          break;
-        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
-          // Currently deleting this line
-          currentLineIndex = i;
-          const deletingElapsed = elapsedTime - typingTime - waitTime;
-          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
-          isDeleting = true;
-          break;
-      } else {
-          // Move to next line
-          elapsedTime -= lineTotalTime;
-        }
-      }
-      
-      // Add cursor element
-        const cursor = document.createElement('span');
-        cursor.className = 'cursor';
-      element.appendChild(cursor);
-      
-      // Set initial display
-      function updateDisplay() {
-        const currentLine = allLines[currentLineIndex];
-        if (!currentLine) return;
-        
-        const textNode = element.childNodes[0];
-        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-          textNode.textContent = currentLine.substring(0, currentCharIndex);
-        } else {
-          element.textContent = currentLine.substring(0, currentCharIndex);
-        element.appendChild(cursor);
       }
     }
-    
-      updateDisplay();
-      
-      function type() {
-        if (allLines.length === 0) return;
-        
-        const currentLine = allLines[currentLineIndex];
-        if (!currentLine) return;
-        
-        if (!isDeleting && currentCharIndex < currentLine.length) {
-          // Typing forward
-          const textNode = element.childNodes[0];
-          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
-          } else {
-            element.textContent = currentLine.substring(0, currentCharIndex + 1);
-            element.appendChild(cursor);
-          }
-          currentCharIndex++;
-          setTimeout(type, speed);
-        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
-          // Finished typing line, wait then start deleting
-          setTimeout(() => {
-            isDeleting = true;
-            type();
-          }, waitTime);
-        } else if (isDeleting && currentCharIndex > 0) {
-          // Deleting backward
-          const textNode = element.childNodes[0];
-          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
-          } else {
-            element.textContent = currentLine.substring(0, currentCharIndex - 1);
-            element.appendChild(cursor);
-          }
-          currentCharIndex--;
-          setTimeout(type, deleteSpeed);
-        } else {
-          // Finished deleting, move to next line
-          isDeleting = false;
-          currentLineIndex = (currentLineIndex + 1) % allLines.length;
-          currentCharIndex = 0;
-          element.textContent = '';
-          element.appendChild(cursor);
-    setTimeout(type, 500);
-        }
-      }
-      
-      // Start typing from calculated position
-      setTimeout(type, 100);
-    }).catch(error => {
-      console.error('Error loading signature files:', error);
-      element.textContent = "I'm only human";
-    });
   }
 
   // Scroll handling
@@ -1098,7 +927,15 @@ main#main-content {
       return;
     }
 
-    typewriterEffect();
+    // Wait for shared typewriter function to be available
+    if (window.initTypewriterEffect) {
+      typewriterEffect();
+    } else {
+      // Retry if shared function not loaded yet
+      setTimeout(init, 100);
+      return;
+    }
+    
     initScrollHandling();
     
     // Initialize article animations after a short delay to ensure DOM is ready
