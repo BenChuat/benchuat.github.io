@@ -12,11 +12,11 @@
   {{ $bodyColor := "text-lg text-neutral-900 dark:text-neutral" }}
   {{ $bodyScrollbar := "scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600" }}
   <body class="{{ $bodyLayout }} {{ $bodyColor }} {{ $bodyScrollbar }}">
-    {{- partial "global-background.html" . -}}
-    {{/* Global fixed top bar - show on all pages except homepage */}}
+    {{/* Global fixed top bar - show on all pages except homepage - Load FIRST for priority */}}
     {{- if not .IsHome -}}
       {{- partial "global-fixed-top-bar.html" . -}}
     {{- end -}}
+    {{- partial "global-background.html" . -}}
     <div id="the-top" class="absolute flex self-center">
       <a
         class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"

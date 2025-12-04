@@ -22,248 +22,205 @@
   </div>
 </details>
 
-{{/* 调试：输出 smartTOC 配置值 */}}
+{{/* TOC 高亮功能 - 应用到所有文章页面 */}}
 <script>
-  console.log('smartTOC config check:', {
-    'Site.Params.smartTOC': {{ if .Site.Params.smartTOC }}true{{ else }}false{{ end }},
-    'site.Params.smartTOC': {{ if site.Params.smartTOC }}true{{ else }}false{{ end }},
-    'raw value': '{{ .Site.Params.smartTOC }}'
-  })
-</script>
+(function() {
+  'use strict';
+  
+  console.log('[TOC] Script loading...');
+  
+  const SCROLL_OFFSET_RATIO = 0.33;
+  const TOC_SELECTORS = [
+    '#TableOfContents', 
+    'nav#TableOfContents', 
+    '.toc ul', 
+    '.toc nav', 
+    '#TOCView ul', 
+    '#TOCView nav', 
+    '#TOCView div ul',
+    '#TOCView > div > ul'
+  ];
+  const ANCHOR_SELECTOR = '.anchor';
+  const TOC_LINK_SELECTOR = 'a[href^="#"]';
+  const ACTIVE_CLASS = 'active';
+  let isJumpingToAnchor = false;
+  let toc = null;
 
-{{ if .Site.Params.smartTOC }}
-<script>
-  console.log('smartTOC script loading...')
-  (function () {
-    'use strict'
-    console.log('smartTOC script executing...')
+  function findTOC() {
+    if (toc) return toc;
+    
+    for (const selector of TOC_SELECTORS) {
+      const element = document.querySelector(selector);
+      if (element) {
+        toc = element;
+        console.log('[TOC] Found with selector:', selector);
+        return element;
+      }
+    }
+    
+    const tocView = document.querySelector('#TOCView');
+    if (tocView) {
+      const nav = tocView.querySelector('nav');
+      const ul = tocView.querySelector('ul');
+      const divWithUl = tocView.querySelector('div > ul');
+      toc = nav || ul || divWithUl || tocView.querySelector('div');
+      if (toc) {
+        console.log('[TOC] Found in #TOCView:', toc.tagName);
+        return toc;
+      }
+    }
+    
+    return null;
+  }
 
-    const SCROLL_OFFSET_RATIO = 0.33
-    // 尝试多个可能的 TOC 选择器
-    const TOC_SELECTORS = ['#TableOfContents', 'nav#TableOfContents', '.toc ul', '.toc nav', '#TOCView ul', '#TOCView nav']
-    const ANCHOR_SELECTOR = '.anchor'
-    const TOC_LINK_SELECTOR = 'a[href^="#"]'
-    const NESTED_LIST_SELECTOR = 'li ul'
-    const ACTIVE_CLASS = 'active'
-    let isJumpingToAnchor = false
-    let toc = null
+  function getActiveAnchorId(anchors, offsetRatio) {
+    if (!toc) return '';
+    
+    const threshold = window.scrollY + window.innerHeight * offsetRatio;
+    const tocLinks = [...toc.querySelectorAll('a[href^="#"]')];
+    const tocIds = new Set(tocLinks.map(link => {
+      const href = link.getAttribute('href');
+      return href ? href.substring(1) : '';
+    }).filter(id => id));
 
-    // 查找 TOC 元素
-    function findTOC() {
-      if (toc) return toc
-      for (const selector of TOC_SELECTORS) {
-        const element = document.querySelector(selector)
-        if (element) {
-          toc = element
-          console.log('TOC found with selector:', selector)
-          return element
+    if (isJumpingToAnchor) {
+      for (let i = 0; i < anchors.length; i++) {
+        const anchor = anchors[i];
+        if (!anchor.id || !tocIds.has(anchor.id)) continue;
+        const top = anchor.getBoundingClientRect().top + window.scrollY;
+        if (Math.abs(window.scrollY - top) < 100) {
+          return anchor.id;
         }
       }
-      // 如果都找不到，尝试在 TOCView 内查找
-      const tocView = document.querySelector('#TOCView')
-      if (tocView) {
-        const nav = tocView.querySelector('nav')
-        const ul = tocView.querySelector('ul')
-        toc = nav || ul || tocView
-        if (toc) {
-          console.log('TOC found in #TOCView')
-          return toc
-        }
-      }
-      return null
     }
 
-    function getActiveAnchorId(anchors, offsetRatio) {
-      if (!toc) return ''
-      
-      const threshold = window.scrollY + window.innerHeight * offsetRatio
-      const tocLinks = [...toc.querySelectorAll('a[href^="#"]')]
-      const tocIds = new Set(tocLinks.map(link => {
-        const href = link.getAttribute('href')
-        return href ? href.substring(1) : ''
-      }).filter(id => id))
-
-      if (isJumpingToAnchor) {
-        for (let i = 0; i < anchors.length; i++) {
-          const anchor = anchors[i]
-          if (!anchor.id || !tocIds.has(anchor.id)) continue
-          const top = anchor.getBoundingClientRect().top + window.scrollY
-          if (Math.abs(window.scrollY - top) < 100) {
-            return anchor.id
-          }
-        }
+    for (let i = anchors.length - 1; i >= 0; i--) {
+      const anchor = anchors[i];
+      if (!anchor.id || !tocIds.has(anchor.id)) continue;
+      const top = anchor.getBoundingClientRect().top + window.scrollY;
+      if (top <= threshold) {
+        return anchor.id;
       }
+    }
+    
+    const firstMatch = anchors.find(anchor => anchor.id && tocIds.has(anchor.id));
+    return firstMatch ? firstMatch.id : '';
+  }
 
-      // 从下往上查找第一个在阈值之上的锚点
-      for (let i = anchors.length - 1; i >= 0; i--) {
-        const anchor = anchors[i]
-        if (!anchor.id || !tocIds.has(anchor.id)) continue
-        const top = anchor.getBoundingClientRect().top + window.scrollY
-        if (top <= threshold) {
-          return anchor.id
-        }
-      }
-      
-      // 如果没找到，返回第一个匹配的锚点
-      const firstMatch = anchors.find(anchor => anchor.id && tocIds.has(anchor.id))
-      return firstMatch ? firstMatch.id : ''
+  function updateTOC(config) {
+    if (!toc) {
+      toc = findTOC();
+      if (!toc) return;
+    }
+    
+    const activeId = getActiveAnchorId(config.anchors, config.scrollOffset);
+    if (!activeId) {
+      config.links.forEach(link => link.classList.remove(ACTIVE_CLASS));
+      return;
     }
 
-    function updateTOC({ anchors, links, scrollOffset, collapseInactive }) {
-      if (!toc) return
+    let hasActive = false;
+    config.links.forEach(link => {
+      const href = link.getAttribute('href');
+      const linkId = href ? href.substring(1) : '';
+      const isActive = linkId === activeId;
       
-      const activeId = getActiveAnchorId(anchors, scrollOffset)
-      if (!activeId) {
-        // 清除所有 active 状态
-        links.forEach(link => link.classList.remove(ACTIVE_CLASS))
-        return
-      }
-
-      let hasActive = false
-      links.forEach(link => {
-        const href = link.getAttribute('href')
-        const linkId = href ? href.substring(1) : ''
-        const isActive = linkId === activeId
-        
-        if (isActive) {
-          hasActive = true
-        }
-        
-        link.classList.toggle(ACTIVE_CLASS, isActive)
-
-        if (collapseInactive) {
-          const ul = link.closest('li')?.querySelector('ul')
-          if (ul) ul.style.display = isActive ? '' : 'none'
-        }
-      })
-
-      if (collapseInactive && hasActive) {
-        const activeLink = toc.querySelector(`a[href="#${CSS.escape(activeId)}"]`)
-        if (activeLink) {
-          let el = activeLink
-          while (el && el !== toc) {
-            if (el.tagName === 'UL') el.style.display = ''
-            if (el.tagName === 'LI') el.querySelector('ul')?.style.setProperty('display', '')
-            el = el.parentElement
-          }
-        }
+      if (isActive && !hasActive) {
+        hasActive = true;
       }
       
-      // 自动滚动到激活的链接（如果链接不在可视区域内）
-      const activeLink = toc.querySelector(`a[href="#${CSS.escape(activeId)}"]`)
+      link.classList.toggle(ACTIVE_CLASS, isActive);
+    });
+    
+    if (hasActive) {
+      const activeLink = toc.querySelector('a[href="#' + CSS.escape(activeId) + '"]');
       if (activeLink) {
-        const tocContainer = document.querySelector('#TOCView')
+        const tocContainer = document.querySelector('#TOCView');
         if (tocContainer) {
-          const linkRect = activeLink.getBoundingClientRect()
-          const containerRect = tocContainer.getBoundingClientRect()
+          const linkRect = activeLink.getBoundingClientRect();
+          const containerRect = tocContainer.getBoundingClientRect();
           
-          // 如果激活的链接不在可视区域内，滚动到它
           if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
-            // 使用 requestAnimationFrame 确保平滑滚动
-            requestAnimationFrame(() => {
+            requestAnimationFrame(function() {
               activeLink.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
                 inline: 'nearest'
-              })
-            })
+              });
+            });
           }
         }
       }
     }
+  }
 
-    function initTOC() {
-      toc = findTOC()
-      if (!toc) {
-        console.warn('TOC not found, trying selectors:', TOC_SELECTORS)
-        // 延迟重试
-        setTimeout(initTOC, 500)
-        return
-      }
-
-      const collapseInactive = {{ if site.Params.smartTOCHideUnfocusedChildren }}true{{ else }}false{{ end }}
-      const anchors = [...document.querySelectorAll(ANCHOR_SELECTOR)]
-      const links = [...toc.querySelectorAll(TOC_LINK_SELECTOR)]
-
-      console.log('TOC initialized:', {
-        anchors: anchors.length,
-        links: links.length,
-        toc: toc.tagName
-      })
-
-      if (anchors.length === 0) {
-        console.warn('No anchors found with selector:', ANCHOR_SELECTOR)
-      }
-      
-      if (links.length === 0) {
-        console.warn('No TOC links found in:', toc)
-      }
-
-      if (collapseInactive) {
-        toc.querySelectorAll(NESTED_LIST_SELECTOR).forEach(ul => ul.style.display = 'none')
-      }
-
-      links.forEach(link => {
-        link.addEventListener('click', () => {
-          isJumpingToAnchor = true
-          setTimeout(() => {
-            isJumpingToAnchor = false
-          }, 1000)
-        })
-      })
-
-      const config = {
-        anchors,
-        links,
-        scrollOffset: SCROLL_OFFSET_RATIO,
-        collapseInactive
-      }
-
-      // 使用节流优化滚动性能
-      let ticking = false
-      function onScroll() {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            updateTOC(config)
-            ticking = false
-          })
-          ticking = true
-        }
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true })
-      window.addEventListener('hashchange', () => updateTOC(config), { passive: true })
-
-      // 初始更新
-      updateTOC(config)
-      
-      // 延迟更新，确保页面完全加载
-      setTimeout(() => updateTOC(config), 200)
-      setTimeout(() => updateTOC(config), 1000)
+  function initTOC() {
+    toc = findTOC();
+    if (!toc) {
+      console.warn('[TOC] Not found, retrying...');
+      setTimeout(initTOC, 200);
+      return;
     }
 
-    // 确保在 DOM 加载完成后初始化
-    console.log('Setting up TOC initialization, readyState:', document.readyState)
-    if (document.readyState === 'loading') {
-      console.log('Waiting for DOMContentLoaded...')
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOMContentLoaded fired, initializing TOC...')
-        initTOC()
-      })
-    } else {
-      // DOM 已经加载完成，延迟一点确保所有内容都渲染完成
-      console.log('DOM already loaded, initializing TOC with delay...')
-      setTimeout(function() {
-        console.log('Delayed initialization starting...')
-        initTOC()
-      }, 100)
-    }
-  })()
-  console.log('smartTOC script loaded')
-</script>
-{{ else }}
-<script>
-  console.warn('smartTOC is disabled in config')
-</script>
-{{ end }}
+    const anchors = [...document.querySelectorAll(ANCHOR_SELECTOR)];
+    const links = [...toc.querySelectorAll(TOC_LINK_SELECTOR)];
 
+    console.log('[TOC] Initialized:', {
+      anchors: anchors.length,
+      links: links.length,
+      toc: toc.tagName
+    });
+
+    if (anchors.length === 0) {
+      console.warn('[TOC] No anchors found');
+    }
+    
+    if (links.length === 0) {
+      console.warn('[TOC] No links found');
+    }
+
+    links.forEach(function(link) {
+      link.addEventListener('click', function() {
+        isJumpingToAnchor = true;
+        setTimeout(function() {
+          isJumpingToAnchor = false;
+        }, 1000);
+      });
+    });
+
+    const config = {
+      anchors: anchors,
+      links: links,
+      scrollOffset: SCROLL_OFFSET_RATIO,
+      collapseInactive: false
+    };
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          updateTOC(config);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('hashchange', function() {
+      updateTOC(config);
+    }, { passive: true });
+
+    updateTOC(config);
+    setTimeout(function() {
+      updateTOC(config);
+    }, 300);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTOC);
+  } else {
+    setTimeout(initTOC, 50);
+  }
+})();
+</script>

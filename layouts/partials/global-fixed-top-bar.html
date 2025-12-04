@@ -328,179 +328,195 @@ body:has(.fixed-top-bar) main#main-content {
     const waitTime = 2000;
     const deleteSpeed = speed / 2;
     
-    // Try to discover signature files
-    const maxFiles = 10;
-    function discoverSignatureFiles() {
-      const files = [];
-      files.push('/signature.txt');
-      for (let i = 1; i < maxFiles; i++) {
-        files.push(`/signature${i}.txt`);
+    // Optimized: Only try to load signature files that exist
+    // First check which files exist, then load only those
+    async function discoverSignatureFiles() {
+      const filesToCheck = ['/signature.txt'];
+      for (let i = 1; i <= 2; i++) { // Only check signature1.txt and signature2.txt
+        filesToCheck.push(`/signature${i}.txt`);
       }
-      return files;
-    }
-    
-    const filesToTry = discoverSignatureFiles();
-    
-    console.log('[Global Fixed Top Bar] Attempting to load signature files:', filesToTry);
-    
-    // Load all signature files
-    Promise.all(
-      filesToTry.map(file => 
-        fetch(file)
-          .then(response => {
-            if (response.ok) {
-              return response.text().then(text => {
-                console.log('[Global Fixed Top Bar] Successfully loaded:', file, 'lines:', text.split('\n').filter(l => l.trim()).length);
-                return { file, text, success: true };
-              });
-            }
-            console.log('[Global Fixed Top Bar] Failed to load (not found):', file);
-            return { file, text: '', success: false };
-          })
-          .catch(err => {
-            console.log('[Global Fixed Top Bar] Error loading:', file, err);
-            return { file, text: '', success: false };
-          })
-      )
-    ).then(results => {
-      // Combine all successful file contents
-      let allLines = [];
-      results.forEach(result => {
-        if (result.success && result.text) {
-          const lines = result.text.split('\n').filter(line => line.trim().length > 0);
-          allLines = allLines.concat(lines);
+      
+      const existingFiles = [];
+      // Check files in parallel but don't log 404s
+      const checkPromises = filesToCheck.map(async (file) => {
+        try {
+          const response = await fetch(file, { method: 'HEAD' });
+          if (response.ok) {
+            return file;
+          }
+          return null;
+        } catch {
+          return null;
         }
       });
       
-      console.log('[Global Fixed Top Bar] Total lines loaded:', allLines.length);
-      
-      if (allLines.length === 0) {
-        console.warn('[Global Fixed Top Bar] No signature lines found, using default');
+      const results = await Promise.all(checkPromises);
+      return results.filter(f => f !== null);
+    }
+    
+    // Load signature files asynchronously (non-blocking)
+    discoverSignatureFiles().then(filesToLoad => {
+      if (filesToLoad.length === 0) {
+        // No signature files, use default text
         element.textContent = "I'm only human";
+        isInitializing = false;
         return;
       }
       
-      console.log('[Global Fixed Top Bar] Starting typewriter animation with', allLines.length, 'lines');
-      
-      // Calculate time-based start position
-      const now = Date.now();
-      const secondsSinceEpoch = Math.floor(now / 1000);
-      
-      // Calculate total time for one complete cycle
-      let totalCycleTime = 0;
-      allLines.forEach(line => {
-        const typingTime = line.length * speed;
-        const deletingTime = line.length * deleteSpeed;
-        totalCycleTime += typingTime + waitTime + deletingTime + 500;
-      });
-      
-      // Calculate which line and position we should be at based on time
-      let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
-      let currentLineIndex = 0;
-      let currentCharIndex = 0;
-      let isDeleting = false;
-      
-      // Find the current position
-      for (let i = 0; i < allLines.length; i++) {
-        const line = allLines[i];
-        const typingTime = line.length * speed;
-        const deletingTime = line.length * deleteSpeed;
-        const lineTotalTime = typingTime + waitTime + deletingTime + 500;
-        
-        if (elapsedTime < typingTime) {
-          currentLineIndex = i;
-          currentCharIndex = Math.floor(elapsedTime / speed);
-          isDeleting = false;
-          break;
-        } else if (elapsedTime < typingTime + waitTime) {
-          currentLineIndex = i;
-          currentCharIndex = line.length;
-          isDeleting = false;
-          break;
-        } else if (elapsedTime < typingTime + waitTime + deletingTime) {
-          currentLineIndex = i;
-          const deletingElapsed = elapsedTime - typingTime - waitTime;
-          currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
-          isDeleting = true;
-          break;
-        } else {
-          elapsedTime -= lineTotalTime;
-        }
-      }
-      
-      // Add cursor element
-      const cursor = document.createElement('span');
-      cursor.className = 'cursor';
-      cursor.style.display = 'inline-block';
-      cursor.style.width = '2px';
-      cursor.style.height = '0.9em';
-      cursor.style.backgroundColor = 'currentColor';
-      cursor.style.marginLeft = '2px';
-      cursor.style.animation = 'blink 1s infinite';
-      element.appendChild(cursor);
-      
-      // Set initial display
-      function updateDisplay() {
-        const currentLine = allLines[currentLineIndex];
-        if (!currentLine) return;
-        
-        const textNode = element.childNodes[0];
-        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-          textNode.textContent = currentLine.substring(0, currentCharIndex);
-        } else {
-          element.textContent = currentLine.substring(0, currentCharIndex);
-          element.appendChild(cursor);
-        }
-      }
-      
-      updateDisplay();
-      
-      function type() {
-        if (allLines.length === 0) return;
-        
-        const currentLine = allLines[currentLineIndex];
-        if (!currentLine) return;
-        
-        if (!isDeleting && currentCharIndex < currentLine.length) {
-          const textNode = element.childNodes[0];
-          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
-          } else {
-            element.textContent = currentLine.substring(0, currentCharIndex + 1);
-            element.appendChild(cursor);
+      // Load only existing files
+      Promise.all(
+        filesToLoad.map(file => 
+          fetch(file)
+            .then(response => {
+              if (response.ok) {
+                return response.text().then(text => {
+                  return { file, text, success: true };
+                });
+              }
+              return { file, text: '', success: false };
+            })
+            .catch(() => {
+              return { file, text: '', success: false };
+            })
+        )
+      ).then(results => {
+        // Combine all successful file contents
+        let allLines = [];
+        results.forEach(result => {
+          if (result.success && result.text) {
+            const lines = result.text.split('\n').filter(line => line.trim().length > 0);
+            allLines = allLines.concat(lines);
           }
-          currentCharIndex++;
-          setTimeout(type, speed);
-        } else if (!isDeleting && currentCharIndex >= currentLine.length) {
-          setTimeout(() => {
+        });
+        
+        if (allLines.length === 0) {
+          element.textContent = "I'm only human";
+          isInitializing = false;
+          return;
+        }
+      
+        // Calculate time-based start position
+        const now = Date.now();
+        const secondsSinceEpoch = Math.floor(now / 1000);
+        
+        // Calculate total time for one complete cycle
+        let totalCycleTime = 0;
+        allLines.forEach(line => {
+          const typingTime = line.length * speed;
+          const deletingTime = line.length * deleteSpeed;
+          totalCycleTime += typingTime + waitTime + deletingTime + 500;
+        });
+        
+        // Calculate which line and position we should be at based on time
+        let elapsedTime = (secondsSinceEpoch * 1000) % totalCycleTime;
+        let currentLineIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        
+        // Find the current position
+        for (let i = 0; i < allLines.length; i++) {
+          const line = allLines[i];
+          const typingTime = line.length * speed;
+          const deletingTime = line.length * deleteSpeed;
+          const lineTotalTime = typingTime + waitTime + deletingTime + 500;
+          
+          if (elapsedTime < typingTime) {
+            currentLineIndex = i;
+            currentCharIndex = Math.floor(elapsedTime / speed);
+            isDeleting = false;
+            break;
+          } else if (elapsedTime < typingTime + waitTime) {
+            currentLineIndex = i;
+            currentCharIndex = line.length;
+            isDeleting = false;
+            break;
+          } else if (elapsedTime < typingTime + waitTime + deletingTime) {
+            currentLineIndex = i;
+            const deletingElapsed = elapsedTime - typingTime - waitTime;
+            currentCharIndex = line.length - Math.floor(deletingElapsed / deleteSpeed);
             isDeleting = true;
-            type();
-          }, waitTime);
-        } else if (isDeleting && currentCharIndex > 0) {
+            break;
+          } else {
+            elapsedTime -= lineTotalTime;
+          }
+        }
+        
+        // Add cursor element
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        cursor.style.display = 'inline-block';
+        cursor.style.width = '2px';
+        cursor.style.height = '0.9em';
+        cursor.style.backgroundColor = 'currentColor';
+        cursor.style.marginLeft = '2px';
+        cursor.style.animation = 'blink 1s infinite';
+        element.appendChild(cursor);
+        
+        // Set initial display
+        function updateDisplay() {
+          const currentLine = allLines[currentLineIndex];
+          if (!currentLine) return;
+          
           const textNode = element.childNodes[0];
           if (textNode && textNode.nodeType === Node.TEXT_NODE) {
-            textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+            textNode.textContent = currentLine.substring(0, currentCharIndex);
           } else {
-            element.textContent = currentLine.substring(0, currentCharIndex - 1);
+            element.textContent = currentLine.substring(0, currentCharIndex);
             element.appendChild(cursor);
           }
-          currentCharIndex--;
-          setTimeout(type, deleteSpeed);
-        } else {
-          isDeleting = false;
-          currentLineIndex = (currentLineIndex + 1) % allLines.length;
-          currentCharIndex = 0;
-          element.textContent = '';
-          element.appendChild(cursor);
-          setTimeout(type, 500);
         }
-      }
-      
-      setTimeout(type, 100);
-    }).catch(error => {
-      console.error('Error loading signature files:', error);
+        
+        updateDisplay();
+        
+        function type() {
+          if (allLines.length === 0) return;
+          
+          const currentLine = allLines[currentLineIndex];
+          if (!currentLine) return;
+          
+          if (!isDeleting && currentCharIndex < currentLine.length) {
+            const textNode = element.childNodes[0];
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+              textNode.textContent = currentLine.substring(0, currentCharIndex + 1);
+            } else {
+              element.textContent = currentLine.substring(0, currentCharIndex + 1);
+              element.appendChild(cursor);
+            }
+            currentCharIndex++;
+            setTimeout(type, speed);
+          } else if (!isDeleting && currentCharIndex >= currentLine.length) {
+            setTimeout(() => {
+              isDeleting = true;
+              type();
+            }, waitTime);
+          } else if (isDeleting && currentCharIndex > 0) {
+            const textNode = element.childNodes[0];
+            if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+              textNode.textContent = currentLine.substring(0, currentCharIndex - 1);
+            } else {
+              element.textContent = currentLine.substring(0, currentCharIndex - 1);
+              element.appendChild(cursor);
+            }
+            currentCharIndex--;
+            setTimeout(type, deleteSpeed);
+          } else {
+            isDeleting = false;
+            currentLineIndex = (currentLineIndex + 1) % allLines.length;
+            currentCharIndex = 0;
+            element.textContent = '';
+            element.appendChild(cursor);
+            setTimeout(type, 500);
+          }
+        }
+        
+        setTimeout(type, 100);
+        isInitializing = false;
+      }).catch(() => {
+        element.textContent = "I'm only human";
+        isInitializing = false;
+      });
+    }).catch(() => {
       element.textContent = "I'm only human";
-    }).finally(() => {
       isInitializing = false;
     });
   }
@@ -716,13 +732,14 @@ body:has(.fixed-top-bar) main#main-content {
       }
     }
     
-    // Try once after a delay to ensure DOM is ready
-    setTimeout(tryCopyMenu, 500);
+    // Try immediately and with minimal delay
+    tryCopyMenu();
+    setTimeout(tryCopyMenu, 100);
   }
   
-  // Initialize when DOM is ready
+  // Initialize when DOM is ready - optimized for faster loading
   function init() {
-    // Ensure fixed top bar is visible
+    // Ensure fixed top bar is visible immediately
     const fixedTopBar = document.getElementById('fixed-top-bar');
     if (fixedTopBar) {
       fixedTopBar.style.setProperty('display', 'block', 'important');
@@ -731,17 +748,19 @@ body:has(.fixed-top-bar) main#main-content {
       fixedTopBar.style.setProperty('z-index', '99999', 'important');
     }
     
-    // Initialize menu
-    setTimeout(initFixedMenu, 300);
+    // Initialize menu with minimal delay
+    initFixedMenu();
+    setTimeout(initFixedMenu, 50);
   }
   
+  // Run immediately if DOM is ready, otherwise wait for DOMContentLoaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
   
-  // Also run after a delay to ensure everything is loaded
+  // Fallback with minimal delay
   setTimeout(function() {
     const fixedTopBar = document.getElementById('fixed-top-bar');
     if (fixedTopBar) {
@@ -750,8 +769,10 @@ body:has(.fixed-top-bar) main#main-content {
       fixedTopBar.style.setProperty('opacity', '1', 'important');
       fixedTopBar.style.setProperty('z-index', '99999', 'important');
     }
-    initFixedMenu();
-  }, 1000);
+    if (!menuCopied) {
+      initFixedMenu();
+    }
+  }, 200);
 })();
 </script>
 
