@@ -1,0 +1,2 @@
+SCRIPT_PATH=D:\hugo\blog\blog.py
+PYTHON=python
