@@ -33,7 +33,8 @@ jobs:
         run: hugo --minify
 
       # 关键：补齐 *.assets 到 public
-      - name: Copy Typora .assets folders into public (fixed with subdir)
+      # 使用Hugo构建后的实际目录结构来匹配.assets文件夹
+      - name: Copy Typora .assets folders into public (fixed with slug)
         run: |
           set -eu
           shopt -s globstar nullglob
@@ -46,20 +47,29 @@ jobs:
             rel="${base#content/}"       # zh-cn/posts/test-post
             lang="${rel%%/*}"            # zh-cn or en
             rest="${rel#*/}"             # posts/test-post (或更深的层级)
-            name="${rest##*/}"           # test-post
             sectionPath="${rest%/*}"     # posts
+            
+            # 从front matter中提取slug，如果没有则使用文件名
+            # 支持格式：slug = "value" 或 slug = 'value' 或 slug = value
+            slug=$(grep -m1 "^slug\s*=" "$md" | sed -E 's/^slug\s*=\s*["'\'']?([^"'\'']+)["'\'']?\s*$/\1/' | tr -d ' ' || echo "")
+            
+            # 如果slug为空或提取失败，使用文件名
+            [ -z "$slug" ] && slug="${rest##*/}"
 
             if [ "$lang" = "zh-cn" ]; then
-              # 默认语言放根目录：/posts/<name>/<name>.assets
-              out="public/${sectionPath}/${name}/${name}.assets"
+              # 默认语言放根目录：/posts/<slug>/<filename>.assets
+              # 注意：图片路径使用的是文件名，所以assets文件夹名也要用文件名
+              filename="${rest##*/}"
+              out="public/${sectionPath}/${slug}/${filename}.assets"
             else
-              # 非默认语言：/en/posts/<name>/<name>.assets
-              out="public/${lang}/${sectionPath}/${name}/${name}.assets"
+              # 非默认语言：/en/posts/<slug>/<filename>.assets
+              filename="${rest##*/}"
+              out="public/${lang}/${sectionPath}/${slug}/${filename}.assets"
             fi
 
             mkdir -p "$out"
             cp -R "$assets"/. "$out/"
-            echo "Copied: $assets -> $out"
+            echo "Copied: $assets -> $out (slug: $slug)"
           done
 
       - name: Upload artifact
