@@ -736,7 +736,8 @@ main#main-content {
   // Use shared typewriter effect function
   function typewriterEffect() {
     if (window.initTypewriterEffect) {
-      window.initTypewriterEffect('typewriter-headline', { maxFiles: 10 });
+      // Try up to 100 files to discover all signature files dynamically
+      window.initTypewriterEffect('typewriter-headline', { maxFiles: 100 });
     } else {
       console.error('Shared typewriter function not loaded');
       const element = document.getElementById('typewriter-headline');

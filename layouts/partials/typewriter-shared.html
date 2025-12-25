@@ -45,15 +45,16 @@
     const speed = parseInt(element.getAttribute('data-speed')) || 100;
     const waitTime = 2000;
     const deleteSpeed = speed / 2;
-    const maxFiles = options?.maxFiles || 10; // Default to 10 files
+    // Try a larger range to discover all signature files dynamically
+    const maxFiles = options?.maxFiles || 100; // Default to 100 files to discover all
     
     // Discover signature files - unified logic
     function discoverSignatureFiles() {
       const files = [];
       // Always try signature.txt first
       files.push('/signature.txt');
-      // Then try numbered versions
-      for (let i = 1; i < maxFiles; i++) {
+      // Then try numbered versions up to maxFiles
+      for (let i = 1; i <= maxFiles; i++) {
         files.push(`/signature${i}.txt`);
       }
       return files;
