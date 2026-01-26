@@ -61,10 +61,17 @@
     src="{{ $katexJS.RelPermalink }}"
     integrity="{{ $katexJS.Data.Integrity }}"
     id="katex-render"></script>
-  {{ $katexFonts := resources.Match "lib/katex/fonts/*" }}
+  {{/* KaTeX 字体文件 - 注释掉预加载以避免警告，KaTeX CSS 会自动处理字体加载 */}}
+  {{/* {{ $katexFonts := resources.Match "lib/katex/fonts/*" }}
   {{ range $katexFonts }}
-    <!-- {{ .RelPermalink }} -->
-  {{ end }}
+    {{ if strings.HasSuffix .Name ".woff2" }}
+      <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
+    {{ else if strings.HasSuffix .Name ".woff" }}
+      <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff" crossorigin>
+    {{ else if strings.HasSuffix .Name ".ttf" }}
+      <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/truetype" crossorigin>
+    {{ end }}
+  {{ end }} */}}
 {{ end }}
 
 {{/* TypeIt */}}

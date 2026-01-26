@@ -1,3 +1,56 @@
 {{/* Umami Analytics */}}
 <script defer src="http://blog.benchuat.cn:3111/script.js" data-website-id="dee3fb5a-a754-4221-a4a1-dae28ca8e743"></script>
 
+{{/* KaTeX 样式修复 - 只修复分数线边框，不干扰布局 */}}
+<style>
+/* 只修复分数线边框，保持 KaTeX 的原有布局 */
+html body main#main-content .content-frosted-wrapper .katex .frac-line,
+html body main#main-content .content-frosted-wrapper .katex-display .frac-line,
+.content-frosted-wrapper .katex .frac-line,
+.content-frosted-wrapper .katex-display .frac-line,
+.katex .frac-line {
+  border-bottom: 0.04em solid currentColor !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-color: currentColor !important;
+  /* 不设置 display, width, height 等布局属性，让 KaTeX 自己控制 */
+}
+</style>
+<script>
+// 在页面加载后只修复边框，不修改布局属性
+(function() {
+  function fixFracLines() {
+    const fracLines = document.querySelectorAll('.katex .frac-line, .katex-display .frac-line');
+    fracLines.forEach(function(line) {
+      // 只设置边框，不修改布局属性
+      line.style.setProperty('border-bottom', '0.04em solid', 'important');
+      line.style.setProperty('border-color', 'currentColor', 'important');
+      line.style.setProperty('border-top', 'none', 'important');
+      line.style.setProperty('border-left', 'none', 'important');
+      line.style.setProperty('border-right', 'none', 'important');
+      // 不设置 display, width, height 等，让 KaTeX 保持原有布局
+    });
+  }
+  
+  // 页面加载完成后执行
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(fixFracLines, 200);
+      // 使用 MutationObserver 监听新添加的公式
+      const observer = new MutationObserver(function() {
+        fixFracLines();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  } else {
+    setTimeout(fixFracLines, 200);
+    // 使用 MutationObserver 监听新添加的公式
+    const observer = new MutationObserver(function() {
+      fixFracLines();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+})();
+</script>
+

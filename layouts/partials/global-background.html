@@ -55,13 +55,13 @@ main#main-content {
 }
 
 /* COMPLETELY REMOVE all backgrounds from ALL internal elements - GLOBAL - HIGHEST PRIORITY */
-/* 注意：表格元素和代码块在后面的规则中单独处理 */
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label),
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::before,
-html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::after,
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label),
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::before,
-.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label)::after {
+/* 注意：表格元素、代码块和 KaTeX 数学公式在后面的规则中单独处理 */
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *),
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *)::before,
+html body main#main-content .content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *)::after,
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *),
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *)::before,
+.content-frosted-wrapper *:not(table):not(table *):not(thead):not(thead *):not(tbody):not(tbody *):not(tr):not(tr *):not(td):not(th):not(.chroma):not(.chroma *):not(.highlight):not(.highlight *):not(pre):not(pre *):not(code):not(.code-lang-label):not(.katex):not(.katex *):not(.katex-display):not(.katex-display *)::after {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
